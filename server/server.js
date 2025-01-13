@@ -12,9 +12,9 @@ app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.static("public"))
 
-// app.use("/api/posts",require("./routes/posts"))
-// app.use("/api/users",require("./routes/users"))
-// app.use("/api/todos",require("./routes/todos"))
+app.use("/api/trips",require("./routes/tripRouter"))
+app.use("/api/vacation",require("./routes/vacationRouter"))
+
 
 
 mongoose.connection.once('open',()=>{
