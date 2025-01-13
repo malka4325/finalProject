@@ -5,7 +5,7 @@ const mongoose = require("mongoose")
 const orderSchema = new mongoose.Schema({
     orderedBy:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"User",
+        ref:'User',
         required:true
     },
     trip:{
@@ -16,7 +16,7 @@ const orderSchema = new mongoose.Schema({
     vacation:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Vacation",
-        default:value
+        default:null
     },
     numOfJoined:{
         type:Number

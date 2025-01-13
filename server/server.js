@@ -12,10 +12,10 @@ app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.static("public"))
 
-// app.use("/api/posts",require("./routes/posts"))
-// app.use("/api/users",require("./routes/users"))
-// app.use("/api/todos",require("./routes/todos"))
 
+app.use("/api/auth", require("./routes/authRouter"))
+app.use("/api/users", require("./routes/userRouter"))
+app.use("/api/orders",require("./routes/orderRouter"))
 
 mongoose.connection.once('open',()=>{
     console.log('connected to mongoDB')
