@@ -14,10 +14,6 @@ app.use(express.static("public"))
 
 app.use("/api/trips",require("./routes/tripRouter"))
 app.use("/api/vacation",require("./routes/vacationRouter"))
-
-
-app.use("/api/trips",require("./routes/tripRouter"))
-app.use("/api/vacation",require("./routes/vacationRouter"))
 app.use("/api/auth", require("./routes/authRouter"))
 app.use("/api/users", require("./routes/userRouter"))
 app.use("/api/orders",require("./routes/orderRouter"))
