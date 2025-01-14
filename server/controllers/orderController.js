@@ -16,6 +16,14 @@ const getAllOrders=async (req,res)=>{
         res.json(orders)
 }
 
+const getbyOrderedBy=async (req,res)=>{
+    const {orderedBy}=req.params
+    const orders = await Order.find({orderedBy}).lean().populate('orderedBy')
+        if (!orders)
+            return res.status(400).send('no orders for user')
+        res.json(orders)
+}
+
 const updateOrder=async (req,res)=>{
     const {_id,orderedBy,trip,vacation,numOfJoined} = req.body
     if(!orderedBy)
@@ -43,4 +51,4 @@ const deleteOrder = async (req, res) => {
     res.json(await Order.find().populate('orderedBy'))
 }
 
-module.exports={createNewOrder,getAllOrders,updateOrder,deleteOrder}
+module.exports={createNewOrder,getAllOrders,updateOrder,deleteOrder,getbyOrderedBy}

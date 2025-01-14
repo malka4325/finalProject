@@ -28,17 +28,10 @@ const userSchema = new mongoose.Schema({
     },
     role:{
         type:String,
-        enum:["client","admin"],
-        default:"client"
-    },
-    tripHistory:{
-        type:[{trip:{type:mongoose.Schema.Types.ObjectId,ref:"Trip"}}],
-        default:null
-    },
-    vacationHistory:{
-        type:[{trip:{type:mongoose.Schema.Types.ObjectId,ref:"Vacation"}}],
-        default:null
+        enum:["Client","Admin"],
+        default:"Client"
     }
+   
 },
     {
         timestamps: true
