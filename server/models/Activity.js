@@ -9,6 +9,11 @@ const activitySchema = new mongoose.Schema({
     imageSrc: {
         type: String,
         default: ''
+    },
+    type:{
+        type:String,
+        enum: ['מסלול', 'אטרקציה', 'תכנית'],
+        default:'תכנית'
     }
 },
     { timestamps: true })
