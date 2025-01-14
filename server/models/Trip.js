@@ -8,7 +8,7 @@ const tripSchema = new mongoose.Schema({
         required: true
     },
     mainActivity: {
-        type: mongoose.Types.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,
         ref: 'Activity'
 
     },
@@ -22,7 +22,7 @@ const tripSchema = new mongoose.Schema({
     },
     activities:
         [{
-            type: mongoose.Types.objectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'Activity'
         }]
     ,

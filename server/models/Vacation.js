@@ -25,7 +25,7 @@ const vacationSchema = new mongoose.Schema({
     },
     activities:
         [{
-            type: mongoose.Types.objectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'Activity'
         }],
     maxParticipants: {

@@ -4,8 +4,8 @@ const vacationController=require("../controllers/vacationController")
 
 router.get("/",vacationController.getAllVacations)
 router.get("/:id",vacationController.getVacationById)
-router.get("/byName/:name",vacationController.getvacationByTitle)
-router.vacation("/",vacationController.createNewVacation)
+router.get("/byName/:name",vacationController.getVacationByName)
+router.post("/",vacationController.createNewVacation)
 router.put("/",vacationController.updateVacation)
 router.delete("/:id",vacationController.deleteVacation)
 
