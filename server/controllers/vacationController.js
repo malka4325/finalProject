@@ -1,10 +1,12 @@
 const Vacation = require("../models/Vacation")
 
 const createNewVacation = async (req, res) => {
+
     const { area, location,TargetAudience, startDate,endDate,activities,maxParticipants,price,imageSrc,rating} = req.body
     if (!area||!location||!TargetAudience||!startDate||!endDate||!maxParticipants||!price)
         return res.status(400).json({ message: 'fields are required' })
     const vacation = await Vacation.create({ area, location,TargetAudience, startDate: new Date(startDate),endDate: new Date(endDate),activities,maxParticipants,price,imageSrc,rating})
+
     if (!vacation)
         return res.status(400).send('invalid vacation')
     res.json(await Vacation.find().lean())
