@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="App">
  <Vacation/>
- <OneVacation vacation={{location:"גלי צאנז",area:"צפון",activities:[{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"}]}}/>
+ <OneVacation vacation={{location:" מלון כינר",area:"צפון",activities:[{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"}]}}/>
 {/* <Router>
   
   <Routes>

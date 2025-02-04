@@ -74,8 +74,9 @@ const Vacation=()=>{
                         <Tag value={full} severity={getSeverity(full)} style={{visibility:full === 'יש מקום'?"hidden":"visible"}}></Tag>
                     </div>
                     <div className="flex flex-column align-items-center gap-3 py-5">
-                        <img className="w-9 shadow-2 border-round" src='./7239120.gif' alt= {vacation.location}/>
-                        <Image src="./7239120.gif" alt={vacation.location} width="250" />
+                        
+                        <Image src="/images/cineret.jpg" alt={vacation.location} width="250" />
+                       
                         <div className="text-2xl font-bold">{vacation.location}</div>
                         <Rating value={vacation.rating} readOnly cancel={false}></Rating>
                     </div>

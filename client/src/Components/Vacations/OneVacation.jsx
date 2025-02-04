@@ -51,7 +51,7 @@ const oneVacation = (props) => {
             <div className="border-1 surface-border border-round m-2 text-center py-5 px-3">
                 <div className="mb-3">
                     <div className="card flex justify-content-center">
-                        <Image src="https://primefaces.org/cdn/primereact/images/galleria/galleria14.jpg" zoomSrc="https://primefaces.org/cdn/primereact/images/galleria/galleria14.jpg" alt="Image" width="80" height="60" preview />
+                        <Image src="/images/0210005.jpg" zoomSrc="/images/0210005.jpg" alt="Image" width="80" height="60" preview />
                     </div>
                 </div>
                 <div>
@@ -77,11 +77,13 @@ const oneVacation = (props) => {
         
         <Splitter style={{ height: '300px',marginTop:'150px' }}>
             <SplitterPanel className="flex align-items-center justify-content-center" size={80}>
-            <Image src="https://primefaces.org/cdn/primereact/images/galleria/galleria10.jpg" alt={props.vacation.location} width="400" preview />
+            <Image src="/images/cineret.jpg" alt={props.vacation.location} width="300" preview />
         </SplitterPanel>
             <SplitterPanel className="flex align-items-center justify-content-center" size={20} minSize={10}>אזור:{props.vacation.area}</SplitterPanel>
         </Splitter>
-        
+        <div className="card flex justify-content-center">
+            <Button label="באיזה אזור אני ממוקם:" link onClick={() =>  window.open(`https://www.google.com/maps?q=${encodeURIComponent(props.vacation.location)}`, '_blank')}/>
+        </div>
         <div className="card">
             <Carousel value={props.vacation.activities} numVisible={3} numScroll={3} responsiveOptions={responsiveOptions} className="custom-carousel" circular
                 autoplayInterval={3000} itemTemplate={productTemplate} />
