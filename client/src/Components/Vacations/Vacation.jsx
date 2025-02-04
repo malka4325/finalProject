@@ -7,12 +7,13 @@ import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { Rating } from 'primereact/rating';
 import { Tag } from 'primereact/tag';
 import { classNames } from 'primereact/utils';
-
+import { Link } from 'react-router-dom';
+import { Image } from 'primereact/image';
 import axios from "axios";
-const Trips=()=>{
+const Vacation=()=>{
     
     const [vacations, setVacations] = useState([]);
-    // const [layout, setLayout] = useState('grid');
+    
     useEffect(()=>{getVacations()},[])
     const getVacations = async () => {
         try {  
@@ -27,43 +28,61 @@ const Trips=()=>{
     //     VacationService.getVacations().then((data) =setVacations> (data.slice(0, 12)));
     // }, []);
 
-    // const getSeverity = (vacation) => {
-    //     switch (vacation.inventoryStatus) {
-    //         case 'INSTOCK':
-    //             return 'success';
+    const getSeverity = (full) => {
+        switch (full) {
 
-    //         case 'LOWSTOCK':
-    //             return 'warning';
+            case 'מקומות אחרונים':
+                return 'warning';
 
-    //         case 'OUTOFSTOCK':
-    //             return 'danger';
+            case 'מלא':
+                return 'danger';
 
-    //         default:
-    //             return null;
-    //     }
-    // };
+            default:
+                return null;
+        }
+    };
+
+    let full='';
+    const freeParticipants=(vacation)=>{
+        const tmp = vacation.maxParticipants-vacation.currentParticipants;
+        
+        console.log(tmp)
+        if (tmp>0&&tmp<20) {
+            full='מקומות אחרונים'
+            console.log(full)
+            console.log(full)
+        }
+        else{ 
+            if (tmp===0) {
+           full='מלא'
+        }
+        else
+       full='יש מקום'}
     
-
-
+    }
     const gridItem = (vacation) => {
+   
+        freeParticipants(vacation);
         return (
             <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2" key={vacation.id}>
                 <div className="p-4 border-1 surface-border surface-card border-round">
                     <div className="flex flex-wrap align-items-center justify-content-between gap-2">
                         <div className="flex align-items-center gap-2">
-                            <i className="pi pi-tag"></i>
+                            <i className="pi pi-map-marker"></i>
                             <span className="font-semibold">{vacation.area}</span>
                         </div>
-                        {/* <Tag value={vacation.inventoryStatus} severity={getSeverity(vacation)}></Tag> */}
+                        <Tag value={full} severity={getSeverity(full)} style={{visibility:full === 'יש מקום'?"hidden":"visible"}}></Tag>
                     </div>
                     <div className="flex flex-column align-items-center gap-3 py-5">
-                        <img className="w-9 shadow-2 border-round" src='7239120.gif' alt={vacation.location} />
+                        <img className="w-9 shadow-2 border-round" src='./7239120.gif' alt= {vacation.location}/>
+                        <Image src="./7239120.gif" alt={vacation.location} width="250" />
                         <div className="text-2xl font-bold">{vacation.location}</div>
-                        {/* <Rating value={vacation.rating} readOnly cancel={false}></Rating> */}
+                        <Rating value={vacation.rating} readOnly cancel={false}></Rating>
                     </div>
                     <div className="flex align-items-center justify-content-between">
                         <span className="text-2xl font-semibold">${vacation.price}</span>
-                        {/* <Button icon="pi pi-shopping-cart" className="p-button-rounded" disabled={vacation.inventoryStatus === 'OUTOFSTOCK'}></Button> */}
+  
+         {/* <Link to="/OneVacation"></Link> */}
                         <Button icon="pi pi-shopping-cart" className="p-button-rounded"></Button>
                     </div>
                 </div>
@@ -81,7 +100,7 @@ const Trips=()=>{
 </div> </>
     )
 }
-export default Trips
+export default Vacation
 
 
 

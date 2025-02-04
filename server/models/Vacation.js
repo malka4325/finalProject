@@ -43,6 +43,10 @@ const vacationSchema = new mongoose.Schema({
     imageSrc: {
         type: String,
         default: ''
+    },
+    rating:{
+        type:Number,
+        default:4
     }
 },
     { timestamps: true })
