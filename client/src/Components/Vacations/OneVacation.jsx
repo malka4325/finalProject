@@ -6,6 +6,8 @@ import { Button } from 'primereact/button';
 import { Carousel } from 'primereact/carousel';
 import { Tag } from 'primereact/tag';
 import { Splitter, SplitterPanel } from 'primereact/splitter';
+import 'primeicons/primeicons.css';
+
 
 
 const oneVacation = (props) => {
@@ -82,7 +84,7 @@ const oneVacation = (props) => {
             <SplitterPanel className="flex align-items-center justify-content-center" size={20} minSize={10}>אזור:{props.vacation.area}</SplitterPanel>
         </Splitter>
         <div className="card flex justify-content-center">
-            <Button label="באיזה אזור אני ממוקם:" link onClick={() =>  window.open(`https://www.google.com/maps?q=${encodeURIComponent(props.vacation.location)}`, '_blank')}/>
+            <Button  icon="pi pi-map-marker" label='חפש' link onClick={() =>  window.open(`https://www.google.com/maps?q=${encodeURIComponent(props.vacation.location)}`, '_blank')}/>
         </div>
         <div className="card">
             <Carousel value={props.vacation.activities} numVisible={3} numScroll={3} responsiveOptions={responsiveOptions} className="custom-carousel" circular
