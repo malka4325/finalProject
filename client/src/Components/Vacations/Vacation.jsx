@@ -1,7 +1,7 @@
 
 import React from "react";
 
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { Rating } from 'primereact/rating';
@@ -10,20 +10,21 @@ import { classNames } from 'primereact/utils';
 import { Link } from 'react-router-dom';
 import { Image } from 'primereact/image';
 import axios from "axios";
-const Vacation=()=>{
-    
+const Vacation = () => {
+
     const [vacations, setVacations] = useState([]);
-    
-    useEffect(()=>{getVacations()},[])
+
+    useEffect(() => { getVacations() }, [])
     const getVacations = async () => {
-        try {  
+        try {
             const res = await axios.get('http://localhost:4300/api/vacations')
             if (res.status === 200) {
                 setVacations(res.data);
             }
         } catch (e) {
             console.error(e)
-        }}
+        }
+    }
     // useEffect(() => {
     //     VacationService.getVacations().then((data) =setVacations> (data.slice(0, 12)));
     // }, []);
@@ -42,48 +43,53 @@ const Vacation=()=>{
         }
     };
 
-    let full='';
-    const freeParticipants=(vacation)=>{
-        const tmp = vacation.maxParticipants-vacation.currentParticipants;
-        
+    let full = '';
+    const freeParticipants = (vacation) => {
+        const tmp = vacation.maxParticipants - vacation.currentParticipants;
+
         console.log(tmp)
-        if (tmp>0&&tmp<20) {
-            full='מקומות אחרונים'
+        if (tmp > 0 && tmp < 20) {
+            full = 'מקומות אחרונים'
             console.log(full)
             console.log(full)
         }
-        else{ 
-            if (tmp===0) {
-           full='מלא'
+        else {
+            if (tmp === 0) {
+                full = 'מלא'
+            }
+            else
+                full = 'יש מקום'
         }
-        else
-       full='יש מקום'}
-    
+
     }
     const gridItem = (vacation) => {
-   
+        // debugger
         freeParticipants(vacation);
         return (
             <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2" key={vacation.id}>
-                <div className="p-4 border-1 surface-border surface-card border-round">
-                    <div className="flex flex-wrap align-items-center justify-content-between gap-2">
+                <div className="p-4 border-1 surface-border surface-card border-round" style={{
+                    width: "300px", /* רוחב קבוע */
+                    height: '400px', /* גובה קבוע */
+                    overflow: 'hidden' /* מסתיר תוכן שגדול מהכרטיס */
+                }}>
+                    <div className="flex flex-wrap align-items-center justify-content-between gap-2" >
                         <div className="flex align-items-center gap-2">
                             <i className="pi pi-map-marker"></i>
                             <span className="font-semibold">{vacation.area}</span>
                         </div>
-                        <Tag value={full} severity={getSeverity(full)} style={{visibility:full === 'יש מקום'?"hidden":"visible"}}></Tag>
+                        <Tag value={full} severity={getSeverity(full)} style={{ visibility: full === 'יש מקום' ? "hidden" : "visible" }}></Tag>
                     </div>
                     <div className="flex flex-column align-items-center gap-3 py-5">
-                        
-                        <Image src="/images/cineret.jpg" alt={vacation.location} width="250" />
-                       
+
+                        <Image src={vacation.imageSrc} alt={vacation.location} width="250" />
+
                         <div className="text-2xl font-bold">{vacation.location}</div>
                         <Rating value={vacation.rating} readOnly cancel={false}></Rating>
                     </div>
                     <div className="flex align-items-center justify-content-between">
                         <span className="text-2xl font-semibold">${vacation.price}</span>
-  
-         {/* <Link to="/OneVacation"></Link> */}
+
+                        {/* <Link to="/OneVacation"></Link> */}
                         <Button icon="pi pi-shopping-cart" className="p-button-rounded"></Button>
                     </div>
                 </div>
@@ -94,11 +100,11 @@ const Vacation=()=>{
         return <div className="grid grid-nogutter">{vacations.map((vacation) => gridItem(vacation))}</div>;
     };
 
-    return(
-  <>    
-    <div className="card">
-  <DataView value={vacations} listTemplate={listTemplate}  />
-</div> </>
+    return (
+        <>
+            <div className="card">
+                <DataView value={vacations} listTemplate={listTemplate} />
+            </div> </>
     )
 }
 export default Vacation
@@ -109,6 +115,5 @@ export default Vacation
 
 
 
-        
 
-        
+
