@@ -20,3 +20,18 @@ body {
   margin-bottom: 1rem;
 }
 
+.fixed-logo {
+  position: fixed;
+  bottom: 20px; /* מרחק מלמטה */
+  right: 20px; /* מרחק מהצד הימני */
+  width: 600px; /* גודל הלוגו */
+  height: auto;
+  opacity: 0.2; /* שקיפות קלה */
+  z-index: 100; /* תמיד מעל התוכן */
+  cursor: pointer; /* ידית עכבר */
+  transition: opacity 0.2s;
+}
+
+.fixed-logo:hover {
+  opacity: 0.3; /* שקיפות מלאה במעבר עכבר */
+}

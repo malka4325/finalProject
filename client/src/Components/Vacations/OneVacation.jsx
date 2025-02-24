@@ -5,9 +5,14 @@ import { Carousel } from 'primereact/carousel';
 import { Tag } from 'primereact/tag';
 import { Divider } from 'primereact/divider';
 import { Galleria } from 'primereact/galleria';
+import React, { useState } from "react";
+
+import { Dialog } from 'primereact/dialog';
+import { InputText } from "primereact/inputtext";
 import 'primeicons/primeicons.css';
 
 const OneVacation = ({ vacation }) => {
+  const [visible, setVisible] = useState(false);
   const responsiveOptions = [
     {
       breakpoint: '1024px',
@@ -35,7 +40,7 @@ const OneVacation = ({ vacation }) => {
   }));
 
   const itemTemplate = (item) => {
-    return <img src={item.source} alt={item.alt} style={{ width: '100%', display: 'block', margin: '0 auto',border: '5px solid #000'}} />;
+    return <img src={item.source} alt={item.alt} style={{ width: '100%', display: 'block', margin: '0 auto', border: '5px solid #000' }} />;
   };
 
   const thumbnailTemplate = (item) => {
@@ -46,7 +51,7 @@ const OneVacation = ({ vacation }) => {
         style={{
           display: 'block',
           width: '100px',
-          height: '100px', 
+          height: '100px',
           margin: '10px',
           cursor: 'pointer',
         }}
@@ -56,25 +61,25 @@ const OneVacation = ({ vacation }) => {
 
   return (
     <div className="p-4">
-      
+
       <h2 className="text-3xl font-bold text-center mb-4">{vacation.location}</h2>
 
       <Card className="flex flex-column lg:flex-row shadow-2 p-4">
-        
+
         <div className="flex flex-column lg:flex-row w-full lg:w-2/5 items-center">
           <Galleria
             value={images}
             responsiveOptions={responsiveOptions}
             numVisible={4}
             circular
-           
-            style={{ maxWidth: '60%',marginLeft:'20%' }} 
-            item={itemTemplate} 
-            thumbnail={thumbnailTemplate} 
+
+            style={{ maxWidth: '60%', marginLeft: '20%' }}
+            item={itemTemplate}
+            thumbnail={thumbnailTemplate}
           />
         </div>
 
-     
+
         <div className="w-full lg:w-3/5 p-6">
           <div className="text-lg mb-3">
             <strong>אזור:</strong> {vacation.area}
@@ -84,12 +89,12 @@ const OneVacation = ({ vacation }) => {
           </div>
           <div className="text-lg mb-4 flex items-center">
             <strong>מחיר:</strong>
-            <Tag value={`₪${vacation.price}`} severity="success" className="ml-2 text-lg p-3" />
+            <Tag value={`₪${vacation.price}`}  style={{background:"var(--orange-400)"}} className="ml-2 text-lg p-3" />
           </div>
 
-         
+
           <div className="flex gap-4 mb-4">
-            
+
             <div className="flex-1">
               <div className="font-semibold text-gray-600">תאריך התחלה</div>
               <div className="text-xl text-gray-800">
@@ -101,7 +106,7 @@ const OneVacation = ({ vacation }) => {
               </div>
             </div>
 
-           
+
             <div className="flex-1">
               <div className="font-semibold text-gray-600">תאריך סיום</div>
               <div className="text-xl text-gray-800">
@@ -116,7 +121,7 @@ const OneVacation = ({ vacation }) => {
 
           <Divider />
 
-         
+
           <div className="flex gap-4 mt-5">
             <Button
               icon="pi pi-map-marker"
@@ -124,17 +129,47 @@ const OneVacation = ({ vacation }) => {
               className="p-button-outlined p-button-secondary"
               onClick={() => window.open(`https://www.google.com/maps?q=${encodeURIComponent(vacation.location)}`, '_blank')}
             />
-            <Button label="הזמן עכשיו" icon="pi pi-shopping-cart" className="p-button p-button-primary" />
+            
+              <Button label="הזמן עכשיו" icon="pi pi-tags" onClick={() => setVisible(true)} style={{background:"var(--cyan-400)"}}/>
+              <Dialog
+                visible={visible}
+                modal
+                onHide={() => { if (!visible) return; setVisible(false); }}
+                content={({ hide }) => (
+                  <div className="flex flex-column px-8 py-5 gap-4" style={{ borderRadius: '12px', backgroundImage: 'radial-gradient(circle at left top, var(--primary-400), var(--primary-700))' }}>
+
+                    <div className="inline-flex flex-column gap-2">
+                      <label htmlFor="username" className="text-primary-50 font-semibold">
+                        Username
+                      </label>
+                      <InputText id="username" label="Username" className="bg-white-alpha-20 border-none p-3 text-primary-50"></InputText>
+                    </div>
+                    <div className="inline-flex flex-column gap-2">
+                      <label htmlFor="username" className="text-primary-50 font-semibold">
+                        Username
+                      </label>
+                      <InputText id="password" label="Password" className="bg-white-alpha-20 border-none p-3 text-primary-50" type="password"></InputText>
+                    </div>
+                    <div className="flex align-items-center gap-2">
+                      <Button label="Sign-In" onClick={(e) => hide(e)} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
+                      <Button label="Cancel" onClick={(e) => hide(e)} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
+                    </div>
+                  </div>
+                )}
+              ></Dialog>
+            </div>
           </div>
-        </div>
+        
       </Card>
 
       <div className="mt-6">
         <h3 className="text-2xl font-semibold text-center mb-4">פעילויות נוספות במלון</h3>
+        
         <Carousel
           value={vacation.activities}
           numVisible={3}
           numScroll={3}
+          
           responsiveOptions={responsiveOptions}
           className="custom-carousel"
           circular
@@ -148,7 +183,7 @@ const OneVacation = ({ vacation }) => {
               <h6 className="text-sm">{activity.type}</h6>
               <div className="mt-3 flex gap-2 justify-content-center">
                 <Button icon="pi pi-search" className="p-button-rounded p-button-outlined" />
-                <Button icon="pi pi-star-fill" className="p-button-rounded p-button-success" />
+                <Button icon="pi pi-star-fill" className="p-button-rounded p-button-warning" />
               </div>
             </div>
           )}
