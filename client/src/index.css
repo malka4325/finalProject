@@ -24,7 +24,7 @@ body {
   position: fixed;
   bottom: 20px; /* מרחק מלמטה */
   right: 20px; /* מרחק מהצד הימני */
-  width: 600px; /* גודל הלוגו */
+  width: 200px; /* גודל הלוגו */
   height: auto;
   opacity: 0.2; /* שקיפות קלה */
   z-index: 100; /* תמיד מעל התוכן */
