@@ -10,10 +10,11 @@ import { classNames } from 'primereact/utils';
 import { Link } from 'react-router-dom';
 import { Image } from 'primereact/image';
 import axios from "axios";
-const Vacation = () => {
+import OneVacation from "./OneVacation";
+const Vacation = (props) => {
 
     const [vacations, setVacations] = useState([]);
-
+    const [oneVacationVis, setOneVacationVis] = useState(false);
     useEffect(() => { getVacations() }, [])
     const getVacations = async () => {
         try {
@@ -51,7 +52,7 @@ const Vacation = () => {
         if (tmp > 0 && tmp < 20) {
             full = 'מקומות אחרונים'
             console.log(full)
-            console.log(full)
+
         }
         else {
             if (tmp === 0) {
@@ -67,11 +68,13 @@ const Vacation = () => {
         freeParticipants(vacation);
         return (
             <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2" key={vacation.id}>
+               
+                {/* {oneVacationVis && <OneVacation vacation={vacation} setOneVacationVis={setOneVacationVis} oneVacationVis={oneVacationVis} />} */}
                 <div className="p-4 border-1 surface-border surface-card border-round" style={{
                     width: "300px", /* רוחב קבוע */
                     height: '400px', /* גובה קבוע */
                     overflow: 'hidden' /* מסתיר תוכן שגדול מהכרטיס */
-                }}>
+                }}> <button onClick={()=>{props.onSelectVacation(vacation)}} style={{backgroundColor:"white",borderWidth:"0px"}}>
                     <div className="flex flex-wrap align-items-center justify-content-between gap-2" >
                         <div className="flex align-items-center gap-2">
                             <i className="pi pi-map-marker"></i>
@@ -85,14 +88,15 @@ const Vacation = () => {
 
                         <div className="text-2xl font-bold">{vacation.location}</div>
                         <Rating value={vacation.rating} readOnly cancel={false}></Rating>
-                    </div>
+                    </div> </button>
                     <div className="flex align-items-center justify-content-between">
                         <span className="text-2xl font-semibold">${vacation.price}</span>
-
+                       
                         {/* <Link to="/OneVacation"></Link> */}
                         <Button icon="pi pi-shopping-cart" className="p-button-rounded"></Button>
                     </div>
                 </div>
+                
             </div>
         );
     };
