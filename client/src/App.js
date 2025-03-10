@@ -1,10 +1,10 @@
 
 import './App.css';
 import HomePage from './Components/HomePage';
-import AuthPage from './Components/AuthPage';
+
 import Trips from './Components/Trips/Trips';
 import MainVacations from './Components/Vacations/MainVacations';
-
+import AuthPage from './Components/AuthPage';
 import OneVacation from './Components/Vacations/OneVacation'
 import Vacation from './Components/Vacations/Vacation';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -23,6 +23,7 @@ function App() {
  */}
  {/* <MainVacations/> */}
 <AuthPage/>
+
 {/* <Router>
   
   <Routes>

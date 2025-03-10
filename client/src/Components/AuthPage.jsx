@@ -1,135 +1,158 @@
-import { useRef, useState } from "react";
-import axios from 'axios'
-//import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Button } from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
-import { Button } from "primereact/button";
-import { Card } from "primereact/card";
-import { Divider } from "primereact/divider";
+import axios from "axios";
+const AuthPage=()=> {
+    const [visible, setVisible] = useState(false);
+    const [isLogin, setIsLogin] = useState(true);  // משתנה לשלוט במעבר בין הרשמה והתחברות
+    const [formData, setFormData] = useState({
+        userName: '',
+        password: '',
+        fullName: '',
+        email: '',
+        phone: ''
+    });
 
-const AuthPage = () => {
-  const [isLogin, setIsLogin] = useState(true);
-  //const navigate = useNavigate();
-
-  // יצירת רפרנסים לשדות
-  const nameRef = useRef(null);
-  const usernameRef = useRef(null);
-  const addressRef = useRef(null);
-  const emailRef = useRef(null);
-  const phoneRef = useRef(null);
-  const passwordRef = useRef(null);
-const register=async (userData)=>{
-    try {
-        const res = await axios.post('http://localhost:4300/api/auth/register', userData)
+    const handleChange = (e, field) => {
+        setFormData({ ...formData, [field]: e.target.value });
+    };
+    const register=async ()=>{
+        try {
+            const res = await axios.post('http://localhost:4300/api/auth/register', formData)
+            console.log(res.data);
+            if (res.status === 200) {
+               alert("yay!")
+            }
+        } catch (e) {
+            alert(e.response.data.message.toString())
+        }
+    }
+    
+    const login= async()=>{
+        debugger
+      const log={
+        userName:formData.userName,
+        password:formData.password
+      }
+      try {
+        const res = await axios.post('http://localhost:4300/api/auth/login', log)
         console.log(res.data);
         if (res.status === 200) {
-           alert("yay!")
+           alert("yayy!")
         }
     } catch (e) {
         alert(e.response.data.message.toString())
     }
-}
-const login= async(userData)=>{
-  const log={
-    userName:userData.userName,
-    password:userData.password
-  }
-  try {
-    const res = await axios.post('http://localhost:4300/api/auth/login', log)
-    console.log(res.data);
-    if (res.status === 200) {
-       alert("yayy!")
     }
-} catch (e) {
-    alert(e.response.data.message.toString())
-}
-}
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    const userData = {
-      name: nameRef.current?.value || "",
-      userName: usernameRef.current?.value || "",
-      address: addressRef.current?.value || "",
-      email: emailRef.current?.value || "",
-      phone: phoneRef.current?.value || "",
-      password: passwordRef.current,
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (isLogin) {
+            login();  // קוראים לפונקציית התחברות
+        } else {
+            register();  // קוראים לפונקציית הרשמה
+        }
     };
-    debugger
-    isLogin ? login(userData) : register(userData);
-    console.log("📢 נתוני משתמש:", userData);
-   // navigate("/order"); // כאן ניתן לשלב שמירה של הנתונים
-  };
 
-  return (
-    <div className="flex flex-col justify-center items-center min-h-screen bg-gradient-to-b from-blue-100 to-blue-300 p-6">
-      <Card className="w-full max-w-sm bg-white shadow-2xl rounded-3xl p-6">
-        <h2 className="text-center text-3xl font-bold text-gray-800">
-          {isLogin ? "🔑 התחברות" : "🚀 הרשמה"}
-        </h2>
-        <p className="text-center text-gray-500 mb-4">
-          {isLogin ? "הזן את פרטיך כדי להיכנס" : "צור חשבון חדש והצטרף אלינו!"}
-        </p>
-        <Divider />
+    return (
+        <div className="card flex justify-content-center">
+            <Button label={isLogin ? "Login" : "Sign Up"} icon="pi pi-user" onClick={() => setVisible(true)} />
+            <Dialog
+                visible={visible}
+                modal
+                onHide={() => setVisible(false)}
+                content={({ hide }) => (
+                    <div className="flex flex-column px-8 py-5 gap-4" style={{ borderRadius: '12px', backgroundImage: 'radial-gradient(circle at left top, var(--primary-400), var(--primary-700))',overflowY: 'auto' }}>
+                         <Button 
+                            icon="pi pi-times" 
+                            className="p-button-text p-button-rounded p-button-outlined p-button-secondary absolute top-0 right-0 mt-2 mr-2"
+                            onClick={() => setVisible(false)} 
+                        />
+                        <h2 className="text-center text-white mb-4">{isLogin ? "🔑 התחברות" : "📝 הרשמה"}</h2>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-          {!isLogin && (
-            <>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="name" className="text-gray-700 font-medium">שם מלא</label>
-                <InputText id="name" ref={nameRef} className="w-full p-inputtext-lg" required />
-              </div>
+                        {/* שדה שם מלא - יוצג רק בהרשמה */}
+                        {!isLogin && (
+                            <div className="inline-flex flex-column gap-2">
+                                <label htmlFor="fullName" className="text-primary-50 font-semibold">שם מלא</label>
+                                <InputText 
+                                    id="fullName" 
+                                    value={formData.fullName} 
+                                    onChange={(e) => handleChange(e, "fullName")} 
+                                    className="bg-white-alpha-20 border-none p-3 text-primary-50"
+                                />
+                            </div>
+                        )}
 
-              <div className="flex flex-col gap-2">
-                <label htmlFor="address" className="text-gray-700 font-medium">כתובת</label>
-                <InputText id="address" ref={addressRef} className="w-full p-inputtext-lg" required />
-              </div>
+                        {/* שדה שם משתמש */}
+                        <div className="inline-flex flex-column gap-2">
+                            <label htmlFor="userName" className="text-primary-50 font-semibold">שם משתמש</label>
+                            <InputText 
+                                id="userName" 
+                                value={formData.userName} 
+                                onChange={(e) => handleChange(e, "userName")} 
+                                className="bg-white-alpha-20 border-none p-3 text-primary-50"
+                            />
+                        </div>
 
-              <div className="flex flex-col gap-2">
-                <label htmlFor="phone" className="text-gray-700 font-medium">טלפון</label>
-                <InputText id="phone" ref={phoneRef} type="tel" className="w-full p-inputtext-lg" required />
-              </div>
-            </>
-          )}
+                        {/* שדה סיסמה */}
+                        <div className="inline-flex flex-column gap-2">
+                            <label htmlFor="password" className="text-primary-50 font-semibold">סיסמה</label>
+                            <Password 
+                                id="password" 
+                                value={formData.password} 
+                                onChange={(e) => handleChange(e, "password")} 
+                                toggleMask 
+                                className="bg-white-alpha-20 border-none p-3 text-primary-50"
+                            />
+                        </div>
 
-<div className="flex flex-col gap-2">
-                <label htmlFor="username" className="text-gray-700 font-medium">שם משתמש</label>
-                <InputText id="username" ref={usernameRef} className="w-full p-inputtext-lg" required />
-              </div>
+                        {/* שדות נוספים - יוצגו רק בהרשמה */}
+                        {!isLogin && (
+                            <>
+                                <div className="inline-flex flex-column gap-2">
+                                    <label htmlFor="email" className="text-primary-50 font-semibold">אימייל</label>
+                                    <InputText 
+                                        id="email" 
+                                        value={formData.email} 
+                                        onChange={(e) => handleChange(e, "email")} 
+                                        className="bg-white-alpha-20 border-none p-3 text-primary-50"
+                                    />
+                                </div>
 
-          <div className="flex flex-col gap-2">
-            <label htmlFor="password" className="text-gray-700 font-medium">סיסמה</label>
-            <Password 
-  id="password" 
-  className="w-full p-inputtext-lg" 
-  toggleMask 
-  required 
-  onChange={(e) => (passwordRef.current = e.target.value)} 
-/>
+                                <div className="inline-flex flex-column gap-2">
+                                    <label htmlFor="phone" className="text-primary-50 font-semibold">טלפון</label>
+                                    <InputText 
+                                        id="phone" 
+                                        value={formData.phone} 
+                                        onChange={(e) => handleChange(e, "phone")} 
+                                        className="bg-white-alpha-20 border-none p-3 text-primary-50"
+                                    />
+                                </div>
+                            </>
+                        )}
 
-          </div>
+                        {/* כפתור שליחה */}
+                        <div className="flex justify-content-between">
+                            <Button 
+                                label={isLogin ? "📲 התחבר" : "📩 הרשמה"} 
+                                onClick={handleSubmit} 
+                                className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"
+                            />
+                        </div>
 
-          <Button
-            label={isLogin ? "🔑 התחבר" : "🚀 הירשם"}
-            icon={isLogin ? "pi pi-sign-in" : "pi pi-user-plus"}
-            type="submit"
-            className="w-full p-button-lg p-button-rounded p-button-primary mt-3"
-          />
-        </form>
-
-        <Divider />
-        <p className="text-center text-gray-600">
-          {isLogin ? "אין לך חשבון?" : "כבר רשום?"}
-          <button
-            onClick={() => setIsLogin(!isLogin)}
-            className="block w-full text-blue-600 font-medium hover:underline mt-2"
-          >
-            {isLogin ? "הירשם כאן" : "התחבר כאן"}
-          </button>
-        </p>
-      </Card>
-    </div>
-  );
-};
-
-export default AuthPage;
+                        {/* כפתור מעבר בין הרשמה והתחברות */}
+                        <div className="mt-3 text-center">
+                            <Button 
+                                label={isLogin ? "אין לך חשבון? הירשם כאן" : "כבר רשום? התחבר כאן"} 
+                                onClick={() => setIsLogin(!isLogin)} 
+                                className="p-button-text text-primary-50"
+                            />
+                        </div>
+                    </div>
+                )}
+            ></Dialog>
+        </div>
+    );
+} 
+export default AuthPage
