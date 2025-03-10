@@ -1,6 +1,7 @@
 
 import './App.css';
 import HomePage from './Components/HomePage';
+import AuthPage from './Components/AuthPage';
 import Trips from './Components/Trips/Trips';
 import MainVacations from './Components/Vacations/MainVacations';
 
@@ -20,8 +21,8 @@ function App() {
  {/* <Vacation/>
   <OneVacation vacation={{location:" מלון כינר",area:"צפון",TargetAudience:"משפחה",price:100,startDate:'05/12/2016',endDate:'05/12/2016',images:['/images/cineret.jpg', '/images/cineret.jpg', '/images/cineret.jpg','/images/logo.jpg'],activities:[{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"}]}}></OneVacation>  
  */}
- <MainVacations/>
-
+ {/* <MainVacations/> */}
+<AuthPage/>
 {/* <Router>
   
   <Routes>
