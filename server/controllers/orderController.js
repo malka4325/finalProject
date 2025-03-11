@@ -17,7 +17,7 @@ const getAllOrders=async (req,res)=>{
 }
 
 const getbyOrderedBy=async (req,res)=>{
-    const {orderedBy}=req.params
+    const orderedBy=req.user._id
     const orders = await Order.find({orderedBy}).lean().populate('orderedBy')
         if (!orders)
             return res.status(400).send('no orders for user')

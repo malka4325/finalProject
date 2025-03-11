@@ -4,6 +4,8 @@ const cors=require("cors")
 const corsOptions=require("./config/corsOptions")
 const connectDB=require("./config/dbConn")
 const { default: mongoose } = require("mongoose")
+const verifyJWT = require("../server/middleware/verifyJWT")
+
 const PORT= process.env.PORT||1300
 const app=express()
 connectDB()
