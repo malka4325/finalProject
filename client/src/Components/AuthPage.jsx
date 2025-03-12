@@ -30,7 +30,7 @@ const AuthPage=(props)=> {
             console.log(res.data);
 
             if (res.status === 200) {
-               alert("yay!")
+            //    alert("yay!")
             }
         } catch (e) {
             alert(e.response.data.message.toString())
@@ -38,7 +38,6 @@ const AuthPage=(props)=> {
     }
     
     const login= async()=>{
-        debugger
       const log={
         userName:formData.userName,
         password:formData.password
@@ -48,7 +47,7 @@ const AuthPage=(props)=> {
        setToken(res.data)
         console.log(res.data);
         if (res.status === 200) {
-           alert("yayy!")
+        //    alert("yayy!")
         }
     } catch (e) {
         alert(e.response.data.message.toString())
