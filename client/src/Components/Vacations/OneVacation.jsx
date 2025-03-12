@@ -5,17 +5,36 @@ import { Carousel } from 'primereact/carousel';
 import { Tag } from 'primereact/tag';
 import { Divider } from 'primereact/divider';
 import { Galleria } from 'primereact/galleria';
-import React, { useState } from "react";
-
+import React, { useEffect, useState ,useContext} from "react";
+import {useLocation, useNavigate, useParams} from 'react-router-dom';
+import axios from 'axios';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from "primereact/inputtext";
 import 'primeicons/primeicons.css';
+import Context from "../../context/Context"
 
-const OneVacation = (props) => {
- 
-  // props.setOneVacationVis(false)
+const OneVacation = () => {
+  const navigate = useNavigate();
+ const {id}=useParams()
+  const [vacation, setVacation] = useState([]);
+  const context = useContext(Context);
+
+  useEffect(() => { getVacation() }, [])
+  const getVacation = async () => {
+      try {
+          const res = await axios.get(`http://localhost:4300/api/vacations/${id}`)
+          if (res.status === 200) {
+              setVacation(res.data);
+          }
+      } catch (e) {
+          console.error(e)
+      }
+  }
+useEffect(()=>{
+console.log(vacation);
+},[])
   const [visible, setVisible] = useState(false);
-  if (!props.vacation) return null;
+  if (!vacation) return null;
   const responsiveOptions = [
     {
       breakpoint: '1024px',
@@ -34,14 +53,14 @@ const OneVacation = (props) => {
       numVisible: 1,
     },
   ];
-  props.vacation.images = props.vacation.images || []; 
-  const images = props.vacation.images.map((src) => ({
-    source: src,
-    thumbnail: src,
-    alt: 'Gallery Image',
-    title: 'Vacation Image',
-  }));
-
+// vacation.images = vacation.images || []; 
+  // const images = vacation.images.map((src) => ({
+  //   source: src,
+  //   thumbnail: src,
+  //   alt: 'Gallery Image',
+  //   title: 'Vacation Image',
+  // }));
+const images=[]
   const itemTemplate = (item) => {
     return <img src={item.source} alt={item.alt} style={{ width: '100%', display: 'block', margin: '0 auto', border: '5px solid #000' }} />;
   };
@@ -61,11 +80,16 @@ const OneVacation = (props) => {
       />
     );
   };
+  const handleButton = () => {
 
+        navigate(`/Vacations`); // שינוי URL עם state
+}
   return (
     <div className="p-4">
 
-      <h2 className="text-3xl font-bold text-center mb-4">{props.vacation.location}</h2>
+ {      console.log("eeeeeeeeeeeee")
+}
+      <h2 className="text-3xl font-bold text-center mb-4">{vacation.location}</h2>
 
       <Card className="flex flex-column lg:flex-row shadow-2 p-4">
 
@@ -85,14 +109,14 @@ const OneVacation = (props) => {
 
         <div className="w-full lg:w-3/5 p-6">
           <div className="text-lg mb-3">
-            <strong>אזור:</strong> {props.vacation.area}
+            <strong>אזור:</strong> {vacation.area}
           </div>
           <div className="text-lg mb-3">
-            <strong>קהל יעד:</strong> {props.vacation.TargetAudience}
+            <strong>קהל יעד:</strong> {vacation.TargetAudience}
           </div>
           <div className="text-lg mb-4 flex items-center">
             <strong>מחיר:</strong>
-            <Tag value={`₪${props.vacation.price}`}  style={{background:"var(--orange-400)"}} className="ml-2 text-lg p-3" />
+            <Tag value={`₪${vacation.price}`}  style={{background:"var(--orange-400)"}} className="ml-2 text-lg p-3" />
           </div>
 
 
@@ -101,7 +125,7 @@ const OneVacation = (props) => {
             <div className="flex-1">
               <div className="font-semibold text-gray-600">תאריך התחלה</div>
               <div className="text-xl text-gray-800">
-                {new Date(props.vacation.startDate).toLocaleDateString('he-IL', {
+                {new Date(vacation.startDate).toLocaleDateString('he-IL', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',
@@ -113,7 +137,7 @@ const OneVacation = (props) => {
             <div className="flex-1">
               <div className="font-semibold text-gray-600">תאריך סיום</div>
               <div className="text-xl text-gray-800">
-                {new Date(props.vacation.endDate).toLocaleDateString('he-IL', {
+                {new Date(vacation.endDate).toLocaleDateString('he-IL', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',
@@ -130,7 +154,7 @@ const OneVacation = (props) => {
               icon="pi pi-map-marker"
               label="הצג מיקום"
               className="p-button-outlined p-button-secondary"
-              onClick={() => window.open(`https://www.google.com/maps?q=${encodeURIComponent(props.vacation.location)}`, '_blank')}
+              onClick={() => window.open(`https://www.google.com/maps?q=${encodeURIComponent(vacation.location)}`, '_blank')}
             />
             
               <Button label="הזמן עכשיו" icon="pi pi-tags" onClick={() => setVisible(true)} style={{background:"var(--cyan-400)"}}/>
@@ -168,8 +192,8 @@ const OneVacation = (props) => {
       <div className="mt-6">
         <h3 className="text-2xl font-semibold text-center mb-4">פעילויות נוספות במלון</h3>
         
-        <Carousel
-          value={props.vacation.activities}
+        {/* <Carousel
+          value={vacation.activities}
           numVisible={3}
           numScroll={3}
           
@@ -190,9 +214,9 @@ const OneVacation = (props) => {
               </div>
             </div>
           )}
-        />
-      </div>
-      <Button onClick={props.onBack}> לכל הנופשים</Button>
+        /> */}
+      </div> 
+      <Button onClick={handleButton}> לכל הנופשים</Button>
     </div>
   );
 };

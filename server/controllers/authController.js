@@ -14,7 +14,17 @@ const createNewUser = async (req, res) => {
     const user = await User.create({ userName, password: hashedPwd, name, email, address, phone, role })
     if (!user)
         return res.status(400).send('invalid user')
-    res.json(await User.find())
+    const userInfo = {
+        _id: user._id,
+        userName: user.userName,
+        name: user.name,
+        email: user.email,
+        address: user.address,
+        phone: user.phone,
+        role: user.role
+    }
+    const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET)
+    res.json({ accessToken })
 }
 
 const login = async (req, res) => {

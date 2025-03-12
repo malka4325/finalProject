@@ -1,6 +1,7 @@
 import { useState } from "react";
 import OneVacation from "./OneVacation";
-import Vacation from "./Vacation";
+
+import Vacations from "./Vacations";
 const MainVacations = () => {
 const [selectedVacation, setSelectedVacation] = useState(null);
 
@@ -16,7 +17,7 @@ const handleBack = () => {
 return (
     <div>
             {!selectedVacation && (
-        <Vacation onSelectVacation={handleSelectVacation} />
+        <Vacations onSelectVacation={handleSelectVacation} />
     )}
    
     {selectedVacation && (

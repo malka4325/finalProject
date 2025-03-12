@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import axios from "axios";
-const AuthPage=()=> {
+import { useNavigate } from "react-router-dom";
+const AuthPage=(props)=> {
+    const navigate=useNavigate()
     const [visible, setVisible] = useState(false);
+    const [token, setToken] = useState();
+
     const [isLogin, setIsLogin] = useState(true);  // משתנה לשלוט במעבר בין הרשמה והתחברות
     const [formData, setFormData] = useState({
         userName: '',
@@ -21,7 +25,10 @@ const AuthPage=()=> {
     const register=async ()=>{
         try {
             const res = await axios.post('http://localhost:4300/api/auth/register', formData)
+            setToken(res.data)
+
             console.log(res.data);
+
             if (res.status === 200) {
                alert("yay!")
             }
@@ -38,6 +45,7 @@ const AuthPage=()=> {
       }
       try {
         const res = await axios.post('http://localhost:4300/api/auth/login', log)
+       setToken(res.data)
         console.log(res.data);
         if (res.status === 200) {
            alert("yayy!")
@@ -54,7 +62,12 @@ const AuthPage=()=> {
             register();  // קוראים לפונקציית הרשמה
         }
     };
-
+    useEffect(() => {
+        if (token) {
+          props.setToken({token:token});
+          navigate('/Vacations');
+        }
+      }, [token]);
     return (
         <div className="card flex justify-content-center">
             <Button label={isLogin ? "Login" : "Sign Up"} icon="pi pi-user" onClick={() => setVisible(true)} />
