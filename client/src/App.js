@@ -9,6 +9,7 @@ import AuthPage from './Components/AuthPage';
 import OneVacation from './Components/Vacations/OneVacation'
 import Vacations from './Components/Vacations/Vacations';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Upload from './Components/Upload';
 
 
 function App() {
@@ -35,7 +36,7 @@ function App() {
 
                 <Route path="/Vacations" element={<Vacations />} ></Route>
                 <Route path="/Vacations/:id" element={<OneVacation  />} />
-                
+                <Route path="/upload" element={<Upload/>}/>
            
 
             </Routes>
