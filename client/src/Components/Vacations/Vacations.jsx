@@ -50,18 +50,21 @@ const Vacations = () => {
     };
 
     let full = '';
+    let classIcon=""
     const freeParticipants = (vacation) => {
         const tmp = vacation.maxParticipants - vacation.currentParticipants;
 
         console.log(tmp)
         if (tmp > 0 && tmp < 20) {
             full = 'מקומות אחרונים'
+            classIcon="pi pi-exclamation-triangle"
             console.log(full)
 
         }
         else {
             if (tmp === 0) {
                 full = 'מלא'
+                classIcon="pi pi-minus-circle"
             }
             else
                 full = 'יש מקום'
@@ -89,23 +92,23 @@ const Vacations = () => {
                     width: "430px", /* רוחב קבוע */
                     height: '370px', /* גובה קבוע */
                     overflow: 'hidden', /* מסתיר תוכן שגדול מהכרטיס */
-                    padding:0,margin:0
-                }}> <button onClick={() => { handleButton(vacation) }} style={{ backgroundColor: "white", borderWidth: "0px" ,padding:0,margin:0}}>
+                    padding: 0, margin: 0
+                }}> <button onClick={() => { handleButton(vacation) }} style={{ position: 'relative', backgroundColor: "white", borderWidth: "0px", padding: 0, margin: 0 }}>
                         <div style={{ position: 'relative', width: '430px', height: '200px', overflow: 'hidden' }}>
                             <Image src={vacation.imageSrc} alt={vacation.location} width="430" height="200" style={{ width: '100%', height: '100%' }} />
-                            <div className="flex flex-wrap align-items-center justify-content-between gap-2" style={{ position: 'absolute', top: '5px', left: '5px', zIndex: 2 }}>
-                                <div className="flex align-items-center gap-2" style={{margin:8}}>
-                                    <i className="pi pi-map-marker"></i>
-                                    <span className="font-semibold">{vacation.area}</span>
-                                </div>
-                                <Tag value={full} severity={getSeverity(full)} style={{
-                                    visibility: full === 'יש מקום' ? "hidden" : "visible",
-                                    position: "absolute",
-                                    top: '10px', // התאם את המיקום
-                                    left: '370px',
-                                    zIndex: 2
-                                }}></Tag>
+                            <div className="flex flex-wrap align-items-center justify-content-between gap-2" style={{ position: 'absolute', top: '5px', left: '5px', margin: 8 }}>
+                                <i className="pi pi-map-marker"></i>
+                                <span className="font-semibold text-xl">{vacation.area}</span>
                             </div>
+                            <Tag className="mr-2 text-lg " value={full} severity={getSeverity(full)} style={{
+                                visibility: full === 'יש מקום' ? "hidden" : "visible",
+                                position: "absolute",
+                                top: '10px', // התאם את המיקום
+                                right: '10px',
+                                whiteSpace: 'nowrap',
+                                zIndex: 2
+                            }}><i className={classIcon}style={{margin:"2px"}}></i></Tag>
+
                         </div>
                         <div className="flex flex-column align-items-center gap-3 py-5">
 
