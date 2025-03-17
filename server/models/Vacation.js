@@ -42,7 +42,7 @@ const vacationSchema = new mongoose.Schema({
     },
     imageSrc: {
         type: String,
-        default: ''
+        default: 'http://localhost:4300/uploads/logo.jpg'
     },
     rating:{
         type:Number,

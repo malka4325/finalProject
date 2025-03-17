@@ -4,7 +4,6 @@ import HomePage from './Components/HomePage';
 import UserProvider from "./context/Provider";
 import {react,useState} from 'react';
 import Trips from './Components/Trips/Trips';
-import MainVacations from './Components/Vacations/MainVacations';
 import AuthPage from './Components/AuthPage';
 import OneVacation from './Components/Vacations/OneVacation'
 import Vacations from './Components/Vacations/Vacations';

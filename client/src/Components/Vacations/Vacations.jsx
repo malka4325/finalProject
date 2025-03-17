@@ -81,24 +81,35 @@ const Vacations = () => {
         freeParticipants(vacation);
 
         return (
-            <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2" key={vacation._id}>
+            <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2" key={vacation._id}
+            >
 
                 {/* {oneVacationVis && <OneVacation vacation={vacation} setOneVacationVis={setOneVacationVis} oneVacationVis={oneVacationVis} />} */}
-                <div className="p-4 border-1 surface-border surface-card border-round" style={{
-                    width: "300px", /* רוחב קבוע */
-                    height: '400px', /* גובה קבוע */
-                    overflow: 'hidden' /* מסתיר תוכן שגדול מהכרטיס */
-                }}> <button onClick={() => { handleButton(vacation) }} style={{ backgroundColor: "white", borderWidth: "0px" }}>
-                        <div className="flex flex-wrap align-items-center justify-content-between gap-2" >
-                            <div className="flex align-items-center gap-2">
-                                <i className="pi pi-map-marker"></i>
-                                <span className="font-semibold">{vacation.area}</span>
+                <div className=" border-1 surface-border surface-card border-round" style={{
+                    width: "430px", /* רוחב קבוע */
+                    height: '370px', /* גובה קבוע */
+                    overflow: 'hidden', /* מסתיר תוכן שגדול מהכרטיס */
+                    padding:0,margin:0
+                }}> <button onClick={() => { handleButton(vacation) }} style={{ backgroundColor: "white", borderWidth: "0px" ,padding:0,margin:0}}>
+                        <div style={{ position: 'relative', width: '430px', height: '200px', overflow: 'hidden' }}>
+                            <Image src={vacation.imageSrc} alt={vacation.location} width="430" height="200" style={{ width: '100%', height: '100%' }} />
+                            <div className="flex flex-wrap align-items-center justify-content-between gap-2" style={{ position: 'absolute', top: '5px', left: '5px', zIndex: 2 }}>
+                                <div className="flex align-items-center gap-2" style={{margin:8}}>
+                                    <i className="pi pi-map-marker"></i>
+                                    <span className="font-semibold">{vacation.area}</span>
+                                </div>
+                                <Tag value={full} severity={getSeverity(full)} style={{
+                                    visibility: full === 'יש מקום' ? "hidden" : "visible",
+                                    position: "absolute",
+                                    top: '10px', // התאם את המיקום
+                                    left: '370px',
+                                    zIndex: 2
+                                }}></Tag>
                             </div>
-                            <Tag value={full} severity={getSeverity(full)} style={{ visibility: full === 'יש מקום' ? "hidden" : "visible" }}></Tag>
                         </div>
                         <div className="flex flex-column align-items-center gap-3 py-5">
 
-                            <Image src={vacation.imageSrc} alt={vacation.location} width="250" />
+
 
                             <div className="text-2xl font-bold">{vacation.location}</div>
                             <Rating value={vacation.rating} readOnly cancel={false}></Rating>
