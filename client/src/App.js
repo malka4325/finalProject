@@ -9,6 +9,7 @@ import OneVacation from './Components/Vacations/OneVacation'
 import Vacations from './Components/Vacations/Vacations';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Upload from './Components/Upload';
+import NewOrder from './Components/Orders/NewOrder';
 
 
 function App() {
@@ -36,7 +37,7 @@ function App() {
                 <Route path="/Vacations" element={<Vacations />} ></Route>
                 <Route path="/Vacations/:id" element={<OneVacation  />} />
                 <Route path="/upload" element={<Upload/>}/>
-           
+                <Route path="/Orders/newOrder/:id" element={<NewOrder  />} />
 
             </Routes>
         </Router>

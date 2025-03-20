@@ -5,34 +5,33 @@ import { Carousel } from 'primereact/carousel';
 import { Tag } from 'primereact/tag';
 import { Divider } from 'primereact/divider';
 import { Galleria } from 'primereact/galleria';
-import React, { useEffect, useState ,useContext} from "react";
-import {useLocation, useNavigate, useParams} from 'react-router-dom';
+import React, { useEffect, useState, useContext } from "react";
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Dialog } from 'primereact/dialog';
-import { InputText } from "primereact/inputtext";
+
 import 'primeicons/primeicons.css';
 import Context from "../../context/Context"
-
+import NewOrder from "../Orders/NewOrder.jsx"
 const OneVacation = () => {
   const navigate = useNavigate();
- const {id}=useParams()
+  const { id } = useParams()
   const [vacation, setVacation] = useState([]);
   const context = useContext(Context);
 
   useEffect(() => { getVacation() }, [])
   const getVacation = async () => {
-      try {
-          const res = await axios.get(`http://localhost:4300/api/vacations/${id}`)
-          if (res.status === 200) {
-              setVacation(res.data);
-          }
-      } catch (e) {
-          console.error(e)
+    try {
+      const res = await axios.get(`http://localhost:4300/api/vacations/${id}`)
+      if (res.status === 200) {
+        setVacation(res.data);
       }
+    } catch (e) {
+      console.error(e)
+    }
   }
-useEffect(()=>{
-console.log(vacation);
-},[])
+  useEffect(() => {
+    console.log(vacation);
+  }, [])
   const [visible, setVisible] = useState(false);
   if (!vacation) return null;
   const responsiveOptions = [
@@ -53,14 +52,14 @@ console.log(vacation);
       numVisible: 1,
     },
   ];
-// vacation.images = vacation.images || []; 
+  // vacation.images = vacation.images || []; 
   // const images = vacation.images.map((src) => ({
   //   source: src,
   //   thumbnail: src,
   //   alt: 'Gallery Image',
   //   title: 'Vacation Image',
   // }));
-const images=[]
+  const images = []
   const itemTemplate = (item) => {
     return <img src={item.source} alt={item.alt} style={{ width: '100%', display: 'block', margin: '0 auto', border: '5px solid #000' }} />;
   };
@@ -82,13 +81,18 @@ const images=[]
   };
   const handleButton = () => {
 
-        navigate(`/Vacations`); // שינוי URL עם state
-}
+    navigate(`/Vacations`); // שינוי URL עם state
+  }
+
+  const handleOrder=()=>{
+    if (context.token.accessToken)
+      navigate(`/Orders/newOrder/${vacation._id}`);
+  }
   return (
     <div className="p-4">
 
- {      console.log("eeeeeeeeeeeee")
-}
+      {console.log("eeeeeeeeeeeee")
+      }
       <h2 className="text-3xl font-bold text-center mb-4">{vacation.location}</h2>
 
       <Card className="flex flex-column lg:flex-row shadow-2 p-4">
@@ -116,7 +120,7 @@ const images=[]
           </div>
           <div className="text-lg mb-4 flex items-center">
             <strong>מחיר:</strong>
-            <Tag value={`₪${vacation.price}`}  style={{background:"var(--orange-400)"}} className="ml-2 text-lg p-3" />
+            <Tag value={`₪${vacation.price}`} style={{ background: "var(--orange-400)" }} className="ml-2 text-lg p-3" />
           </div>
 
 
@@ -156,48 +160,23 @@ const images=[]
               className="p-button-outlined p-button-secondary"
               onClick={() => window.open(`https://www.google.com/maps?q=${encodeURIComponent(vacation.location)}`, '_blank')}
             />
-            
-              <Button label="הזמן עכשיו" icon="pi pi-tags" onClick={() => setVisible(true)} style={{background:"var(--cyan-400)"}}/>
-              <Dialog
-                visible={visible}
-                modal
-                onHide={() => { if (!visible) return; setVisible(false); }}
-                content={({ hide }) => (
-                  <div className="flex flex-column px-8 py-5 gap-4" style={{ borderRadius: '12px', backgroundImage: 'radial-gradient(circle at left top, var(--primary-400), var(--primary-700))' }}>
 
-                    <div className="inline-flex flex-column gap-2">
-                      <label htmlFor="username" className="text-primary-50 font-semibold">
-                        Username
-                      </label>
-                      <InputText id="username" label="Username" className="bg-white-alpha-20 border-none p-3 text-primary-50"></InputText>
-                    </div>
-                    <div className="inline-flex flex-column gap-2">
-                      <label htmlFor="username" className="text-primary-50 font-semibold">
-                        Username
-                      </label>
-                      <InputText id="password" label="Password" className="bg-white-alpha-20 border-none p-3 text-primary-50" type="password"></InputText>
-                    </div>
-                    <div className="flex align-items-center gap-2">
-                      <Button label="Sign-In" onClick={(e) => hide(e)} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
-                      <Button label="Cancel" onClick={(e) => hide(e)} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
-                    </div>
-                  </div>
-                )}
-              ></Dialog>
-            </div>
+            <Button label="הזמן" rounded aria-label="Filter"    onClick={handleOrder} />
+
           </div>
-        
+        </div>
+
       </Card>
 
       <div className="mt-6">
         <h3 className="text-2xl font-semibold text-center mb-4">פעילויות נוספות במלון</h3>
-        
+
         <Carousel
-    
-          value={vacation.activities||[]}
+
+          value={vacation.activities || []}
           numVisible={3}
           numScroll={3}
-          
+
           responsiveOptions={responsiveOptions}
           className="custom-carousel"
           circular
@@ -216,7 +195,7 @@ const images=[]
             </div>
           )}
         />
-      </div> 
+      </div>
       <Button onClick={handleButton}> לכל הנופשים</Button>
     </div>
   );
