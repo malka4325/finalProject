@@ -7,7 +7,7 @@
 // import { Card } from "primereact/card";
 // import { Divider } from "primereact/divider";
 
-// const NewOrder = () => {
+ const NewOrder = () => {
 //     const [order, setOrder] = useState({
 //         name: "",
 //         address: "",
@@ -27,7 +27,7 @@
 //         toast.current.show({ severity: "success", summary: "Order Submitted", detail: `Order for ${order.name} confirmed!` });
 //     };
 
-//     return (
+   return (<></>
 //         <div className="flex justify-content-center p-4" style={{ background: '#f0f8ff', minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
 //             <Toast ref={toast} />
 //             <Card className="shadow-4 p-5" style={{ width: '420px', borderRadius: '12px', background: 'white', border: '2px solid #007bff' }}>
@@ -52,7 +52,7 @@
 //                 <Button label="Submit Order" onClick={handleSubmit} className="w-full p-button-lg p-button-raised p-button-rounded" style={{ background: '#007bff', borderColor: '#007bff', color: 'white', fontWeight: 'bold', borderRadius: '8px' }} />
 //             </Card>
 //         </div>
-//     );
-// };
+    );
+ };
 
-// export default NewOrder;
+export default NewOrder;
