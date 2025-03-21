@@ -82,7 +82,7 @@ const Vacations = () => {
     const gridItem = (vacation) => {
         // debugger
         freeParticipants(vacation);
-
+console.log(vacation.imageSrc);
         return (
             <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2" key={vacation._id}
             >

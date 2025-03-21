@@ -17,11 +17,11 @@ const vacationSchema = new mongoose.Schema({
     },
     startDate: {
         type: Date,
-        required: true
+        // required: true
     },
     endDate: {
         type: Date,
-        required: true
+        // required: true
     },
     activities:
         [{
