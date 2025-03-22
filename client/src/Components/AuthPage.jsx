@@ -115,6 +115,7 @@ const AuthPage=(props)=> {
                                 value={formData.password} 
                                 onChange={(e) => handleChange(e, "password")} 
                                 toggleMask 
+                                feedback={false}
                                 className="bg-white-alpha-20 border-none p-3 text-primary-50"
                             />
                         </div>
