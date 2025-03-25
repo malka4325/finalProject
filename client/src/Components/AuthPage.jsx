@@ -5,10 +5,18 @@ import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-const AuthPage=(props)=> {
+import { useSelector,useDispatch } from "react-redux"
+import { setValue } from "../Store/TokenSlice";
+
+const AuthPage=()=> {
     const navigate=useNavigate()
     const [visible, setVisible] = useState(false);
-    const [token, setToken] = useState();
+    //const [token, setToken] = useState();
+
+    const token = useSelector(state=>{console.log(state.TokenSlice.token);
+        return state.TokenSlice.token})
+        console.log(token);
+    const dispatch = useDispatch()
 
     const [isLogin, setIsLogin] = useState(true);  // משתנה לשלוט במעבר בין הרשמה והתחברות
     const [formData, setFormData] = useState({
@@ -25,12 +33,13 @@ const AuthPage=(props)=> {
     const register=async ()=>{
         try {
             const res = await axios.post('http://localhost:4300/api/auth/register', formData)
-            setToken(res.data)
-
-            console.log(res.data);
+           //setToken(res.data)
+ 
 
             if (res.status === 200) {
-            //    alert("yay!")
+                dispatch(setValue(res.data.accessToken))
+
+                console.log(token);
             }
         } catch (e) {
             alert(e.response.data.message.toString())
@@ -44,10 +53,10 @@ const AuthPage=(props)=> {
       }
       try {
         const res = await axios.post('http://localhost:4300/api/auth/login', log)
-       setToken(res.data)
-        console.log(res.data);
+      
         if (res.status === 200) {
-        //    alert("yayy!")
+            dispatch(setValue(res.data.accessToken)) 
+            console.log(token);
         }
     } catch (e) {
         alert(e.response.data.message.toString())
@@ -61,12 +70,12 @@ const AuthPage=(props)=> {
             register();  // קוראים לפונקציית הרשמה
         }
     };
-    useEffect(() => {
-        if (token) {
-          props.setToken({token:token});
-          navigate('/Vacations');
-        }
-      }, [token]);
+    // useEffect(() => {
+    //     if (token) {
+    //       props.setToken({token:token});
+    //       navigate('/Vacations');
+    //     }
+    //   }, [token]);
     return (
         <div className="card flex justify-content-center">
             <Button label={isLogin ? "Login" : "Sign Up"} icon="pi pi-user" onClick={() => setVisible(true)} />
