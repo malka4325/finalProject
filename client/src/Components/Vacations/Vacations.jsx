@@ -14,11 +14,12 @@ import axios from "axios";
 import Context from "../../context/Context"
 
 import OneVacation from "./OneVacation";
+import { useSelector } from "react-redux";
 const Vacations = () => {
     const context = useContext(Context);
 
     const navigate = useNavigate();
-
+    const token = useSelector(state=> state.TokenSlice.token)
     const [vacations, setVacations] = useState([]);
     useEffect(() => { getVacations() }, [])
     const getVacations = async () => {
@@ -71,13 +72,13 @@ const Vacations = () => {
         }
 
     }
-    useEffect(() => {
-        console.log(context.token.accessToken);
-    }, [])
+    // useEffect(() => {
+    //     console.log(context.token.accessToken);
+    // }, [])
     const handleButton = (vacation) => {
         console.log(vacation);
-        if (context.token.accessToken)
-            navigate(`/Vacations/${vacation._id}`); // שינוי URL עם state
+           if(token)
+             navigate(`/Vacations/${vacation._id}`); // שינוי URL עם state
     }
     const gridItem = (vacation) => {
         // debugger

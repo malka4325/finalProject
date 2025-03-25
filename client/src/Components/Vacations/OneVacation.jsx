@@ -12,12 +12,13 @@ import axios from 'axios';
 import 'primeicons/primeicons.css';
 import Context from "../../context/Context"
 import NewOrder from "../Orders/NewOrder.jsx"
+import { useSelector } from 'react-redux';
 const OneVacation = () => {
   const navigate = useNavigate();
   const { id } = useParams()
   const [vacation, setVacation] = useState([]);
   const context = useContext(Context);
-
+  const token = useSelector(state=> state.TokenSlice.token)
   useEffect(() => { getVacation() }, [])
   const getVacation = async () => {
     try {
@@ -85,7 +86,7 @@ const OneVacation = () => {
   }
 
   const handleOrder=()=>{
-    if (context.token.accessToken)
+    if (token)
       navigate(`/Orders/newOrder/${vacation._id}`);
   }
   return (

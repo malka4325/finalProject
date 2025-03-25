@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 const initVal = {
-    token: "hh"
+    token: null
 }
 
 const tokenSlice = createSlice({
@@ -8,8 +8,8 @@ const tokenSlice = createSlice({
     initialState: initVal,
     reducers: {
         setValue: (state, action) => {
-            state.value = action.payload; 
-            console.log(state.value);
+            state.token = action.payload; 
+            
           },
     }
 })
