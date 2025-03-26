@@ -10,6 +10,7 @@ import Vacations from './Components/Vacations/Vacations';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Upload from './Components/Upload';
 import NewOrder from './Components/Orders/NewOrder';
+import NavBar from './Components/NavBar';
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         alt="לוגו קטן"
         className="fixed-logo"
       />
+      <NavBar/>
  {/* <Vacation/>
   <OneVacation vacation={{location:" מלון כינר",area:"צפון",TargetAudience:"משפחה",price:100,startDate:'05/12/2016',endDate:'05/12/2016',images:['/images/cineret.jpg', '/images/cineret.jpg', '/images/cineret.jpg','/images/logo.jpg'],activities:[{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"}]}}></OneVacation>  
  */}

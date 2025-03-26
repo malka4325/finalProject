@@ -24,7 +24,7 @@ const createNewUser = async (req, res) => {
         role: user.role
     }
     const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET)
-    res.json({ accessToken })
+    res.json({ accessToken,userId:userInfo._id })
 }
 
 const login = async (req, res) => {
@@ -47,6 +47,6 @@ const login = async (req, res) => {
         role: user.role
     }
     const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET)
-    res.json({ accessToken })
+    res.json({ accessToken,userId:userInfo._id })
 }
 module.exports = { createNewUser, login }
