@@ -19,6 +19,52 @@ const NavBar = () => {
                         url: '/unstyled'
                     }
                 ]
+                
+            },
+            {
+                label:'טיולים',
+                icon: 'pi pi-palette',
+                items: [
+                    {
+                        label: 'Styled',
+                        url: '/Vacations'
+                    },
+                    {
+                        label: 'Unstyled',
+                        url: '/unstyled'
+                    }
+                ]
+                
+            },
+            {
+                label:'הרגע האחרון',
+                icon: 'pi pi-palette',
+                items: [
+                    {
+                        label: 'Styled',
+                        url: '/Vacations'
+                    },
+                    {
+                        label: 'Unstyled',
+                        url: '/unstyled'
+                    }
+                ]
+                
+            },
+            {
+                label:'עשה זאת בעצמך',
+                icon: 'pi pi-palette',
+                items: [
+                    {
+                        label: 'Styled',
+                        url: '/Vacations'
+                    },
+                    {
+                        label: 'Unstyled',
+                        url: '/unstyled'
+                    }
+                ]
+                
             },
             
         ];
