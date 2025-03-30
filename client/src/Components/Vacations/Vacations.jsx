@@ -1,7 +1,7 @@
 
 import React from "react";
 
-import { useContext, useState, useEffect } from 'react';
+import {useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { Rating } from 'primereact/rating';
@@ -16,8 +16,8 @@ import Context from "../../context/Context"
 import OneVacation from "./OneVacation";
 import { useSelector } from "react-redux";
 const Vacations = () => {
-    const context = useContext(Context);
-
+    // const context = useContext(Context);
+    debugger
     const navigate = useNavigate();
     const token = useSelector(state=> state.TokenSlice.token)
     const [vacations, setVacations] = useState([]);
@@ -81,22 +81,23 @@ const Vacations = () => {
              navigate(`/Vacations/${vacation._id}`); // שינוי URL עם state
     }
     const gridItem = (vacation) => {
-        // debugger
+         
         freeParticipants(vacation);
 console.log(vacation.imageSrc);
+
         return (
-            <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2" key={vacation._id}
+            <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2" key={vacation._id} 
             >
 
                 {/* {oneVacationVis && <OneVacation vacation={vacation} setOneVacationVis={setOneVacationVis} oneVacationVis={oneVacationVis} />} */}
                 <div className=" border-1 surface-border surface-card border-round" style={{
-                    width: "430px", /* רוחב קבוע */
+                    width: "370px", /* רוחב קבוע */
                     height: '370px', /* גובה קבוע */
                     overflow: 'hidden', /* מסתיר תוכן שגדול מהכרטיס */
                     padding: 0, margin: 0
                 }}> <button onClick={() => { handleButton(vacation) }} style={{ position: 'relative', backgroundColor: "white", borderWidth: "0px", padding: 0, margin: 0 }}>
-                        <div style={{ position: 'relative', width: '430px', height: '200px', overflow: 'hidden' }}>
-                            <Image src={vacation.imageSrc} alt={vacation.location} width="430" height="200" style={{ width: '100%', height: '100%' }} />
+                        <div style={{ position: 'relative', width: '370px', height: '200px', overflow: 'hidden' }}>
+                            <Image src={vacation.imageSrc} alt={vacation.location} width="370px" height="200" style={{ width: '100%', height: '100%' }} />
                             <div className="flex flex-wrap align-items-center justify-content-between gap-2" style={{ position: 'absolute', top: '5px', left: '5px', margin: 8 }}>
                                 <i className="pi pi-map-marker"></i>
                                 <span className="font-semibold text-xl">{vacation.area}</span>
@@ -118,7 +119,7 @@ console.log(vacation.imageSrc);
                             <div className="text-2xl font-bold">{vacation.location}</div>
                             <Rating value={vacation.rating} readOnly cancel={false}></Rating>
                         </div> </button>
-                    <div className="flex align-items-center justify-content-between">
+                    <div className="flex align-items-center justify-content-between" style={{padding:"5px"}}>
                         <span className="text-2xl font-semibold">${vacation.price}</span>
 
                         {/* <Link to="/OneVacation"></Link> */}
@@ -135,7 +136,8 @@ console.log(vacation.imageSrc);
 
     return (
         <>
-            <div className="card">
+            <div className="card"style={{margin:"40px"}}>
+                <h1>נופשים</h1>
                 <DataView value={vacations} listTemplate={listTemplate} />
                 <Outlet />
             </div> </>

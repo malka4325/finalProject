@@ -5,7 +5,7 @@ import { Carousel } from 'primereact/carousel';
 import { Tag } from 'primereact/tag';
 import { Divider } from 'primereact/divider';
 import { Galleria } from 'primereact/galleria';
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState} from "react";
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
@@ -17,7 +17,7 @@ const OneVacation = () => {
   const navigate = useNavigate();
   const { id } = useParams()
   const [vacation, setVacation] = useState([]);
-  const context = useContext(Context);
+  // const context = useContext(Context);
   const token = useSelector(state=> state.TokenSlice.token)
   useEffect(() => { getVacation() }, [])
   const getVacation = async () => {

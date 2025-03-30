@@ -14,11 +14,13 @@ import NavBar from './Components/NavBar';
 
 
 function App() {
-  const [token, setToken] = useState();
-  const setTokenCallback = (token) => {
-    setToken(token);
-  }
+  // const [token, setToken] = useState();
+  // const setTokenCallback = (token) => {
+  //   setToken(token);
+  // }
   return (
+  <div className='card'>
+    <Router>
     <div className="App">
          <img
         src="/images/logo2.png"
@@ -30,21 +32,22 @@ function App() {
   <OneVacation vacation={{location:" מלון כינר",area:"צפון",TargetAudience:"משפחה",price:100,startDate:'05/12/2016',endDate:'05/12/2016',images:['/images/cineret.jpg', '/images/cineret.jpg', '/images/cineret.jpg','/images/logo.jpg'],activities:[{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"}]}}></OneVacation>  
  */}
 {/* <AuthPage/> */}
-<UserProvider  accessToken={token}>
-<Router>
+{/* <UserProvider  accessToken={token}> */}
+
   
             <Routes>
-            <Route path="/" element={<AuthPage   setToken={setTokenCallback} />} />
+            <Route path="/" element={<AuthPage/>} />
 
-                <Route path="/Vacations" element={<Vacations />} ></Route>
+                <Route path="/Vacations" element={<Vacations />} />
                 <Route path="/Vacations/:id" element={<OneVacation  />} />
                 <Route path="/upload" element={<Upload/>}/>
                 <Route path="/Orders/newOrder/:id" element={<NewOrder  />} />
 
             </Routes>
-        </Router>
-        </UserProvider>
+      
+        {/* </UserProvider> */}
 
+    </div>  </Router>
     </div>
   );
 }
