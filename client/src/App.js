@@ -19,7 +19,7 @@ function App() {
   //   setToken(token);
   // }
   return (
-  <div className='card'>
+  // <div className='card'>
     <Router>
     <div className="App">
          <img
@@ -48,7 +48,7 @@ function App() {
         {/* </UserProvider> */}
 
     </div>  </Router>
-    </div>
+    // {/* </div> */}
   );
 }
 

@@ -96,7 +96,7 @@ const NavBar = () => {
 
         return (
 
-            <div className="card"style={{direction:"rtl",backgroundColor:"ButtonFace"}}>
+            <div className="card"style={{direction:"rtl",backgroundColor:"ButtonFace",width:"100%"}}>
                   <div style={{ display: 'flex', alignItems: 'center' }} >
                   <Link to="/">
             <img    src="/images/logo2.png"

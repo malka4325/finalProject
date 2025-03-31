@@ -1,7 +1,7 @@
 
 import React from "react";
 
-import {useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { Rating } from 'primereact/rating';
@@ -19,7 +19,7 @@ const Vacations = () => {
     // const context = useContext(Context);
     debugger
     const navigate = useNavigate();
-    const token = useSelector(state=> state.TokenSlice.token)
+    const token = useSelector(state => state.TokenSlice.token)
     const [vacations, setVacations] = useState([]);
     useEffect(() => { getVacations() }, [])
     const getVacations = async () => {
@@ -51,21 +51,21 @@ const Vacations = () => {
     };
 
     let full = '';
-    let classIcon=""
+    let classIcon = ""
     const freeParticipants = (vacation) => {
         const tmp = vacation.maxParticipants - vacation.currentParticipants;
 
         console.log(tmp)
         if (tmp > 0 && tmp < 20) {
             full = 'מקומות אחרונים'
-            classIcon="pi pi-exclamation-triangle"
+            classIcon = "pi pi-exclamation-triangle"
             console.log(full)
 
         }
         else {
             if (tmp === 0) {
                 full = 'מלא'
-                classIcon="pi pi-minus-circle"
+                classIcon = "pi pi-minus-circle"
             }
             else
                 full = 'יש מקום'
@@ -77,16 +77,16 @@ const Vacations = () => {
     // }, [])
     const handleButton = (vacation) => {
         console.log(vacation);
-           if(token)
-             navigate(`/Vacations/${vacation._id}`); // שינוי URL עם state
+        if (token)
+            navigate(`/Vacations/${vacation._id}`); // שינוי URL עם state
     }
     const gridItem = (vacation) => {
-         
+
         freeParticipants(vacation);
-console.log(vacation.imageSrc);
+        console.log(vacation.imageSrc);
 
         return (
-            <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2" key={vacation._id} 
+            <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2" key={vacation._id}
             >
 
                 {/* {oneVacationVis && <OneVacation vacation={vacation} setOneVacationVis={setOneVacationVis} oneVacationVis={oneVacationVis} />} */}
@@ -109,7 +109,7 @@ console.log(vacation.imageSrc);
                                 right: '10px',
                                 whiteSpace: 'nowrap',
                                 zIndex: 2
-                            }}><i className={classIcon}style={{margin:"2px"}}></i></Tag>
+                            }}><i className={classIcon} style={{ margin: "2px" }}></i></Tag>
 
                         </div>
                         <div className="flex flex-column align-items-center gap-3 py-5">
@@ -117,13 +117,17 @@ console.log(vacation.imageSrc);
 
 
                             <div className="text-2xl font-bold">{vacation.location}</div>
-                            <Rating value={vacation.rating} readOnly cancel={false}></Rating>
+                            <Rating value={vacation.rating} readOnly cancel={false}  ></Rating>
+
+                           
                         </div> </button>
-                    <div className="flex align-items-center justify-content-between" style={{padding:"5px"}}>
-                        <span className="text-2xl font-semibold">${vacation.price}</span>
+                    <div className="flex align-items-center justify-content-between" style={{ padding: "7px" }}>
+                        <span className="text-2xl font-semibold"></span>
 
                         {/* <Link to="/OneVacation"></Link> */}
-                        <Button icon="pi pi-shopping-cart" className="p-button-rounded"></Button>
+                        <Button  className="p-button-rounded font-semibold" style={{backgroundColor:"MenuText",borderColor:"orange" ,  boxShadow: '0 0 0 0.2rem rgba(250, 0, 100, 0.5)',
+
+          }} >הזמן עכשיו</Button>
                     </div>
                 </div>
 
@@ -133,10 +137,9 @@ console.log(vacation.imageSrc);
     const listTemplate = (vacations) => {
         return <div className="grid grid-nogutter">{vacations.map((vacation) => gridItem(vacation))}</div>;
     };
-
     return (
         <>
-            <div className="card"style={{margin:"40px"}}>
+            <div className="card" style={{ margin: "40px" }}>
                 <h1>נופשים</h1>
                 <DataView value={vacations} listTemplate={listTemplate} />
                 <Outlet />
