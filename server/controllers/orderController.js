@@ -1,13 +1,14 @@
 const Order=require("../models/Order")
 const User=require("../models/User")
 const createNewOrder=async (req,res)=>{
+    console.log("tttt");
  const {orderedBy,trip,vacation,numOfJoined}=req.body
  if(!orderedBy)
     return res.status(400).json({message:"orderedby is required"})
 const order = await Order.create({ orderedBy,trip,vacation,numOfJoined })
     if (!order)
         return res.status(400).send('not correct order')
-    res.json(await Order.find().populate('orderedBy'))
+    res.json("your orders code is: "+order._id)
 }
 const getAllOrders=async (req,res)=>{
     const orders = await Order.find().lean().populate('orderedBy')
