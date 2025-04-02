@@ -11,6 +11,8 @@ import { setValue } from "../Store/TokenSlice";
 const AuthPage=()=> {
     const navigate=useNavigate()
     const [visible, setVisible] = useState(false);
+    const [connecting, setConnecting] = useState(false);
+    const [error, setError] = useState(null);
     //const [token, setToken] = useState();
 
     const token = useSelector(state=> state.TokenSlice.token)
@@ -42,6 +44,8 @@ const AuthPage=()=> {
             }
         } catch (e) {
             alert(e.response.data.message.toString())
+        }finally{
+            setConnecting(false);
         }
     }
     
@@ -60,8 +64,11 @@ const AuthPage=()=> {
     } catch (e) {
         alert(e.response.data.message.toString())
     }
-    }
+    finally{
+        setConnecting(false);
+    }}
     const handleSubmit = (e) => {
+        setConnecting(true);
         e.preventDefault();
         if (isLogin) {
             login();  // קוראים לפונקציית התחברות
@@ -155,8 +162,9 @@ const AuthPage=()=> {
                         {/* כפתור שליחה */}
                         <div className="flex justify-content-between">
                             <Button 
-                                label={isLogin ? "📲 התחבר" : "📩 הרשמה"} 
-                                onClick={handleSubmit} 
+                                label={connecting?"connecting":isLogin ? "📲 התחבר" : "📩 הרשמה"} 
+                                onClick={handleSubmit}
+                                disabled={connecting} 
                                 className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"
                             />
                         </div>
