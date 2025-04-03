@@ -1,7 +1,6 @@
 const Order=require("../models/Order")
 const User=require("../models/User")
 const createNewOrder=async (req,res)=>{
-    console.log("tttt");
  const {orderedBy,trip,vacation,numOfJoined}=req.body
  if(!orderedBy)
     return res.status(400).json({message:"orderedby is required"})
