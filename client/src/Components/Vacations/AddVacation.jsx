@@ -1,11 +1,12 @@
 import axios from 'axios'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { useLocation, useNavigate } from 'react-router-dom';
 const AddVacation = () => {
     const navigate=useNavigate()
+
 
     // const location = useLocation();
     // const props = location.state || {};
@@ -19,7 +20,47 @@ const AddVacation = () => {
     const priceRef = useRef("")
     const imageSrcRef = useRef("")
     const ratingRef = useRef("")
+
+    const [file, setFile] = useState(null);
+  
+    const [imageUrl, setImageUrl] = useState("");
+    const newVacation = {
+      imageSrc:imageUrl
+  };
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleUpload = async () => {
+    if (!file) {
+      alert("נא לבחור קובץ!");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const response = await axios.post("http://localhost:4300/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      console.log("response",response.data.imageUrl);
+  
+      if (response.data.imageUrl){      setImageUrl(`http://localhost:4300${response.data.imageUrl}`);
+   newVacation.imageSrc = `http://localhost:4300${response.data.imageUrl}`; } 
+  
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  }
     const addVacation = async () => {
+
+
+  if(!newVacation.imageSrc)newVacation.imageSrc = 'http://localhost:4300/uploads/logo.jpg';
+        console.log("response",newVacation.imageSrc);
+
+console.log(newVacation);
 
         // const newVacation = {
         //     area: areaRef.current.value,
@@ -34,7 +75,7 @@ const AddVacation = () => {
         //     rating: ratingRef.current.value,
 
         // }
-        const newVacation = {};
+       
 
         if (areaRef.current.value) newVacation.area = areaRef.current.value;
         if (locationRef.current.value) newVacation.location = locationRef.current.value;
@@ -43,7 +84,7 @@ const AddVacation = () => {
         //if (activities) newVacation.activities = activities;
         if (maxParticipantsRef.current.value) newVacation.maxParticipants = maxParticipantsRef.current.value;
         if (priceRef.current.value) newVacation.price = priceRef.current.value;
-        if (imageSrcRef.current.value) newVacation.imageSrc = imageSrcRef.current.value;
+        // if (imageSrcRef.current.value) newVacation.imageSrc = imageSrcRef.current.value;
         if (ratingRef.current.value) newVacation.rating = ratingRef.current.value;
         
         try {
@@ -122,12 +163,24 @@ const AddVacation = () => {
                                 </label>
                                 <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={priceRef}></InputText>
                             </div>
-                            <div className="inline-flex flex-column gap-2">
+                            {/* <div className="inline-flex flex-column gap-2">
                                 <label htmlFor="vacationname" className="text-primary-50 font-semibold">
                                     תמונה
                                 </label>
                                 <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={imageSrcRef}></InputText>
-                            </div>
+                            </div> */}
+                              <div>
+      <input type="file" onChange={handleFileChange} />
+      <button onClick={handleUpload}>העלה תמונה</button>
+      {imageUrl && (
+        <div>
+      {console.log(imageUrl)}
+      
+          <h3>התמונה שהועלתה:</h3>
+          <img src={imageUrl} alt="Uploaded" width="300" />
+        </div>
+      )}
+    </div>
                             <div className="inline-flex flex-column gap-2">
                                 <label htmlFor="vacationname" className="text-primary-50 font-semibold">
                                     ניקוד
