@@ -13,10 +13,12 @@ import 'primeicons/primeicons.css';
 import Context from "../../context/Context"
 import NewOrder from "../Orders/NewOrder.jsx"
 import { useSelector } from 'react-redux';
+import { InputNumber } from 'primereact/inputnumber';
 const OneVacation = () => {
   const navigate = useNavigate();
   const { id } = useParams()
   const [vacation, setVacation] = useState([]);
+  const [value,setValue]=useState(10)
   // const context = useContext(Context);
   const token = useSelector(state=> state.TokenSlice.token)
   useEffect(() => { getVacation() }, [])
@@ -87,13 +89,11 @@ const OneVacation = () => {
 
   const handleOrder=()=>{
     if (token)
-      navigate(`/Orders/newOrder/${vacation._id}`);
+      navigate(`/Orders/newOrder/${vacation._id}?num=${value}`);
   }
   return (
     <div className="p-4">
 
-      {console.log("eeeeeeeeeeeee")
-      }
       <h2 className="text-3xl font-bold text-center mb-4">{vacation.location}</h2>
 
       <Card className="flex flex-column lg:flex-row shadow-2 p-4">
@@ -150,8 +150,10 @@ const OneVacation = () => {
               </div>
             </div>
           </div>
-
-          <Divider />
+          <div className="flex-1">
+          <InputNumber inputId="minmax-buttons" value={value} onValueChange={(e) => setValue(e.value)} mode="decimal" showButtons min={0} max={100} size="small" />
+         </div> 
+         <Divider />
 
 
           <div className="flex gap-4 mt-5">

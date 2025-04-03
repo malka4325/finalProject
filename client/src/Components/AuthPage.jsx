@@ -7,6 +7,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSelector,useDispatch } from "react-redux"
 import { setValue } from "../Store/TokenSlice";
+import { setValue as setUser } from "../Store/UserSlice";
+import { jwtDecode } from "jwt-decode"; 
 
 const AuthPage=()=> {
     const navigate=useNavigate()
@@ -39,7 +41,8 @@ const AuthPage=()=> {
 
             if (res.status === 200) {
                 dispatch(setValue(res.data.accessToken))
-
+                const decoded = jwtDecode(res.data.accessToken) 
+                dispatch(setUser(decoded));
                 
             }
         } catch (e) {
@@ -58,7 +61,9 @@ const AuthPage=()=> {
         const res = await axios.post('http://localhost:4300/api/auth/login', log)
       
         if (res.status === 200) {
-            dispatch(setValue(res.data.accessToken)) 
+            dispatch(setValue(res.data.accessToken))
+            const decoded = jwtDecode(res.data.accessToken) 
+            dispatch(setUser(decoded));
             
         }
     } catch (e) {

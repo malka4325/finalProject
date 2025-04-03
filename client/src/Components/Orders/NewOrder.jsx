@@ -9,24 +9,26 @@ import axios from "axios";
 import "primereact/resources/themes/lara-light-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const NewOrder = () => {
-   
+  const [searchParams] = useSearchParams();
+  const numOfJoined = searchParams.get("num");
     
       const [name, setName] = useState("");
-      
       const [phone, setPhone] = useState("");
       const [cardNumber, setCardNumber] = useState("");
       const [expiry, setExpiry] = useState("");
       const [cvv, setCvv] = useState("");
       const { id } = useParams();
+
       const token = useSelector(state => state.TokenSlice.token)
+      const user = useSelector(state => state.UserSlice.user)
       const order= async ()=>{
         try {
           const res = await axios.post(  'http://localhost:4300/api/orders',
-            { orderedBy: "67d1c9f413cc897e397a8060", vacation: id }, // ה-body של הבקשה
+            { orderedBy: user._id, vacation: id,numOfJoined }, // ה-body של הבקשה
             {
               headers: {
                 "Authorization": `Bearer ${token}`, // הכנסת ה-token לכותרת Authorization
