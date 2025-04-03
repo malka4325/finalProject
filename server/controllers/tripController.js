@@ -1,10 +1,10 @@
 const Trip = require("../models/Trip")
 
 const createNewTrip = async (req, res) => {
-    const { area, mainActivity,TargetAudience, date,activities,maxParticipants,price,imageSrc} = req.body
+    const { area, mainActivity,description,TargetAudience, date,activities,maxParticipants,price,imageSrc} = req.body
     if (!area||!TargetAudience||!date||!maxParticipants||!price)
         return res.status(400).json({ message: 'fields are required' })
-    const trip = await Trip.create({ area, mainActivity,TargetAudience, date,activities,maxParticipants,price,imageSrc})
+    const trip = await Trip.create({ area, mainActivity,description,TargetAudience, date,activities,maxParticipants,price,imageSrc})
     if (!trip)
         return res.status(400).send('invalid trip')
     res.json(await Trip.find().lean())
@@ -34,7 +34,7 @@ const getTripById = async (req, res) => {
 }
 
  const updateTrip = async (req, res) => {
-    const { _id, area, mainActivity,TargetAudience, date,activities,maxParticipants,currentParticipants,price,imageSrc} = req.body
+    const { _id, area, mainActivity,description,TargetAudience, date,activities,maxParticipants,currentParticipants,price,imageSrc} = req.body
     if (!_id||!area||!TargetAudience||!date||!maxParticipants||!price)
         return res.status(400).json({ message: 'fields are required' })
     const trip = await Trip.findById(_id).exec()
@@ -42,6 +42,7 @@ const getTripById = async (req, res) => {
         return res.status(400).send('trip not found')
 trip.area=area
 trip.mainActivity=mainActivity
+trip.description=description
 trip.TargetAudience=TargetAudience
 trip.activities=activities
 trip.date=date

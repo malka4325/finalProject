@@ -17,7 +17,7 @@ import OneVacation from "./OneVacation";
 import { useSelector } from "react-redux";
 const Vacations = () => {
     // const context = useContext(Context);
-    debugger
+    
     const navigate = useNavigate();
     const token = useSelector(state => state.TokenSlice.token)
     const [vacations, setVacations] = useState([]);
@@ -76,14 +76,20 @@ const Vacations = () => {
     //     console.log(context.token.accessToken);
     // }, [])
     const handleButton = (vacation) => {
-        console.log(vacation);
+        // console.log(vacation);
         if (token)
             navigate(`/Vacations/${vacation._id}`); // שינוי URL עם state
+    }
+    const handleButtonAddVacation = () => {
+        // console.log(vacation);
+        
+        if (token)//add check if its manager!!!!!!!
+            navigate('/Vacations/AddVacation'); // שינוי URL עם state
     }
     const gridItem = (vacation) => {
 
         freeParticipants(vacation);
-        console.log(vacation.imageSrc);
+        // console.log(vacation.imageSrc);
 
         return (
             <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2" key={vacation._id}
@@ -124,10 +130,9 @@ const Vacations = () => {
                     <div className="flex align-items-center justify-content-between" style={{ padding: "7px" }}>
                         <span className="text-2xl font-semibold"></span>
 
-                        {/* <Link to="/OneVacation"></Link> */}
-                        <Button  className="p-button-rounded font-semibold" style={{backgroundColor:"MenuText",borderColor:"orange" ,  boxShadow: '0 0 0 0.2rem rgba(250, 0, 100, 0.5)',
-
-          }} >הזמן עכשיו</Button>
+                        
+                        <Button  className="p-button-rounded font-semibold" style={{backgroundColor:"MenuText",borderColor:"orange" ,  boxShadow: '0 0 0 0.2rem rgba(240, 134, 80, 0.5)',
+          }}  onClick={() => { handleButton(vacation) }}>הזמן עכשיו</Button>
                     </div>
                 </div>
 
@@ -142,6 +147,7 @@ const Vacations = () => {
             <div className="card" style={{ margin: "40px" }}>
                 <h1>נופשים</h1>
                 <DataView value={vacations} listTemplate={listTemplate} />
+                <Button icon="pi pi-plus" severity="Success" rounded aria-label="Filter" onClick={handleButtonAddVacation} style={{marginLeft:"50px",marginBottom:'50px' ,left: 0, bottom: 0 ,position:'fixed'}}direction="down-left" label="הוספת נופש"/>
                 <Outlet />
             </div> </>
     )

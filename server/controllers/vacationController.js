@@ -2,11 +2,16 @@ const Vacation = require("../models/Vacation")
 
 const createNewVacation = async (req, res) => {
 
-    const { area, location,TargetAudience, startDate,endDate,activities,maxParticipants,price,imageSrc,rating} = req.body
-    if (!area||!location||!TargetAudience||!startDate||!endDate||!maxParticipants||!price)
+    const { area, location,description,TargetAudience, startDate,endDate,activities,maxParticipants,price,imageSrc,rating} = req.body
+   // if (!area||!location||!TargetAudience||!startDate||!endDate||!maxParticipants||!price)
+    if (!area||!location||!TargetAudience||!maxParticipants||!price)
         return res.status(400).json({ message: 'fields are required' })
-    const vacation = await Vacation.create({ area, location,TargetAudience, startDate: new Date(startDate),endDate: new Date(endDate),activities,maxParticipants,price,imageSrc,rating})
-
+        //const vacation = await Vacation.create({ area, location,TargetAudience,description, startDate: new Date(startDate),endDate: new Date(endDate),activities,maxParticipants,price,imageSrc,rating})
+        const vacation = await Vacation.create({ area, location,TargetAudience,description,activities,maxParticipants,price,imageSrc,rating})
+ 
+    
+    
+    
     if (!vacation)
         return res.status(400).send('invalid vacation')
     res.json(await Vacation.find().lean())
@@ -36,7 +41,7 @@ const getVacationById = async (req, res) => {
 }
 
  const updateVacation = async (req, res) => {
-    const { _id,area, location,TargetAudience,currentParticipants, startDate,endDate,activities,maxParticipants,price,imageSrc,rating} = req.body
+    const { _id,area, location,description,TargetAudience,currentParticipants, startDate,endDate,activities,maxParticipants,price,imageSrc,rating} = req.body
     if (!_id||!area||!location||!TargetAudience||!startDate||!endDate||!maxParticipants||!price)
         return res.status(400).json({ message: 'fields are required' })
     const vacation = await Vacation.findById(_id).exec()
@@ -44,6 +49,7 @@ const getVacationById = async (req, res) => {
         return res.status(400).send('vacation not found')
 vacation.area=area
 vacation.location=location
+vacation.description=description
 vacation.TargetAudience=TargetAudience
 vacation.activities=activities
 vacation.startDate=new Date(startDate)

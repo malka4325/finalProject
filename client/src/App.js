@@ -11,6 +11,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Upload from './Components/Upload';
 import NewOrder from './Components/Orders/NewOrder';
 import NavBar from './Components/NavBar';
+import AddVacation from './Components/Vacations/AddVacation';
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
             <Route path="/" element={<AuthPage/>} />
 
                 <Route path="/Vacations" element={<Vacations />} />
+                <Route path="/Vacations/AddVacation" element={<AddVacation />} />
                 <Route path="/Vacations/:id" element={<OneVacation  />} />
                 <Route path="/upload" element={<Upload/>}/>
                 <Route path="/Orders/newOrder/:id" element={<NewOrder  />} />

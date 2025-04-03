@@ -10,6 +10,9 @@ const activitySchema = new mongoose.Schema({
         type: String,
         default: ''
     },
+    description:{
+        type: String,
+    },
     type:{
         type:String,
         enum: ['מסלול', 'אטרקציה', 'תכנית'],

@@ -12,6 +12,9 @@ const tripSchema = new mongoose.Schema({
         ref: 'Activity'
 
     },
+    description:{
+        type: String,
+    },
     TargetAudience: {
         type: String,
         required: true
