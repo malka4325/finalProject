@@ -10,20 +10,34 @@ import './flags.css';
 import App from './App';
 import TokenSlice from './Store/TokenSlice';
 import UserSlice from './Store/UserSlice';
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux'
+import storage from 'redux-persist/lib/storage';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistReducer, persistStore } from 'redux-persist';
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['TokenSlice', 'UserSlice']
+};
+const rootReducer = combineReducers({
+  TokenSlice,
+  UserSlice
+});
 
-// import reportWebVitals from './reportWebVitals';
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 const myStore = configureStore({
-  reducer:{
-    TokenSlice,
-    UserSlice,
-  }
+    reducer: persistedReducer,
+  
 })
+const persistor = persistStore(myStore);
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={myStore}>
-  <App />
+    <PersistGate loading={null} persistor={persistor}><App />
+    </PersistGate>
+  
 </Provider>
  
 );

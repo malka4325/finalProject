@@ -33,7 +33,7 @@ const NavBar = () => {
                     },
                     {
                         label: 'אזור ירושלים',
-                        url: '/unstyled'
+                        url: '/Orders/myOrders'
                     }
                 ]
                 

@@ -12,6 +12,7 @@ import Upload from './Components/Upload';
 import NewOrder from './Components/Orders/NewOrder';
 import NavBar from './Components/NavBar';
 import AddVacation from './Components/Vacations/AddVacation';
+import OldOrders from './Components/Orders/OldOrders';
 
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
                 <Route path="/Vacations/:id" element={<OneVacation  />} />
                 <Route path="/upload" element={<Upload/>}/>
                 <Route path="/Orders/newOrder/:id" element={<NewOrder  />} />
+                <Route path="/Orders/myOrders" element={<OldOrders/>} />
 
             </Routes>
       
