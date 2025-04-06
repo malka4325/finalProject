@@ -33,7 +33,7 @@ const NavBar = () => {
                     },
                     {
                         label: 'אזור ירושלים',
-                        url: '/Orders/myOrders'
+                        url: '/Vacations'
                     }
                 ]
                 
@@ -90,7 +90,10 @@ const NavBar = () => {
                     }
                 ]
                 
-            },
+            },{
+                label:'הזמנות שלי',
+                url:'/Orders/myOrders',
+            }
             
         ];
 
