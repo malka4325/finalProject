@@ -17,11 +17,11 @@ import OneVacation from "./OneVacation";
 import { useSelector } from "react-redux";
 const Vacations = () => {
     // const context = useContext(Context);
-    
+
     const navigate = useNavigate();
     const token = useSelector(state => state.TokenSlice.token)
-const user=useSelector(state => state.UserSlice.user)
-console.log(user);
+    const user = useSelector(state => state.UserSlice.user)
+    console.log(user);
 
     const [vacations, setVacations] = useState([]);
     useEffect(() => { getVacations() }, [])
@@ -85,7 +85,7 @@ console.log(user);
     }
     const handleButtonAddVacation = () => {
         // console.log(vacation);
-        
+
         if (token)//add check if its manager!!!!!!!
             navigate('/Vacations/AddVacation'); // שינוי URL עם state
     }
@@ -95,7 +95,7 @@ console.log(user);
         // console.log(vacation.imageSrc);
 
         return (
-            <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2" key={vacation._id}
+            <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-1" key={vacation._id}
             >
 
                 {/* {oneVacationVis && <OneVacation vacation={vacation} setOneVacationVis={setOneVacationVis} oneVacationVis={oneVacationVis} />} */}
@@ -107,7 +107,7 @@ console.log(user);
                 }}> <button onClick={() => { handleButton(vacation) }} style={{ position: 'relative', backgroundColor: "white", borderWidth: "0px", padding: 0, margin: 0 }}>
                         <div style={{ position: 'relative', width: '370px', height: '200px', overflow: 'hidden' }}>
                             <Image src={vacation.imageSrc} alt={vacation.location} width="370px" height="200" style={{ width: '100%', height: '100%' }} />
-                            <div className="flex flex-wrap align-items-center justify-content-between gap-2" style={{ position: 'absolute', top: '5px', left: '5px', margin: 8 }}>
+                            <div className="flex flex-wrap align-items-center justify-content-between gap-1" style={{ position: 'absolute', top: '5px', left: '5px', margin: 8 }}>
                                 <i className="pi pi-map-marker"></i>
                                 <span className="font-semibold text-xl">{vacation.area}</span>
                             </div>
@@ -121,21 +121,43 @@ console.log(user);
                             }}><i className={classIcon} style={{ margin: "2px" }}></i></Tag>
 
                         </div>
-                        <div className="flex flex-column align-items-center gap-3 py-5">
-
-
-
-                            <div className="text-2xl font-bold">{vacation.location}</div>
-                            <Rating value={vacation.rating} readOnly cancel={false}  ></Rating>
-
-                           
-                        </div> </button>
-                    <div className="flex align-items-center justify-content-between" style={{ padding: "7px" }}>
-                        <span className="text-2xl font-semibold"></span>
+                        <div className="flex flex-column align-items-center gap-2 py-2">
 
                         
-                        <Button  className="p-button-rounded font-semibold" style={{backgroundColor:"MenuText",borderColor:"orange" ,  boxShadow: '0 0 0 0.2rem rgba(240, 134, 80, 0.5)',
-          }}  onClick={() => { handleButton(vacation) }}>הזמן עכשיו</Button>
+                            <div className="text-2xl font-bold">{vacation.location}</div>
+                            <div className="flex gap-5 mb-1" style={{marginTop:"7px"}}>
+                            <div className="flex-1">
+                                <div className="font-semibold text-gray-600">תאריך סיום</div>
+                                <div className="text-xl text-gray-800">
+                                    {new Date(vacation.endDate).toLocaleDateString('he-IL', {
+                                        year: 'numeric',
+                                        month: 'numeric',
+                                        day: 'numeric',
+                                    })}
+                                </div>
+                            </div>
+                            <div className="flex-1"style={{ whiteSpace: 'nowrap' }}>
+                                <div className="font-semibold text-gray-600">תאריך התחלה</div>
+                                <div className="text-xl text-gray-800">
+                                    {new Date(vacation.startDate).toLocaleDateString('he-IL', {
+                                        year: 'numeric',
+                                        month: 'numeric',
+                                        day: 'numeric',
+                                    })}
+                                </div>
+                            </div>
+                            </div>
+                       
+                            <Rating value={vacation.rating} readOnly cancel={false}></Rating>
+                        </div>
+                         </button>
+                    <div className="flex align-items-center justify-content-between" style={{ padding: "1px" }}>
+                        <span className="text-2xl font-semibold"></span>
+
+
+                        <Button className="p-button-rounded font-semibold" style={{
+                            backgroundColor: "MenuText", borderColor: "orange", boxShadow: '0 0 0 0.2rem rgba(240, 134, 80, 0.5)',marginRight:"7px"
+                        }} onClick={() => { handleButton(vacation) }}>הזמן עכשיו</Button>
                     </div>
                 </div>
 
@@ -150,7 +172,7 @@ console.log(user);
             <div className="card" style={{ margin: "40px" }}>
                 <h1>נופשים</h1>
                 <DataView value={vacations} listTemplate={listTemplate} />
-                <Button icon="pi pi-plus" visible={user.role=="Admin"} severity="Success" rounded aria-label="Filter" onClick={handleButtonAddVacation} style={{marginLeft:"50px",marginBottom:'50px' ,left: 0, bottom: 0 ,position:'fixed'}}direction="down-left" label="הוספת נופש"/>
+                <Button icon="pi pi-plus" visible={user.role == "Admin"} severity="Success" rounded aria-label="Filter" onClick={handleButtonAddVacation} style={{ marginLeft: "50px", marginBottom: '50px', left: 0, bottom: 0, position: 'fixed' }} direction="down-left" label="הוספת נופש" />
                 <Outlet />
             </div> </>
     )

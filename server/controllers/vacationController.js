@@ -3,15 +3,15 @@ const Vacation = require("../models/Vacation")
 const createNewVacation = async (req, res) => {
 
     const { area, location,description,TargetAudience, startDate,endDate,activities,maxParticipants,price,imageSrc,rating} = req.body
-   // if (!area||!location||!TargetAudience||!startDate||!endDate||!maxParticipants||!price)
-    if (!area||!location||!TargetAudience||!maxParticipants||!price)
+   if (!area||!location||!TargetAudience||!startDate||!endDate||!maxParticipants||!price)
+    //if (!area||!location||!TargetAudience||!maxParticipants||!price)
         return res.status(400).json({ message: 'לא הוכנסו כל השדות הנדרשים' })
         const validAreas = ['צפון', 'דרום', 'מרכז', 'אזור ירושלים'];
         if (!validAreas.includes(area)) {
             return res.status(400).json({ message: 'אזור לא חוקי, יש להכניס צפון, דרום, מרכז או אזור ירושלים' });
         }
-        //const vacation = await Vacation.create({ area, location,TargetAudience,description, startDate: new Date(startDate),endDate: new Date(endDate),activities,maxParticipants,price,imageSrc,rating})
-        const vacation = await Vacation.create({ area, location,TargetAudience,description,activities,maxParticipants,price,imageSrc,rating})
+        const vacation = await Vacation.create({ area, location,TargetAudience,description, startDate: new Date(startDate),endDate: new Date(endDate),activities,maxParticipants,price,imageSrc,rating})
+      //  const vacation = await Vacation.create({ area, location,TargetAudience,description,activities,maxParticipants,price,imageSrc,rating})
  
     
     

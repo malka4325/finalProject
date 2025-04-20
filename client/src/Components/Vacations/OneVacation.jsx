@@ -5,7 +5,7 @@ import { Carousel } from 'primereact/carousel';
 import { Tag } from 'primereact/tag';
 import { Divider } from 'primereact/divider';
 import { Galleria } from 'primereact/galleria';
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
@@ -18,9 +18,9 @@ const OneVacation = () => {
   const navigate = useNavigate();
   const { id } = useParams()
   const [vacation, setVacation] = useState([]);
-  const [value,setValue]=useState(10)
+  const [value, setValue] = useState(10)
   // const context = useContext(Context);
-  const token = useSelector(state=> state.TokenSlice.token)
+  const token = useSelector(state => state.TokenSlice.token)
   useEffect(() => { getVacation() }, [])
   const getVacation = async () => {
     try {
@@ -87,7 +87,7 @@ const OneVacation = () => {
     navigate(`/Vacations`); // שינוי URL עם state
   }
 
-  const handleOrder=()=>{
+  const handleOrder = () => {
     if (token)
       navigate(`/Orders/newOrder/${vacation._id}?num=${value}`);
   }
@@ -126,34 +126,34 @@ const OneVacation = () => {
 
 
           <div className="flex gap-4 mb-4">
-
-            <div className="flex-1">
-              <div className="font-semibold text-gray-600">תאריך התחלה</div>
-              <div className="text-xl text-gray-800">
-                {new Date(vacation.startDate).toLocaleDateString('he-IL', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
-              </div>
-            </div>
-
-
             <div className="flex-1">
               <div className="font-semibold text-gray-600">תאריך סיום</div>
               <div className="text-xl text-gray-800">
                 {new Date(vacation.endDate).toLocaleDateString('he-IL', {
                   year: 'numeric',
-                  month: 'long',
+                  month: 'numeric',
                   day: 'numeric',
                 })}
               </div>
             </div>
+            <div className="flex-1">
+              <div className="font-semibold text-gray-600">תאריך התחלה</div>
+              <div className="text-xl text-gray-800">
+                {new Date(vacation.startDate).toLocaleDateString('he-IL', {
+                  year: 'numeric',
+                  month: 'numeric',
+                  day: 'numeric',
+                })}
+              </div>
+            </div>
+
+
+
           </div>
           <div className="flex-1">
-          <InputNumber inputId="minmax-buttons" value={value} onValueChange={(e) => setValue(e.value)} mode="decimal" showButtons min={0} max={100} size="small" />
-         </div> 
-         <Divider />
+            <InputNumber inputId="minmax-buttons" value={value} onValueChange={(e) => setValue(e.value)} mode="decimal" showButtons min={0} max={100} size="small" />
+          </div>
+          <Divider />
 
 
           <div className="flex gap-4 mt-5">
@@ -164,7 +164,7 @@ const OneVacation = () => {
               onClick={() => window.open(`https://www.google.com/maps?q=${encodeURIComponent(vacation.location)}`, '_blank')}
             />
 
-            <Button label="הזמן" rounded aria-label="Filter"    onClick={handleOrder} />
+            <Button label="הזמן" rounded aria-label="Filter" onClick={handleOrder} />
 
           </div>
         </div>

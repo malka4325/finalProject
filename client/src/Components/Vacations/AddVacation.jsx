@@ -3,64 +3,68 @@ import { useRef, useState } from 'react'
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Calendar } from 'primereact/calendar';
 const AddVacation = () => {
-    const navigate=useNavigate()
-
+    const navigate = useNavigate()
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
 
     // const location = useLocation();
     // const props = location.state || {};
     const areaRef = useRef("")
     const locationRef = useRef("")
-    const descriptionRef=useRef("")
+    const descriptionRef = useRef("")
     const targetAudienceRef = useRef("")
-    // const startDateRef = useRef("")
-    // const endDateRef = useRef("")
+    const startDateRef = useRef(null)
+    const endDateRef = useRef(null)
     const maxParticipantsRef = useRef("")
     const priceRef = useRef("")
     const imageSrcRef = useRef("")
     const ratingRef = useRef("")
 
     const [file, setFile] = useState(null);
-  
+
     const [imageUrl, setImageUrl] = useState("");
     const newVacation = {
-      imageSrc:imageUrl
-  };
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
+        imageSrc: imageUrl
+    };
+    const handleFileChange = (e) => {
+        setFile(e.target.files[0]);
+    };
 
-  const handleUpload = async () => {
-    if (!file) {
-      alert("נא לבחור קובץ!");
-      return;
+    const handleUpload = async () => {
+        if (!file) {
+            alert("נא לבחור קובץ!");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("image", file);
+
+        try {
+            const response = await axios.post("http://localhost:4300/upload", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
+
+            console.log("response", response.data.imageUrl);
+
+            if (response.data.imageUrl) {
+                setImageUrl(`http://localhost:4300${response.data.imageUrl}`);
+                newVacation.imageSrc = `http://localhost:4300${response.data.imageUrl}`;
+            }
+
+        } catch (error) {
+            console.error("Error uploading file:", error);
+        }
     }
-
-    const formData = new FormData();
-    formData.append("image", file);
-
-    try {
-      const response = await axios.post("http://localhost:4300/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      console.log("response",response.data.imageUrl);
-  
-      if (response.data.imageUrl){      setImageUrl(`http://localhost:4300${response.data.imageUrl}`);
-   newVacation.imageSrc = `http://localhost:4300${response.data.imageUrl}`; } 
-  
-    } catch (error) {
-      console.error("Error uploading file:", error);
-    }
-  }
     const addVacation = async () => {
 
 
-  if(!newVacation.imageSrc)newVacation.imageSrc = 'http://localhost:4300/uploads/logo.jpg';
-        console.log("response",newVacation.imageSrc);
+        if (!newVacation.imageSrc) newVacation.imageSrc = 'http://localhost:4300/uploads/logo.jpg';
+        console.log("response", newVacation.imageSrc);
 
-console.log(newVacation);
+        console.log(newVacation);
 
         // const newVacation = {
         //     area: areaRef.current.value,
@@ -75,18 +79,20 @@ console.log(newVacation);
         //     rating: ratingRef.current.value,
 
         // }
-       
+
 
         if (areaRef.current.value) newVacation.area = areaRef.current.value;
         if (locationRef.current.value) newVacation.location = locationRef.current.value;
         if (targetAudienceRef.current.value) newVacation.TargetAudience = targetAudienceRef.current.value;
         if (descriptionRef.current.value) newVacation.description = descriptionRef.current.value;
+        if (startDate) newVacation.startDate = startDate;
+        if (endDate) newVacation.endDate = endDate;
         //if (activities) newVacation.activities = activities;
         if (maxParticipantsRef.current.value) newVacation.maxParticipants = maxParticipantsRef.current.value;
         if (priceRef.current.value) newVacation.price = priceRef.current.value;
         // if (imageSrcRef.current.value) newVacation.imageSrc = imageSrcRef.current.value;
         if (ratingRef.current.value) newVacation.rating = ratingRef.current.value;
-        
+
         try {
             const res = await axios.post('http://localhost:4300/api/vacations', newVacation)
             console.log(res);
@@ -106,38 +112,38 @@ console.log(newVacation);
             <div className="card flex justify-content-center">
 
                 {/* <Dialog style={{ direction: "rtl" }} */}
-                    {/* // visible={props.visible} */}
-                    {/* modal */}
-                    {/* // onHide={() => { if (!props.visible) return; props.setVisible(false); }} */}
-                    {/* content={({ hide }) => ( */}
-                        <div className="flex flex-column px-8 py-5 gap-4" style={{ borderRadius: '12px', backgroundImage: 'radial-gradient(circle at left top, var(--primary-400), var(--primary-700))' }}>
-                            <div className="inline-flex flex-column gap-2">
-                                <label htmlFor="vacationname" className="text-primary-50 font-semibold">
-                                    מיקום
-                                </label>
-                                <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={locationRef}></InputText>
+                {/* // visible={props.visible} */}
+                {/* modal */}
+                {/* // onHide={() => { if (!props.visible) return; props.setVisible(false); }} */}
+                {/* content={({ hide }) => ( */}
+                <div className="flex flex-column px-8 py-5 gap-4" style={{ borderRadius: '12px', backgroundImage: 'radial-gradient(circle at left top, var(--primary-400), var(--primary-700))' }}>
+                    <div className="inline-flex flex-column gap-2">
+                        <label htmlFor="vacationname" className="text-primary-50 font-semibold">
+                            מיקום
+                        </label>
+                        <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={locationRef}></InputText>
 
-                            </div>
-                            <div className="inline-flex flex-column gap-2">
-                                <label htmlFor="vacationname" className="text-primary-50 font-semibold">
-                                    אזור
-                                </label>
-                                <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={areaRef}></InputText>
-                            </div>
-                            <div className="inline-flex flex-column gap-2">
-                                <label htmlFor="description" className="text-primary-50 font-semibold">
-                                    תאור
-                                </label>
-                                <InputText id="description" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={descriptionRef}></InputText>
-                            </div>
+                    </div>
+                    <div className="inline-flex flex-column gap-2">
+                        <label htmlFor="vacationname" className="text-primary-50 font-semibold">
+                            אזור
+                        </label>
+                        <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={areaRef}></InputText>
+                    </div>
+                    <div className="inline-flex flex-column gap-2">
+                        <label htmlFor="description" className="text-primary-50 font-semibold">
+                            תאור
+                        </label>
+                        <InputText id="description" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={descriptionRef}></InputText>
+                    </div>
 
-                            <div className="inline-flex flex-column gap-2">
-                                <label htmlFor="vacationname" className="text-primary-50 font-semibold">
-                                    קהל יעד
-                                </label>
-                                <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={targetAudienceRef}></InputText>
-                            </div>
-                            {/* <div className="inline-flex flex-column gap-2">
+                    <div className="inline-flex flex-column gap-2">
+                        <label htmlFor="vacationname" className="text-primary-50 font-semibold">
+                            קהל יעד
+                        </label>
+                        <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={targetAudienceRef}></InputText>
+                    </div>
+                    {/* <div className="inline-flex flex-column gap-2">
                         <label htmlFor="vacationname" className="text-primary-50 font-semibold">
                             תאריך התחלה
                         </label>
@@ -145,56 +151,68 @@ console.log(newVacation);
                                      <Calendar className="w-full p-calendar-lg" style={{ borderRadius: '8px', border: '1px solid #007bff' }} value={order.date} onChange={(e) => setOrder({ ...order, date: e.value })} showIcon />
 
                     </div> */}
-                            {/* <div className="inline-flex flex-column gap-2">
+                    <div className="flex-auto">
+                        <label htmlFor="buttondisplay" className="font-bold block mb-2">
+                            תאריך התחלה
+                        </label>
+                        <Calendar id="buttondisplay" value={startDate} onChange={(e) => setStartDate(e.value)} showIcon dateFormat="dd/mm/yy"/>
+                    </div>
+                    <div className="flex-auto">
+                        <label htmlFor="buttondisplay" className="font-bold block mb-2">
+                            תאריך סיום
+                        </label>
+                        <Calendar id="buttondisplay" value={endDate} onChange={(e) => setEndDate(e.value)} showIcon dateFormat="dd/mm/yy"/>
+                    </div>
+                    {/* <div className="inline-flex flex-column gap-2">
                         <label htmlFor="vacationname" className="text-primary-50 font-semibold">
                             תאריך סיום
                         </label>
                         <InputText id="vacationname"  className="bg-white-alpha-20 border-none p-3 text-primary-50"  ref={endDateRef}></InputText>
                     </div> */}
-                            <div className="inline-flex flex-column gap-2">
-                                <label htmlFor="vacationname" className="text-primary-50 font-semibold">
-                                    מקסימום משתתפים
-                                </label>
-                                <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={maxParticipantsRef}></InputText>
-                            </div>
-                            <div className="inline-flex flex-column gap-2">
-                                <label htmlFor="vacationname" className="text-primary-50 font-semibold">
-                                    מחיר
-                                </label>
-                                <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={priceRef}></InputText>
-                            </div>
-                            {/* <div className="inline-flex flex-column gap-2">
+                    <div className="inline-flex flex-column gap-2">
+                        <label htmlFor="vacationname" className="text-primary-50 font-semibold">
+                            מקסימום משתתפים
+                        </label>
+                        <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={maxParticipantsRef}></InputText>
+                    </div>
+                    <div className="inline-flex flex-column gap-2">
+                        <label htmlFor="vacationname" className="text-primary-50 font-semibold">
+                            מחיר
+                        </label>
+                        <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={priceRef}></InputText>
+                    </div>
+                    {/* <div className="inline-flex flex-column gap-2">
                                 <label htmlFor="vacationname" className="text-primary-50 font-semibold">
                                     תמונה
                                 </label>
                                 <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={imageSrcRef}></InputText>
                             </div> */}
-                              <div>
-      <input type="file" onChange={handleFileChange} />
-      <button onClick={handleUpload}>העלה תמונה</button>
-      {imageUrl && (
-        <div>
-      {console.log(imageUrl)}
-      
-          <h3>התמונה שהועלתה:</h3>
-          <img src={imageUrl} alt="Uploaded" width="300" />
-        </div>
-      )}
-    </div>
-                            <div className="inline-flex flex-column gap-2">
-                                <label htmlFor="vacationname" className="text-primary-50 font-semibold">
-                                    ניקוד
-                                </label>
-                                <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={ratingRef}></InputText>
+                    <div>
+                        <input type="file" onChange={handleFileChange} />
+                        <button onClick={handleUpload}>העלה תמונה</button>
+                        {imageUrl && (
+                            <div>
+                                {console.log(imageUrl)}
+
+                                <h3>התמונה שהועלתה:</h3>
+                                <img src={imageUrl} alt="Uploaded" width="300" />
                             </div>
-                            <div className="inline-flex flex-column gap-2">
-                            </div>
-                            <div className="flex align-items-center gap-2">
-                                <Button label="הוסף" onClick={(e) => { addVacation();  }} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
-                                {/* <Button label="ביטול" onClick={(e) => hide(e)} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button> */}
-                            </div>
-                        </div>
-                     {/* )}
+                        )}
+                    </div>
+                    <div className="inline-flex flex-column gap-2">
+                        <label htmlFor="vacationname" className="text-primary-50 font-semibold">
+                            ניקוד
+                        </label>
+                        <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={ratingRef}></InputText>
+                    </div>
+                    <div className="inline-flex flex-column gap-2">
+                    </div>
+                    <div className="flex align-items-center gap-2">
+                        <Button label="הוסף" onClick={(e) => { addVacation(); }} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
+                        {/* <Button label="ביטול" onClick={(e) => hide(e)} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button> */}
+                    </div>
+                </div>
+                {/* )}
                  ></Dialog> */}
             </div>
         </>
