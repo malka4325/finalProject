@@ -20,6 +20,9 @@ const Vacations = () => {
     
     const navigate = useNavigate();
     const token = useSelector(state => state.TokenSlice.token)
+const user=useSelector(state => state.UserSlice.user)
+console.log(user);
+
     const [vacations, setVacations] = useState([]);
     useEffect(() => { getVacations() }, [])
     const getVacations = async () => {
@@ -147,7 +150,7 @@ const Vacations = () => {
             <div className="card" style={{ margin: "40px" }}>
                 <h1>נופשים</h1>
                 <DataView value={vacations} listTemplate={listTemplate} />
-                <Button icon="pi pi-plus" severity="Success" rounded aria-label="Filter" onClick={handleButtonAddVacation} style={{marginLeft:"50px",marginBottom:'50px' ,left: 0, bottom: 0 ,position:'fixed'}}direction="down-left" label="הוספת נופש"/>
+                <Button icon="pi pi-plus" visible={user.role=="Admin"} severity="Success" rounded aria-label="Filter" onClick={handleButtonAddVacation} style={{marginLeft:"50px",marginBottom:'50px' ,left: 0, bottom: 0 ,position:'fixed'}}direction="down-left" label="הוספת נופש"/>
                 <Outlet />
             </div> </>
     )
