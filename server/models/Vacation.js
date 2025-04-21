@@ -14,7 +14,7 @@ const vacationSchema = new mongoose.Schema({
     description:{
         type: String,
     },
-    TargetAudience: {
+    targetAudience: {
         type: String,
         required: true
     },

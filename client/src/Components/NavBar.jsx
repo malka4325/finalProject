@@ -20,7 +20,8 @@ const NavBar = () => {
                 { label: 'צפון', url: '/Vacations/צפון' },
                 { label: 'דרום', url: '/Vacations/דרום' },
                 { label: 'מרכז', url: '/Vacations/מרכז' },
-                { label: 'אזור ירושלים', url: '/Vacations/אזור ירושלים' }
+                { label: 'אזור ירושלים', url: '/Vacations/אזור ירושלים' },
+                { label: ' כל הנופשים ', url: '/Vacations/הכל' }
             ]
         },
         {
@@ -48,13 +49,14 @@ const NavBar = () => {
                 { label: 'Styled', url: '/Vacations' },
                 { label: 'Unstyled', url: '/unstyled' }
             ]
-        },{},{},{},{},{},{},{},{},{},{},{},{},
+        },{},{},{},{},{},{},{},{},{},{},{},
         {
             label: token ? 'אזור אישי' : 'התחברות',
             url: token ? '' : '/Login',
             icon: <FaUser style={{ fontSize: '24px' }} />,
             items: token ? [
                 { label: 'הזמנות שלי', url: '/Orders/myOrders' },
+               // { label: 'עדכון פרטים', url: '/Orders/myOrders' },
                 {
                     label: 'התנתקות',
                     url: '/',

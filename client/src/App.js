@@ -43,7 +43,7 @@ function App() {
 
                 <Route path="/Vacations/:area" element={<Vacations />} />
                 <Route path="/Vacations/AddVacation" element={<AddVacation />} />
-                <Route path="/Vacations/:id" element={<OneVacation  />} />
+                <Route path="/Vacations/:area/:id" element={<OneVacation  />} />
                 <Route path="/upload" element={<Upload/>}/>
                 <Route path="/Orders/newOrder/:id" element={<NewOrder  />} />
                 <Route path="/Orders/myOrders" element={<OldOrders/>} />

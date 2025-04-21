@@ -83,7 +83,7 @@ const AuthPage=()=> {
     };
     useEffect(() => {
         if (token) {
-          navigate('/Vacations');
+          navigate('/Vacations/הכל');
         }
       }, [token]);
     return (

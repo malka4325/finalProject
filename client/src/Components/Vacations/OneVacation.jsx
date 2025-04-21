@@ -82,9 +82,9 @@ const OneVacation = () => {
       />
     );
   };
-  const handleButton = () => {
+  const handleToVacations = () => {
 
-    navigate(`/Vacations`); // שינוי URL עם state
+    navigate(`/Vacations/${vacation.area}`); // שינוי URL עם state
   }
 
   const handleOrder = () => {
@@ -199,7 +199,7 @@ const OneVacation = () => {
           )}
         />
       </div>
-      <Button onClick={handleButton}> לכל הנופשים</Button>
+      <Button onClick={handleToVacations}> חזרה לנופשים</Button>
     </div>
   );
 };
