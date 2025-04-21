@@ -17,10 +17,10 @@ const NavBar = () => {
             label: 'נופשים',
             icon: 'pi pi-palette',
             items: [
-                { label: 'צפון', url: '/Vacations' },
-                { label: 'דרום', url: '/unstyled' },
-                { label: 'מרכז', url: '/Vacations' },
-                { label: 'אזור ירושלים', url: '/Vacations' }
+                { label: 'צפון', url: '/Vacations/צפון' },
+                { label: 'דרום', url: '/Vacations/דרום' },
+                { label: 'מרכז', url: '/Vacations/מרכז' },
+                { label: 'אזור ירושלים', url: '/Vacations/אזור ירושלים' }
             ]
         },
         {

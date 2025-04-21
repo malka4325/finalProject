@@ -43,6 +43,16 @@ const getVacationById = async (req, res) => {
     }
     res.json(vacations)
 }
+const getVacationsByArea = async (req, res) => {
+    const { area } = req.params;
+     const vacations = await Vacation.find({ area: { $regex: area, $options: 'i' } }).lean();
+     if (!vacations) {
+        return res.json([])
+    }
+     res.json(vacations)
+ 
+};
+
 
  const updateVacation = async (req, res) => {
     const { _id,area, location,description,TargetAudience,currentParticipants, startDate,endDate,activities,maxParticipants,price,imageSrc,rating} = req.body
@@ -82,4 +92,4 @@ return res.status(400).send('error delete')
 res.json(await Vacation.find().lean())
 
 }
-module.exports = { createNewVacation,getAllVacations,getVacationById,updateVacation,deleteVacation ,getVacationByName}
+module.exports = { createNewVacation,getAllVacations,getVacationById,getVacationsByArea,updateVacation,deleteVacation ,getVacationByName}

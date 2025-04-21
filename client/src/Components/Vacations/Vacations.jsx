@@ -7,7 +7,7 @@ import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { Rating } from 'primereact/rating';
 import { Tag } from 'primereact/tag';
 import { classNames } from 'primereact/utils';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useParams } from 'react-router-dom';
 import { Image } from 'primereact/image';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -22,9 +22,9 @@ const Vacations = () => {
     const token = useSelector(state => state.TokenSlice.token)
     const user = useSelector(state => state.UserSlice.user)
     console.log(user);
-
+    const {area}=useParams();
     const [vacations, setVacations] = useState([]);
-    useEffect(() => { getVacations() }, [])
+    useEffect(() => { getVacationsByArea() }, [area])
     const getVacations = async () => {
         try {
             const res = await axios.get('http://localhost:4300/api/vacations')
@@ -35,6 +35,17 @@ const Vacations = () => {
             console.error(e)
         }
     }
+    const getVacationsByArea = async () => {
+        try {
+            const res = await axios.get(`http://localhost:4300/api/vacations/ByArea/${area}`)
+            if (res.status === 200) {
+                setVacations(res.data);
+            }
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
     // useEffect(() => {
     //     VacationService.getVacations().then((data) =setVacations> (data.slice(0, 12)));
     // }, []);
