@@ -7,6 +7,7 @@ import { FaUser } from 'react-icons/fa';
 
 const NavBar = () => {
     const token = useSelector(state => state.TokenSlice.token);
+    const user = useSelector(state => state.UserSlice.user)
     const items = [
         {
             label: 'דף הבית',
@@ -56,6 +57,7 @@ const NavBar = () => {
             icon: <FaUser style={{ fontSize: '24px' }} />,
             items: token ? [
                 { label: 'הזמנות שלי', url: '/Orders/myOrders' },
+                ...(user?.role === 'Admin' ? [{ label: 'כל ההזמנות', url: '/Orders/allOrders' }] : []),
                // { label: 'עדכון פרטים', url: '/Orders/myOrders' },
                 {
                     label: 'התנתקות',

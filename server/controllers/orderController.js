@@ -10,7 +10,7 @@ const order = await Order.create({ orderedBy,trip,vacation,numOfJoined })
     res.json("your orders code is: "+order._id)
 }
 const getAllOrders=async (req,res)=>{
-    const orders = await Order.find().lean().populate('orderedBy')
+    const orders = await Order.find().lean().populate('orderedBy').populate('vacation')
         if (!orders)
             return res.status(400).send('no orders')
         res.json(orders)

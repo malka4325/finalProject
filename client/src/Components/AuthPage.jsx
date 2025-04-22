@@ -25,7 +25,7 @@ const AuthPage=()=> {
     const [formData, setFormData] = useState({
         userName: '',
         password: '',
-        fullName: '',
+        name: '',
         email: '',
         phone: ''
     });
@@ -105,11 +105,11 @@ const AuthPage=()=> {
                         {/* שדה שם מלא - יוצג רק בהרשמה */}
                         {!isLogin && (
                             <div className="inline-flex flex-column gap-2">
-                                <label htmlFor="fullName" className="text-primary-50 font-semibold">שם מלא</label>
+                                <label htmlFor="name" className="text-primary-50 font-semibold">שם מלא</label>
                                 <InputText 
-                                    id="fullName" 
-                                    value={formData.fullName} 
-                                    onChange={(e) => handleChange(e, "fullName")} 
+                                    id="name" 
+                                    value={formData.name} 
+                                    onChange={(e) => handleChange(e, "name")} 
                                     className="bg-white-alpha-20 border-none p-3 text-primary-50"
                                 />
                             </div>
