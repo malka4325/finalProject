@@ -24,7 +24,7 @@ const OneVacation = () => {
   useEffect(() => { getVacation() }, [])
   const getVacation = async () => {
     try {
-      const res = await axios.get(`http://localhost:4300/api/vacations/${id}`)
+      const res = await axios.get(`http://localhost:4300/api/vacations/byId/${id}`)
       if (res.status === 200) {
         setVacation(res.data);
       }

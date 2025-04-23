@@ -2,15 +2,15 @@ const Vacation = require("../models/Vacation")
 
 const createNewVacation = async (req, res) => {
 
-    const { area, location,description,TargetAudience, startDate,endDate,activities,maxParticipants,price,imageSrc,rating} = req.body
-   if (!area||!location||!TargetAudience||!startDate||!endDate||!maxParticipants||!price)
+    const { area, location,description,targetAudience, startDate,endDate,activities,maxParticipants,price,imageSrc,rating} = req.body
+   if (!area||!location||!targetAudience||!startDate||!endDate||!maxParticipants||!price)
     //if (!area||!location||!TargetAudience||!maxParticipants||!price)
         return res.status(400).json({ message: 'לא הוכנסו כל השדות הנדרשים' })
         const validAreas = ['צפון', 'דרום', 'מרכז', 'אזור ירושלים'];
         if (!validAreas.includes(area)) {
             return res.status(400).json({ message: 'אזור לא חוקי, יש להכניס צפון, דרום, מרכז או אזור ירושלים' });
         }
-        const vacation = await Vacation.create({ area, location,TargetAudience,description, startDate: new Date(startDate),endDate: new Date(endDate),activities,maxParticipants,price,imageSrc,rating})
+        const vacation = await Vacation.create({ area, location,targetAudience,description, startDate: new Date(startDate),endDate: new Date(endDate),activities,maxParticipants,price,imageSrc,rating})
       //  const vacation = await Vacation.create({ area, location,TargetAudience,description,activities,maxParticipants,price,imageSrc,rating})
  
     
@@ -52,11 +52,25 @@ const getVacationsByArea = async (req, res) => {
      res.json(vacations)
  
 };
-
+const getCloseVacations= async (req, res) => {
+    const twoWeeksFromNow = new Date();
+    twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
+    
+    const now = new Date();
+    
+    const vacations = await Vacation.find({
+      startDate: { $gte: now, $lte: twoWeeksFromNow }
+    }).lean();
+     if (!vacations) {
+        return res.json([])
+    }
+     res.json(vacations)
+ 
+};
 
  const updateVacation = async (req, res) => {
-    const { _id,area, location,description,TargetAudience,currentParticipants, startDate,endDate,activities,maxParticipants,price,imageSrc,rating} = req.body
-    if (!_id||!area||!location||!TargetAudience||!startDate||!endDate||!maxParticipants||!price)
+    const { _id,area, location,description,targetAudience,currentParticipants, startDate,endDate,activities,maxParticipants,price,imageSrc,rating} = req.body
+    if (!_id||!area||!location||!targetAudience||!startDate||!endDate||!maxParticipants||!price)
         return res.status(400).json({ message: 'fields are required' })
     const vacation = await Vacation.findById(_id).exec()
     if (!vacation)
@@ -64,7 +78,7 @@ const getVacationsByArea = async (req, res) => {
 vacation.area=area
 vacation.location=location
 vacation.description=description
-vacation.TargetAudience=TargetAudience
+vacation.targetAudience=TargetAudience
 vacation.activities=activities
 vacation.startDate=new Date(startDate)
 vacation.endDate=new Date(endDate)
@@ -92,4 +106,4 @@ return res.status(400).send('error delete')
 res.json(await Vacation.find().lean())
 
 }
-module.exports = { createNewVacation,getAllVacations,getVacationById,getVacationsByArea,updateVacation,deleteVacation ,getVacationByName}
+module.exports = { createNewVacation,getAllVacations,getVacationById,getVacationsByArea,updateVacation,deleteVacation ,getVacationByName,getCloseVacations}

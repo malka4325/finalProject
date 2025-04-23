@@ -83,7 +83,7 @@ const AddVacation = () => {
 
         if (areaRef.current.value) newVacation.area = areaRef.current.value;
         if (locationRef.current.value) newVacation.location = locationRef.current.value;
-        if (targetAudienceRef.current.value) newVacation.TargetAudience = targetAudienceRef.current.value;
+        if (targetAudienceRef.current.value) newVacation.targetAudience = targetAudienceRef.current.value;
         if (descriptionRef.current.value) newVacation.description = descriptionRef.current.value;
         if (startDate) newVacation.startDate = startDate;
         if (endDate) newVacation.endDate = endDate;

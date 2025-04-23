@@ -39,8 +39,8 @@ const NavBar = () => {
             label: 'הרגע האחרון',
             icon: 'pi pi-palette',
             items: [
-                { label: 'נופשים בקרוב', url: '/Vacations/הרגע האחרון' },
-                { label: 'טיולים בקרוב', url:  '/Vacations/הרגע האחרון' }
+                { label: 'נופשים בקרוב', url: '/Vacations/קרוב' },
+                { label: 'טיולים בקרוב', url:  '/Vacations/קרוב' }
             ]
         },
         {

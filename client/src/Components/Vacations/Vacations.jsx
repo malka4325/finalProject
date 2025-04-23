@@ -28,7 +28,7 @@ const Vacations = () => {
         switch (area) {
             case 'הכל': getVacations()
                 break
-            case 'הרגע האחרון': getSoonVacations()
+            case 'קרוב': getCloseVacations()
                 break
             default: getVacationsByArea()
         }
@@ -44,15 +44,15 @@ const Vacations = () => {
             console.error(e)
         }
     }
-    const getSoonVacations = async () => {
-        // try {
-        //     const res = await axios.get('http://localhost:4300/api/vacations')
-        //     if (res.status === 200) {
-        //         setVacations(res.data);
-        //     }
-        // } catch (e) {
-        //     console.error(e)
-        // }
+    const getCloseVacations = async () => {
+        try {
+            const res = await axios.get('http://localhost:4300/api/vacations/close')
+            if (res.status === 200) {
+                setVacations(res.data);
+            }
+        } catch (e) {
+            console.error(e)
+        }
     }
     const getVacationsByArea = async () => {
         try {
