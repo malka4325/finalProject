@@ -22,11 +22,18 @@ const Vacations = () => {
     const token = useSelector(state => state.TokenSlice.token)
     const user = useSelector(state => state.UserSlice.user)
     console.log(user);
-    const {area}=useParams();
+    const { area } = useParams();
     const [vacations, setVacations] = useState([]);
-    useEffect(() => { if(area=='הכל')getVacations()
-    else getVacationsByArea() }, [area])
-   // useEffect(() => { getVacations() }, [])
+    useEffect(() => {
+        switch (area) {
+            case 'הכל': getVacations()
+                break
+            case 'הרגע האחרון': getSoonVacations()
+                break
+            default: getVacationsByArea()
+        }
+    }, [area])
+    // useEffect(() => { getVacations() }, [])
     const getVacations = async () => {
         try {
             const res = await axios.get('http://localhost:4300/api/vacations')
@@ -36,6 +43,16 @@ const Vacations = () => {
         } catch (e) {
             console.error(e)
         }
+    }
+    const getSoonVacations = async () => {
+        // try {
+        //     const res = await axios.get('http://localhost:4300/api/vacations')
+        //     if (res.status === 200) {
+        //         setVacations(res.data);
+        //     }
+        // } catch (e) {
+        //     console.error(e)
+        // }
     }
     const getVacationsByArea = async () => {
         try {
@@ -71,7 +88,7 @@ const Vacations = () => {
         if (tmp > 0 && tmp < 20) {
             full = 'מקומות אחרונים'
             classIcon = "pi pi-exclamation-triangle"
-            
+
 
         }
         else {
@@ -88,18 +105,18 @@ const Vacations = () => {
     const handleButton = (vacation) => {
         if (token)
             navigate(`/Vacations/${vacation.area}/${vacation._id}`);
-            else
+        else
             navigate('/Login')
     }
     const handleButtonAddVacation = () => {
 
-        if (token&&user.role == "Admin")
-            navigate('/Vacations/AddVacation'); 
+        if (token && user.role == "Admin")
+            navigate('/Vacations/AddVacation');
     }
     const gridItem = (vacation) => {
 
         freeParticipants(vacation);
-         console.log(vacation);
+        console.log(vacation);
 
         return (
             <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-1" key={vacation._id}
@@ -111,8 +128,8 @@ const Vacations = () => {
                     height: '370px', /* גובה קבוע */
                     overflow: 'hidden', /* מסתיר תוכן שגדול מהכרטיס */
                     padding: 0, margin: 0
-                }}> 
-                <button onClick={() => { handleButton(vacation) }} style={{ position: 'relative', backgroundColor: "white", borderWidth: "0px", padding: 0, margin: 0 }}>
+                }}>
+                    <button onClick={() => { handleButton(vacation) }} style={{ position: 'relative', backgroundColor: "white", borderWidth: "0px", padding: 0, margin: 0 }}>
                         <div style={{ position: 'relative', width: '370px', height: '200px', overflow: 'hidden' }}>
                             <Image src={vacation.imageSrc} alt={vacation.location} width="370px" height="200" style={{ width: '100%', height: '100%' }} />
                             <div className="flex flex-wrap align-items-center justify-content-between gap-1" style={{ position: 'absolute', top: '5px', left: '5px', margin: 8 }}>
@@ -131,43 +148,43 @@ const Vacations = () => {
                         </div>
                         <div className="flex flex-column align-items-center gap-2 py-2">
 
-                        
+
                             <div className="text-2xl font-bold">{vacation.location}</div>
-                            <div className="flex gap-5 mb-1" style={{marginTop:"7px"}}>
-                          
-                            <div className="flex-1"style={{ whiteSpace: 'nowrap' }}>
-                                <div className="font-semibold text-gray-600">החל מ</div>
-                                <div className="text-xl text-gray-800">
-                                    {new Date(vacation.startDate).toLocaleDateString('he-IL', {
-                                        year: 'numeric',
-                                        month: 'numeric',
-                                        day: 'numeric',
-                                    })}
+                            <div className="flex gap-5 mb-1" style={{ marginTop: "7px" }}>
+
+                                <div className="flex-1" style={{ whiteSpace: 'nowrap' }}>
+                                    <div className="font-semibold text-gray-600">החל מ</div>
+                                    <div className="text-xl text-gray-800">
+                                        {new Date(vacation.startDate).toLocaleDateString('he-IL', {
+                                            year: 'numeric',
+                                            month: 'numeric',
+                                            day: 'numeric',
+                                        })}
+                                    </div>
+                                </div>
+                                <span className="text-xl text-gray-800">__</span>
+                                <div className="flex-1">
+                                    <div className="font-semibold text-gray-600">עד </div>
+                                    <div className="text-xl text-gray-800">
+                                        {new Date(vacation.endDate).toLocaleDateString('he-IL', {
+                                            year: 'numeric',
+                                            month: 'numeric',
+                                            day: 'numeric',
+                                        })}
+                                    </div>
                                 </div>
                             </div>
-                            <span className="text-xl text-gray-800">__</span>
-                            <div className="flex-1">
-                                <div className="font-semibold text-gray-600">עד </div>
-                                <div className="text-xl text-gray-800">
-                                    {new Date(vacation.endDate).toLocaleDateString('he-IL', {
-                                        year: 'numeric',
-                                        month: 'numeric',
-                                        day: 'numeric',
-                                    })}
-                                </div>
-                            </div>
-                            </div>
-                       
+
                             <Rating value={vacation.rating} readOnly cancel={false}></Rating>
                         </div>
-                         </button>
+                    </button>
                     <div className="flex align-items-center justify-content-between" style={{ padding: "1px" }}>
                         <span style={{ marginLeft: "8px", }}>
                             <span className="text-xl font-semibold">{vacation.price}$</span>
-                        <br/><span className="text-m font-semibold">ללילה</span>
+                            <br /><span className="text-m font-semibold">ללילה</span>
                         </span>
                         <span className="text-m font-semibold">{vacation.targetAudience}</span>
-                       
+
 
 
                         {/* <Button className="p-button-rounded font-semibold" style={{
@@ -185,7 +202,7 @@ const Vacations = () => {
     return (
         <>
             <div className="card" style={{ margin: "40px" }}>
-               <h1>{area=='הכל'?'כל הנופשים':`נופשים ב${area}`}</h1>
+                <h1>{area == 'הכל' ? 'כל הנופשים' : `נופשים ב${area}`}</h1>
                 <DataView value={vacations} listTemplate={listTemplate} />
                 <Button icon="pi pi-plus" visible={user.role == "Admin"} severity="Success" rounded aria-label="Filter" onClick={handleButtonAddVacation} style={{ marginLeft: "50px", marginBottom: '50px', left: 0, bottom: 0, position: 'fixed' }} direction="down-left" label="הוספת נופש" />
                 <Outlet />
