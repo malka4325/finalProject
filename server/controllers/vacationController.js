@@ -21,8 +21,29 @@ const createNewVacation = async (req, res) => {
     res.json(await Vacation.find().lean())
 }
 
-const getAllVacations = async (req, res) => {
-   const vacations=await Vacation.find().lean()
+const getVacations = async (req, res) => {
+    let query = {};
+    const { fromDate, toDate, area,name } = req.query;
+
+    // הוספת תנאים על פי הפרמטרים שנשלחו
+    if (area) {
+        query.area = { $regex: area, $options: 'i' };
+    }
+    if (name) {
+        query.name = { $regex: name, $options: 'i' };
+    }
+
+    if (fromDate || toDate) {
+        query.startDate = {};
+        if (fromDate) {
+            query.startDate.$gte = new Date(fromDate);
+        }
+        if (toDate) {
+            query.startDate.$lte = new Date(toDate);
+        }
+    }
+    // חיפוש חופשות עם השאילתא שנוצרה
+    const vacations = await Vacation.find(query).lean();
    if (!vacations)
     return res.status(400).send('vacations not found')
 res.json(vacations)
@@ -35,38 +56,7 @@ const getVacationById = async (req, res) => {
      return res.status(400).send('vacation not found')
  res.json(vacation)
  }
- const getVacationByName = async (req, res) => {
-    const { name } = req.params
-    const vacations = await Vacation.find({ location:{$regex :name}}).lean()
-    if (!vacations) {
-        return res.json([])
-    }
-    res.json(vacations)
-}
-const getVacationsByArea = async (req, res) => {
-    const { area } = req.params;
-     const vacations = await Vacation.find({ area: { $regex: area, $options: 'i' } }).lean();
-     if (!vacations) {
-        return res.json([])
-    }
-     res.json(vacations)
- 
-};
-const getCloseVacations= async (req, res) => {
-    const twoWeeksFromNow = new Date();
-    twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
-    
-    const now = new Date();
-    
-    const vacations = await Vacation.find({
-      startDate: { $gte: now, $lte: twoWeeksFromNow }
-    }).lean();
-     if (!vacations) {
-        return res.json([])
-    }
-     res.json(vacations)
- 
-};
+
 
  const updateVacation = async (req, res) => {
     const { _id,area, location,description,targetAudience,currentParticipants, startDate,endDate,activities,maxParticipants,price,imageSrc,rating} = req.body
@@ -106,4 +96,4 @@ return res.status(400).send('error delete')
 res.json(await Vacation.find().lean())
 
 }
-module.exports = { createNewVacation,getAllVacations,getVacationById,getVacationsByArea,updateVacation,deleteVacation ,getVacationByName,getCloseVacations}
+module.exports = { createNewVacation,getVacations,getVacationById,updateVacation,deleteVacation }

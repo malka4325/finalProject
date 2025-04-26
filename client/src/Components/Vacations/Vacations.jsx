@@ -45,8 +45,11 @@ const Vacations = () => {
         }
     }
     const getCloseVacations = async () => {
+        const now = new Date();
+        const oneMonthFromNow = new Date();
+        oneMonthFromNow.setMonth(oneMonthFromNow.getMonth() + 1);
         try {
-            const res = await axios.get('http://localhost:4300/api/vacations/close')
+            const res = await axios.get(`http://localhost:4300/api/vacations?fromDate=${now}&toDate=${oneMonthFromNow}`)
             if (res.status === 200) {
                 setVacations(res.data);
             }
@@ -56,7 +59,7 @@ const Vacations = () => {
     }
     const getVacationsByArea = async () => {
         try {
-            const res = await axios.get(`http://localhost:4300/api/vacations/ByArea/${area}`)
+            const res = await axios.get(`http://localhost:4300/api/vacations?area=${area}`)
             if (res.status === 200) {
                 setVacations(res.data);
             }
