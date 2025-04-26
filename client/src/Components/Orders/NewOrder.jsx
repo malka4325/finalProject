@@ -36,7 +36,8 @@ const NewOrder = () => {
             }
           );
           if (res.status === 200) {
-              alert(res.data);
+              //alert(res.data);
+              window.location.href = '/ThankYou'
           }
       } catch (e) {
           alert(e.response.data.message.toString())

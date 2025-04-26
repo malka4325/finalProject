@@ -14,6 +14,7 @@ import NavBar from './Components/NavBar';
 import AddVacation from './Components/Vacations/AddVacation';
 import OldOrders from './Components/Orders/OldOrders';
 import AllOrders from './Components/Orders/AllOrders';
+import ThankYouPage from './Components/ThankYouPage';
 
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
             <Routes>
             <Route path="/" element={<HomePage/>} />
             <Route path="/Login" element={<AuthPage/>} />
+            <Route path="/ThankYou" element={<ThankYouPage/>} />
 
                 <Route path="/Vacations/:area" element={<Vacations />} />
                 <Route path="/Vacations/AddVacation" element={<AddVacation />} />
