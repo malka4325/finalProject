@@ -15,7 +15,7 @@ const tripSchema = new mongoose.Schema({
     description:{
         type: String,
     },
-    TargetAudience: {
+    targetAudience: {
         type: String,
         required: true
     },
@@ -43,8 +43,8 @@ const tripSchema = new mongoose.Schema({
     },
     imageSrc: {
         type: String,
-        default: ''
-    }
+        default: 'http://localhost:4300/uploads/logo.jpg'
+    },
 },
     { timestamps: true })
 

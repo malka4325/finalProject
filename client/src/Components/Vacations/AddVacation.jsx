@@ -5,10 +5,12 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
 import { Calendar } from 'primereact/calendar';
+import { useSelector } from 'react-redux';
 const AddVacation = () => {
     const navigate = useNavigate()
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
+    const token = useSelector(state => state.TokenSlice.token)
 
     // const location = useLocation();
     // const props = location.state || {};
@@ -66,19 +68,6 @@ const AddVacation = () => {
 
         console.log(newVacation);
 
-        // const newVacation = {
-        //     area: areaRef.current.value,
-        //     location: locationRef.current.value,
-        //     description:descriptionRef.current.value,
-        //     targetAudience: targetAudienceRef.current.value,
-        //     // startDate: startDateRef.current.value,
-        //     // endDate: endDateRef.current.value,
-        //     maxParticipants: maxParticipantsRef.current.value,
-        //     price: priceRef.current.value,
-        //     imageSrc: imageSrcRef.current.value,
-        //     rating: ratingRef.current.value,
-
-        // }
 
 
         if (areaRef.current.value) newVacation.area = areaRef.current.value;
@@ -94,7 +83,12 @@ const AddVacation = () => {
         if (ratingRef.current.value) newVacation.rating = ratingRef.current.value;
 
         try {
-            const res = await axios.post('http://localhost:4300/api/vacations', newVacation)
+         
+            const res = await axios.post('http://localhost:4300/api/vacations', newVacation, {
+                headers: {
+                  'Authorization': `Bearer ${token}`, // שליחת הטוקן בכותרת Authorization
+                },
+              })
             console.log(res);
             if (res.status === 200) {
                 console.log("res.data", res.data);

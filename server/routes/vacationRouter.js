@@ -7,7 +7,7 @@ const isAdmin = require("../middleware/isAdmin")
 router.get("/",vacationController.getVacations)
 router.get("/:id",vacationController.getVacationById)
 
-router.post("/",vacationController.createNewVacation)
+router.post("/",verifyJWT,isAdmin,vacationController.createNewVacation)
 router.put("/",verifyJWT,isAdmin,vacationController.updateVacation)
 router.delete("/:id",verifyJWT,isAdmin,vacationController.deleteVacation)
 

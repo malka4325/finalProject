@@ -29,10 +29,11 @@ const NavBar = () => {
             label: 'טיולים',
             icon: 'pi pi-palette',
             items: [
-                { label: 'צפון', url: '/Vacations' },
-                { label: 'דרום', url: '/unstyled' },
-                { label: 'מרכז', url: '/Vacations' },
-                { label: 'אזור ירושלים', url: '/unstyled' }
+                { label: 'צפון', url: '/Trips/צפון' },
+                { label: 'דרום', url: '/Trips/דרום' },
+                { label: 'מרכז', url: '/Trips/מרכז' },
+                { label: 'אזור ירושלים', url: '/Trips/אזור ירושלים' },
+                { label: ' כל הטיולים ', url: '/Trips/הכל' }
             ]
         },
         {

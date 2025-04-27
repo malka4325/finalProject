@@ -1,84 +1,203 @@
 
 import React from "react";
 
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
-import { Rating } from 'primereact/rating';
-import { Tag } from 'primereact/tag';
-import { classNames } from 'primereact/utils';
 
+import { Tag } from 'primereact/tag';
+
+import { Link, Outlet, useParams } from 'react-router-dom';
+import { Image } from 'primereact/image';
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-const Trips=()=>{
-    
-    const [vacations, setVacations] = useState([]);
-    // const [layout, setLayout] = useState('grid');
-    useEffect(()=>{getVacations()},[])
-    const getVacations = async () => {
-        try {  
-            const res = await axios.get('http://localhost:4300/api/vacations')
+
+import { useSelector } from "react-redux";
+const Trips = () => {
+    // const context = useContext(Context);
+
+    const navigate = useNavigate();
+    const token = useSelector(state => state.TokenSlice.token)
+    const user = useSelector(state => state.UserSlice.user)
+    console.log(user);
+    const { area } = useParams();
+    const [trips, setTrips] = useState([]);
+    useEffect(() => {
+        switch (area) {
+            case 'הכל': getTrips()
+                break
+            case 'קרוב': getCloseTrips()
+                break
+            default: getTripsByArea()
+        }
+    }, [area])
+    // useEffect(() => { getTrips() }, [])
+    const getTrips = async () => {
+        try {
+            const res = await axios.get('http://localhost:4300/api/trips')
             if (res.status === 200) {
-                setVacations(res.data);
+                setTrips(res.data);
             }
         } catch (e) {
             console.error(e)
-        }}
-    // useEffect(() => {
-    //     VacationService.getVacations().then((data) =setVacations> (data.slice(0, 12)));
-    // }, []);
+        }
+    }
+    const getCloseTrips = async () => {
+        const now = new Date();
+        const towWeeksFromNow = new Date();
+        towWeeksFromNow.setDate(towWeeksFromNow.getDate() + 14);
+        try {
+            const res = await axios.get(`http://localhost:4300/api/trips?fromDate=${now}&toDate=${towWeeksFromNow}`)
+            if (res.status === 200) {
+                setTrips(res.data);
+            }
+        } catch (e) {
+            console.error(e)
+        }
+    }
+    const getTripsByArea = async () => {
+        try {
+            const res = await axios.get(`http://localhost:4300/api/trips?area=${area}`)
+            if (res.status === 200) {
+                setTrips(res.data);
+            }
+        } catch (e) {
+            console.error(e)
+        }
+    }
 
-    // const getSeverity = (vacation) => {
-    //     switch (vacation.inventoryStatus) {
-    //         case 'INSTOCK':
-    //             return 'success';
 
-    //         case 'LOWSTOCK':
-    //             return 'warning';
+    const getSeverity = (full) => {
+        switch (full) {
 
-    //         case 'OUTOFSTOCK':
-    //             return 'danger';
+            case 'מקומות אחרונים':
+                return 'warning';
 
-    //         default:
-    //             return null;
-    //     }
-    // };
-    
+            case 'מלא':
+                return 'danger';
+
+            default:
+                return null;
+        }
+    };
+
+    let full = '';
+    let classIcon = ""
+    const freeParticipants = (trip) => {
+        const tmp = trip.maxParticipants - trip.currentParticipants;
+
+        if (tmp > 0 && tmp < 20) {
+            full = 'מקומות אחרונים'
+            classIcon = "pi pi-exclamation-triangle"
 
 
-    const gridItem = (vacation) => {
+        }
+        else {
+            if (tmp === 0) {
+                full = 'מלא'
+                classIcon = "pi pi-minus-circle"
+            }
+            else
+                full = 'יש מקום'
+        }
+
+    }
+
+    const handleButton = (trip) => {
+        if (token)
+            navigate(`/Trips/${trip.area}/${trip._id}`);
+        else
+            navigate('/Login')
+    }
+    const handleButtonAddTrip = () => {
+
+        if (token && user.role == "Admin")
+            navigate('/Trips/AddTrip');
+    }
+    const gridItem = (trip) => {
+
+        freeParticipants(trip);
+        console.log(trip);
+
         return (
-            <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2" key={vacation.id}>
-                <div className="p-4 border-1 surface-border surface-card border-round">
-                    <div className="flex flex-wrap align-items-center justify-content-between gap-2">
-                        <div className="flex align-items-center gap-2">
-                            <i className="pi pi-tag"></i>
-                            <span className="font-semibold">{vacation.area}</span>
+            <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-1" key={trip._id}
+            >
+
+                {/* {oneTripVis && <OneTrip trip={trip} setOneTripVis={setOneTripVis} oneTripVis={oneTripVis} />} */}
+                <div className=" border-1 surface-border surface-card border-round" style={{
+                    width: "370px", /* רוחב קבוע */
+                    height: '370px', /* גובה קבוע */
+                    overflow: 'hidden', /* מסתיר תוכן שגדול מהכרטיס */
+                    padding: 0, margin: 0
+                }}>
+                    <button onClick={() => { handleButton(trip) }} style={{ position: 'relative', backgroundColor: "white", borderWidth: "0px", padding: 0, margin: 0 }}>
+                        <div style={{ position: 'relative', width: '370px', height: '200px', overflow: 'hidden' }}>
+                            <Image src={trip.imageSrc} alt={trip.location} width="370px" height="200" style={{ width: '100%', height: '100%' }} />
+                            <div className="flex flex-wrap align-items-center justify-content-between gap-1" style={{ position: 'absolute', top: '5px', left: '5px', margin: 8 }}>
+                                <i className="pi pi-map-marker"></i>
+                                <span className="font-semibold text-xl">{trip.area}</span>
+                            </div>
+                            <Tag className="mr-2 text-lg " value={full} severity={getSeverity(full)} style={{
+                                visibility: full === 'יש מקום' ? "hidden" : "visible",
+                                position: "absolute",
+                                top: '10px', // התאם את המיקום
+                                right: '10px',
+                                whiteSpace: 'nowrap',
+                                zIndex: 2
+                            }}><i className={classIcon} style={{ margin: "2px" }}></i></Tag>
+
                         </div>
-                        {/* <Tag value={vacation.inventoryStatus} severity={getSeverity(vacation)}></Tag> */}
-                    </div>
-                    <div className="flex flex-column align-items-center gap-3 py-5">
-                        <img className="w-9 shadow-2 border-round" src='7239120.gif' alt={vacation.location} />
-                        <div className="text-2xl font-bold">{vacation.location}</div>
-                        {/* <Rating value={vacation.rating} readOnly cancel={false}></Rating> */}
-                    </div>
-                    <div className="flex align-items-center justify-content-between">
-                        <span className="text-2xl font-semibold">${vacation.price}</span>
-                        {/* <Button icon="pi pi-shopping-cart" className="p-button-rounded" disabled={vacation.inventoryStatus === 'OUTOFSTOCK'}></Button> */}
-                        <Button icon="pi pi-shopping-cart" className="p-button-rounded"></Button>
+                        <div className="flex flex-column align-items-center gap-2 py-2">
+
+
+                            <div className="text-2xl font-bold">{trip.location}</div>
+                            <div className="flex gap-5 mb-1" style={{ marginTop: "7px" }}>
+
+                                <div className="flex-1" style={{ whiteSpace: 'nowrap' }}>
+                                    <div className="font-semibold text-gray-600">בתאריך </div>
+                                    <div className="text-xl text-gray-800">
+                                        {new Date(trip.date).toLocaleDateString('he-IL', {
+                                            year: 'numeric',
+                                            month: 'numeric',
+                                            day: 'numeric',
+                                        })}
+                                    </div>
+                                </div>
+                               
+                            </div>
+
+                            
+                        </div>
+                    </button>
+                    <div className="flex align-items-center justify-content-between" style={{ padding: "1px" }}>
+                        <span style={{ marginLeft: "8px", }}>
+                            <span className="text-xl font-semibold">{trip.price}$</span>
+                            <br /><span className="text-m font-semibold">ללילה</span>
+                        </span>
+                        <span className="text-m font-semibold">{trip.targetAudience}</span>
+
+
+
+                        {/* <Button className="p-button-rounded font-semibold" style={{
+                           backgroundColor: "Window",color:"ButtonText", borderColor: "orange", boxShadow: '0 0 0 0.2rem rgba(240, 134, 80, 0.5)',marginRight:"7px"
+                        }} onClick={() => { handleButton(trip) }}>הזמן עכשיו</Button> */}
                     </div>
                 </div>
+
             </div>
         );
     };
-    const listTemplate = (vacations) => {
-        return <div className="grid grid-nogutter">{vacations.map((vacation) => gridItem(vacation))}</div>;
+    const listTemplate = (trips) => {
+        return <div className="grid grid-nogutter">{trips.map((trip) => gridItem(trip))}</div>;
     };
-
-    return(
-  <>    
-    <div className="card">
-  <DataView value={vacations} listTemplate={listTemplate}  />
-</div> </>
+    return (
+        <>
+            <div className="card" style={{ margin: "40px" }}>
+                <h1>{area == 'הכל' ? 'כל הטיולים' : `טיולים ב${area}`}</h1>
+                <DataView value={trips} listTemplate={listTemplate} />
+                <Button icon="pi pi-plus" visible={user.role == "Admin"} severity="Success" rounded aria-label="Filter" onClick={handleButtonAddTrip} style={{ marginLeft: "50px", marginBottom: '50px', left: 0, bottom: 0, position: 'fixed' }} direction="down-left" label="הוספת טיול" />
+                <Outlet />
+            </div> </>
     )
 }
 export default Trips
@@ -89,6 +208,5 @@ export default Trips
 
 
 
-        
 
-        
+
