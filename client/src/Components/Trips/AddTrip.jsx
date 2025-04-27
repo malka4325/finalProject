@@ -6,10 +6,19 @@ import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
 import { Calendar } from 'primereact/calendar';
 import { useSelector } from 'react-redux';
+import { Dropdown } from 'primereact/dropdown';
 const AddTrip = () => {
     const navigate = useNavigate()
     const [date, setEndDate] = useState(null);
     const token = useSelector(state => state.TokenSlice.token)
+    const [selectedArea, setSelectedArea] = useState(null);
+    const areas = [
+        { name: 'צפון', code: 'NY' },
+        { name: 'דרום', code: 'RM' },
+        { name: 'אזור ירושלים', code: 'LDN' },
+        { name: 'מרכז', code: 'IST' }
+       
+    ];
 
     // const mainActivity = useLocation();
     // const props = mainActivity.state || {};
@@ -67,7 +76,7 @@ const AddTrip = () => {
         console.log(newTrip);
 
 
-        if (areaRef.current.value) newTrip.area = areaRef.current.value;
+        if (selectedArea) newTrip.area = selectedArea.name;
         if (mainActivityRef.current.value) newTrip.mainActivity = mainActivityRef.current.value;
         if (targetAudienceRef.current.value) newTrip.targetAudience = targetAudienceRef.current.value;
         if (descriptionRef.current.value) newTrip.description = descriptionRef.current.value;
@@ -87,7 +96,7 @@ const AddTrip = () => {
             if (res.status === 200) {
                 console.log("res.data", res.data);
                 // props.setTrips(res.data)
-                navigate('/Trips');
+                navigate('/Trips/הכל');
             }
         } catch (e) {
             alert(e.response.data.message)
@@ -112,12 +121,16 @@ const AddTrip = () => {
                         <InputText id="tripname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={mainActivityRef}></InputText>
 
                     </div>
-                    <div className="inline-flex flex-column gap-2">
+                    {/* <div className="inline-flex flex-column gap-2">
                         <label htmlFor="tripname" className="text-primary-50 font-semibold">
                             אזור
                         </label>
                         <InputText id="tripname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={areaRef}></InputText>
-                    </div>
+                    </div> */}
+                            <div className="card flex justify-content-center">
+            <Dropdown value={selectedArea} onChange={(e) => setSelectedArea(e.value)} options={areas} optionLabel="name" 
+                placeholder=" בחר אזור" className="w-full md:w-14rem" />
+        </div>
                     <div className="inline-flex flex-column gap-2">
                         <label htmlFor="description" className="text-primary-50 font-semibold">
                             תאור

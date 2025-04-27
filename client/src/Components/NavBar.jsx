@@ -41,7 +41,7 @@ const NavBar = () => {
             icon: 'pi pi-palette',
             items: [
                 { label: 'נופשים בקרוב', url: '/Vacations/קרוב' },
-                { label: 'טיולים בקרוב', url:  '/Vacations/קרוב' }
+                { label: 'טיולים בקרוב', url:  '/Trips/קרוב' }
             ]
         },
         {

@@ -5,7 +5,7 @@ const isAdmin = require("../middleware/isAdmin")
 const verifyJWT = require("../middleware/verifyJWT")
 
 
-router.get("/",tripController.getAllTrips)
+router.get("/",tripController.getTrips)
 router.get("/:id",tripController.getTripById)
 // router.get("/byName/:name",tripController.getTripByName)
 router.post("/",verifyJWT,isAdmin,tripController.createNewTrip)

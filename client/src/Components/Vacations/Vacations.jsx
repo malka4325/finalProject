@@ -36,7 +36,7 @@ const Vacations = () => {
     // useEffect(() => { getVacations() }, [])
     const getVacations = async () => {
         try {
-            const res = await axios.get('http://localhost:4300/api/vacations')
+            const res = await axios.get(`http://localhost:4300/api/vacations?fromDate=${new Date()}`)
             if (res.status === 200) {
                 setVacations(res.data);
             }
@@ -59,7 +59,7 @@ const Vacations = () => {
     }
     const getVacationsByArea = async () => {
         try {
-            const res = await axios.get(`http://localhost:4300/api/vacations?area=${area}`)
+            const res = await axios.get(`http://localhost:4300/api/vacations?fromDate=${new Date()}&area=${area}`)
             if (res.status === 200) {
                 setVacations(res.data);
             }

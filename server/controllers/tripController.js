@@ -10,11 +10,30 @@ const createNewTrip = async (req, res) => {
     res.json(await Trip.find().lean())
 }
 
-const getAllTrips = async (req, res) => {
-   const trips=await Trip.find().lean()
+const getTrips = async (req, res) => {
+    let query = {};
+    const { fromDate, toDate, area } = req.query;
+
+    // הוספת תנאים על פי הפרמטרים שנשלחו
+    if (area) {
+        query.area = { $regex: area, $options: 'i' };
+    }
+ 
+
+    if (fromDate || toDate) {
+        query.date = {};
+        if (fromDate) {
+            query.date.$gte = new Date(fromDate);
+        }
+        if (toDate) {
+            query.date.$lte = new Date(toDate);
+        }
+    }
+    const trips = await Trip.find(query).lean();
    if (!trips)
     return res.status(400).send('trips not found')
 res.json(trips)
+
 }
 
 const getTripById = async (req, res) => {
@@ -69,4 +88,4 @@ return res.status(400).send('error delete')
 res.json(await Trip.find().lean())
 
 }
-module.exports = { createNewTrip,getAllTrips,getTripById,updateTrip,deleteTrip ,getTripByName}
+module.exports = { createNewTrip,getTrips,getTripById,updateTrip,deleteTrip ,getTripByName}

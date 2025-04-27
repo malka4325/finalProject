@@ -8,9 +8,10 @@ const tripSchema = new mongoose.Schema({
         required: true
     },
     mainActivity: {
-        type:mongoose.Schema.Types.ObjectId,
-        ref: 'Activity'
-
+        // type:mongoose.Schema.Types.ObjectId,
+        // ref: 'Activity'
+        
+        type: String,
     },
     description:{
         type: String,

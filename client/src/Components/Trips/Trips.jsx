@@ -34,7 +34,7 @@ const Trips = () => {
     // useEffect(() => { getTrips() }, [])
     const getTrips = async () => {
         try {
-            const res = await axios.get('http://localhost:4300/api/trips')
+            const res = await axios.get(`http://localhost:4300/api/trips?fromDate=${new Date()}`)
             if (res.status === 200) {
                 setTrips(res.data);
             }
@@ -43,6 +43,7 @@ const Trips = () => {
         }
     }
     const getCloseTrips = async () => {
+        
         const now = new Date();
         const towWeeksFromNow = new Date();
         towWeeksFromNow.setDate(towWeeksFromNow.getDate() + 14);
@@ -57,7 +58,7 @@ const Trips = () => {
     }
     const getTripsByArea = async () => {
         try {
-            const res = await axios.get(`http://localhost:4300/api/trips?area=${area}`)
+            const res = await axios.get(`http://localhost:4300/api/trips?fromDate=${new Date()}&area=${area}`)
             if (res.status === 200) {
                 setTrips(res.data);
             }

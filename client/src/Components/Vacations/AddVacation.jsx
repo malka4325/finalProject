@@ -6,20 +6,27 @@ import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
 import { Calendar } from 'primereact/calendar';
 import { useSelector } from 'react-redux';
+import { Dropdown } from 'primereact/dropdown';
 const AddVacation = () => {
     const navigate = useNavigate()
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const token = useSelector(state => state.TokenSlice.token)
+    const [selectedArea, setSelectedArea] = useState(null);
+    const areas = [
+        { name: 'צפון', code: 'NY' },
+        { name: 'דרום', code: 'RM' },
+        { name: 'אזור ירושלים', code: 'LDN' },
+        { name: 'מרכז', code: 'IST' }
+       
+    ];
 
     // const location = useLocation();
     // const props = location.state || {};
-    const areaRef = useRef("")
     const locationRef = useRef("")
     const descriptionRef = useRef("")
     const targetAudienceRef = useRef("")
-    const startDateRef = useRef(null)
-    const endDateRef = useRef(null)
+  
     const maxParticipantsRef = useRef("")
     const priceRef = useRef("")
     const imageSrcRef = useRef("")
@@ -70,7 +77,7 @@ const AddVacation = () => {
 
 
 
-        if (areaRef.current.value) newVacation.area = areaRef.current.value;
+        if (selectedArea) newVacation.area = selectedArea.name;
         if (locationRef.current.value) newVacation.location = locationRef.current.value;
         if (targetAudienceRef.current.value) newVacation.targetAudience = targetAudienceRef.current.value;
         if (descriptionRef.current.value) newVacation.description = descriptionRef.current.value;
@@ -93,7 +100,7 @@ const AddVacation = () => {
             if (res.status === 200) {
                 console.log("res.data", res.data);
                 // props.setVacations(res.data)
-                navigate('/Vacations');
+                navigate('/Vacations/הכל');
             }
         } catch (e) {
             alert(e.response.data.message)
@@ -118,12 +125,16 @@ const AddVacation = () => {
                         <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={locationRef}></InputText>
 
                     </div>
-                    <div className="inline-flex flex-column gap-2">
+                    {/* <div className="inline-flex flex-column gap-2">
                         <label htmlFor="vacationname" className="text-primary-50 font-semibold">
                             אזור
                         </label>
                         <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={areaRef}></InputText>
-                    </div>
+                    </div> */}
+                      <div className="card flex justify-content-center">
+            <Dropdown value={selectedArea} onChange={(e) => setSelectedArea(e.value)} options={areas} optionLabel="name" 
+                placeholder="בחר אזור" className="w-full md:w-14rem" />
+        </div>
                     <div className="inline-flex flex-column gap-2">
                         <label htmlFor="description" className="text-primary-50 font-semibold">
                             תאור
