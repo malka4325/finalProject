@@ -1,12 +1,12 @@
 import axios from 'axios'
 import { useRef, useState } from 'react'
-import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
 import { Calendar } from 'primereact/calendar';
 import { useSelector } from 'react-redux';
 import { Dropdown } from 'primereact/dropdown';
+import { FileUpload } from 'primereact/fileupload';
 const AddTrip = () => {
     const navigate = useNavigate()
     const [date, setEndDate] = useState(null);
@@ -17,7 +17,7 @@ const AddTrip = () => {
         { name: 'דרום', code: 'RM' },
         { name: 'אזור ירושלים', code: 'LDN' },
         { name: 'מרכז', code: 'IST' }
-       
+
     ];
 
     // const mainActivity = useLocation();
@@ -35,14 +35,14 @@ const AddTrip = () => {
     const [file, setFile] = useState(null);
 
     const [imageUrl, setImageUrl] = useState("");
+
     const newTrip = {
         imageSrc: imageUrl
     };
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
-    };
 
-    const handleUpload = async () => {
+    const handleUpload = async (e) => {
+        const file = e.files[0];
+
         if (!file) {
             alert("נא לבחור קובץ!");
             return;
@@ -59,14 +59,14 @@ const AddTrip = () => {
             console.log("response", response.data.imageUrl);
 
             if (response.data.imageUrl) {
-                setImageUrl(`http://localhost:4300${response.data.imageUrl}`);
-                newTrip.imageSrc = `http://localhost:4300${response.data.imageUrl}`;
+                const fullUrl = `http://localhost:4300${response.data.imageUrl}`;
+                setImageUrl(fullUrl);
+                newTrip.imageSrc = fullUrl;
             }
-
         } catch (error) {
             console.error("Error uploading file:", error);
         }
-    }
+    };
     const addTrip = async () => {
 
 
@@ -85,13 +85,13 @@ const AddTrip = () => {
         if (maxParticipantsRef.current.value) newTrip.maxParticipants = maxParticipantsRef.current.value;
         if (priceRef.current.value) newTrip.price = priceRef.current.value;
         // if (imageSrcRef.current.value) newTrip.imageSrc = imageSrcRef.current.value;
-        
+
         try {
             const res = await axios.post('http://localhost:4300/api/trips', newTrip, {
                 headers: {
-                  'Authorization': `Bearer ${token}`, // שליחת הטוקן בכותרת Authorization
+                    'Authorization': `Bearer ${token}`, // שליחת הטוקן בכותרת Authorization
                 },
-              })
+            })
             console.log(res);
             if (res.status === 200) {
                 console.log("res.data", res.data);
@@ -127,10 +127,10 @@ const AddTrip = () => {
                         </label>
                         <InputText id="tripname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={areaRef}></InputText>
                     </div> */}
-                            <div className="card flex justify-content-center">
-            <Dropdown value={selectedArea} onChange={(e) => setSelectedArea(e.value)} options={areas} optionLabel="name" 
-                placeholder=" בחר אזור" className="w-full md:w-14rem" />
-        </div>
+                    <div className="card flex justify-content-center">
+                        <Dropdown value={selectedArea} onChange={(e) => setSelectedArea(e.value)} options={areas} optionLabel="name"
+                            placeholder=" בחר אזור" className="w-full md:w-14rem" />
+                    </div>
                     <div className="inline-flex flex-column gap-2">
                         <label htmlFor="description" className="text-primary-50 font-semibold">
                             תאור
@@ -144,15 +144,15 @@ const AddTrip = () => {
                         </label>
                         <InputText id="tripname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={targetAudienceRef}></InputText>
                     </div>
-                  
-              
+
+
                     <div className="flex-auto">
                         <label htmlFor="buttondisplay" className="font-bold block mb-2">
-                            תאריך 
+                            תאריך
                         </label>
-                        <Calendar id="buttondisplay" value={date} onChange={(e) => setEndDate(e.value)} showIcon dateFormat="dd/mm/yy"/>
+                        <Calendar id="buttondisplay" value={date} onChange={(e) => setEndDate(e.value)} showIcon dateFormat="dd/mm/yy" />
                     </div>
-               
+
                     <div className="inline-flex flex-column gap-2">
                         <label htmlFor="tripname" className="text-primary-50 font-semibold">
                             מקסימום משתתפים
@@ -171,9 +171,18 @@ const AddTrip = () => {
                                 </label>
                                 <InputText id="tripname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={imageSrcRef}></InputText>
                             </div> */}
-                    <div>
-                        <input type="file" onChange={handleFileChange} />
-                        <button onClick={handleUpload}>העלה תמונה</button>
+                    <div className="inline-flex flex-column gap-2">
+
+                        <FileUpload
+                            mode="basic"
+                            name="demo[]"
+                            accept="image/*"
+                            customUpload
+                            uploadHandler={handleUpload}
+                            chooseLabel="בחר והעלה תמונה"
+                            auto={false}
+                            className="w-full max-w-xs"
+                        />
                         {imageUrl && (
                             <div>
                                 {console.log(imageUrl)}
@@ -182,8 +191,9 @@ const AddTrip = () => {
                                 <img src={imageUrl} alt="Uploaded" width="300" />
                             </div>
                         )}
+
                     </div>
-                 
+
                     <div className="inline-flex flex-column gap-2">
                     </div>
                     <div className="flex align-items-center gap-2">

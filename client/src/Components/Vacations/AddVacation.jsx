@@ -1,12 +1,15 @@
 import axios from 'axios'
 import { useRef, useState } from 'react'
-import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
 import { Calendar } from 'primereact/calendar';
 import { useSelector } from 'react-redux';
 import { Dropdown } from 'primereact/dropdown';
+import { FileUpload } from 'primereact/fileupload';
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
 const AddVacation = () => {
     const navigate = useNavigate()
     const [startDate, setStartDate] = useState(null);
@@ -18,7 +21,7 @@ const AddVacation = () => {
         { name: 'דרום', code: 'RM' },
         { name: 'אזור ירושלים', code: 'LDN' },
         { name: 'מרכז', code: 'IST' }
-       
+
     ];
 
     // const location = useLocation();
@@ -26,7 +29,7 @@ const AddVacation = () => {
     const locationRef = useRef("")
     const descriptionRef = useRef("")
     const targetAudienceRef = useRef("")
-  
+
     const maxParticipantsRef = useRef("")
     const priceRef = useRef("")
     const imageSrcRef = useRef("")
@@ -38,11 +41,10 @@ const AddVacation = () => {
     const newVacation = {
         imageSrc: imageUrl
     };
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
-    };
 
-    const handleUpload = async () => {
+    const handleUpload = async (e) => {
+        const file = e.files[0];
+
         if (!file) {
             alert("נא לבחור קובץ!");
             return;
@@ -59,14 +61,14 @@ const AddVacation = () => {
             console.log("response", response.data.imageUrl);
 
             if (response.data.imageUrl) {
-                setImageUrl(`http://localhost:4300${response.data.imageUrl}`);
-                newVacation.imageSrc = `http://localhost:4300${response.data.imageUrl}`;
+                const fullUrl = `http://localhost:4300${response.data.imageUrl}`;
+                setImageUrl(fullUrl);
+                newVacation.imageSrc = fullUrl;
             }
-
         } catch (error) {
             console.error("Error uploading file:", error);
         }
-    }
+    };
     const addVacation = async () => {
 
 
@@ -90,12 +92,12 @@ const AddVacation = () => {
         if (ratingRef.current.value) newVacation.rating = ratingRef.current.value;
 
         try {
-         
+
             const res = await axios.post('http://localhost:4300/api/vacations', newVacation, {
                 headers: {
-                  'Authorization': `Bearer ${token}`, // שליחת הטוקן בכותרת Authorization
+                    'Authorization': `Bearer ${token}`, // שליחת הטוקן בכותרת Authorization
                 },
-              })
+            })
             console.log(res);
             if (res.status === 200) {
                 console.log("res.data", res.data);
@@ -131,10 +133,10 @@ const AddVacation = () => {
                         </label>
                         <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={areaRef}></InputText>
                     </div> */}
-                      <div className="card flex justify-content-center">
-            <Dropdown value={selectedArea} onChange={(e) => setSelectedArea(e.value)} options={areas} optionLabel="name" 
-                placeholder="בחר אזור" className="w-full md:w-14rem" />
-        </div>
+                    <div className="card flex justify-content-center">
+                        <Dropdown value={selectedArea} onChange={(e) => setSelectedArea(e.value)} options={areas} optionLabel="name"
+                            placeholder="בחר אזור" className="w-full md:w-14rem" />
+                    </div>
                     <div className="inline-flex flex-column gap-2">
                         <label htmlFor="description" className="text-primary-50 font-semibold">
                             תאור
@@ -160,13 +162,13 @@ const AddVacation = () => {
                         <label htmlFor="buttondisplay" className="font-bold block mb-2">
                             תאריך התחלה
                         </label>
-                        <Calendar id="buttondisplay" value={startDate} onChange={(e) => setStartDate(e.value)} showIcon dateFormat="dd/mm/yy"/>
+                        <Calendar id="buttondisplay" value={startDate} onChange={(e) => setStartDate(e.value)} showIcon dateFormat="dd/mm/yy" />
                     </div>
                     <div className="flex-auto">
                         <label htmlFor="buttondisplay" className="font-bold block mb-2">
                             תאריך סיום
                         </label>
-                        <Calendar id="buttondisplay" value={endDate} onChange={(e) => setEndDate(e.value)} showIcon dateFormat="dd/mm/yy"/>
+                        <Calendar id="buttondisplay" value={endDate} onChange={(e) => setEndDate(e.value)} showIcon dateFormat="dd/mm/yy" />
                     </div>
                     {/* <div className="inline-flex flex-column gap-2">
                         <label htmlFor="vacationname" className="text-primary-50 font-semibold">
@@ -186,15 +188,19 @@ const AddVacation = () => {
                         </label>
                         <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={priceRef}></InputText>
                     </div>
-                    {/* <div className="inline-flex flex-column gap-2">
-                                <label htmlFor="vacationname" className="text-primary-50 font-semibold">
-                                    תמונה
-                                </label>
-                                <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={imageSrcRef}></InputText>
-                            </div> */}
-                    <div>
-                        <input type="file" onChange={handleFileChange} />
-                        <button onClick={handleUpload}>העלה תמונה</button>
+
+                    <div className="inline-flex flex-column gap-2">
+
+                        <FileUpload
+                            mode="basic"
+                            name="demo[]"
+                            accept="image/*"
+                            customUpload
+                            uploadHandler={handleUpload}
+                            chooseLabel="בחר והעלה תמונה"
+                            auto={false}
+                            className="w-full max-w-xs"
+                        />
                         {imageUrl && (
                             <div>
                                 {console.log(imageUrl)}
@@ -203,7 +209,9 @@ const AddVacation = () => {
                                 <img src={imageUrl} alt="Uploaded" width="300" />
                             </div>
                         )}
+
                     </div>
+
                     <div className="inline-flex flex-column gap-2">
                         <label htmlFor="vacationname" className="text-primary-50 font-semibold">
                             ניקוד
