@@ -18,7 +18,7 @@ const OneVacation = () => {
   const navigate = useNavigate();
   const { id } = useParams()
   const [vacation, setVacation] = useState([]);
-  const [value, setValue] = useState(10)
+  const [value, setValue] = useState(5)
   // const context = useContext(Context);
   const token = useSelector(state => state.TokenSlice.token)
   useEffect(() => { getVacation() }, [])
