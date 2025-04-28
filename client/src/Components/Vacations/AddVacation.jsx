@@ -4,17 +4,22 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
 import { Calendar } from 'primereact/calendar';
+import { Card } from 'primereact/card';
 import { useSelector } from 'react-redux';
 import { Dropdown } from 'primereact/dropdown';
 import { FileUpload } from 'primereact/fileupload';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
+import { Dialog } from 'primereact/dialog';
+import { Image } from 'primereact/image';
 const AddVacation = () => {
     const navigate = useNavigate()
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const token = useSelector(state => state.TokenSlice.token)
+    const [activities, setActivities] = useState([]);
+
     const [selectedArea, setSelectedArea] = useState(null);
     const areas = [
         { name: 'צפון', code: 'NY' },
@@ -23,6 +28,16 @@ const AddVacation = () => {
         { name: 'מרכז', code: 'IST' }
 
     ];
+    const getActivities= async () => {
+        try {
+            const res = await axios.get(`http://localhost:4300/api/activities}`)
+            if (res.status === 200) {
+                setActivities(res.data);
+            }
+        } catch (e) {
+            console.error(e)
+        }
+    }
 
     // const location = useLocation();
     // const props = location.state || {};
@@ -109,16 +124,12 @@ const AddVacation = () => {
         }
     }
 
+    const [visibleChooseActivity, setVisibleChooseActivity] = useState(false);
+
     return (
         <>
 
             <div className="card flex justify-content-center">
-
-                {/* <Dialog style={{ direction: "rtl" }} */}
-                {/* // visible={props.visible} */}
-                {/* modal */}
-                {/* // onHide={() => { if (!props.visible) return; props.setVisible(false); }} */}
-                {/* content={({ hide }) => ( */}
                 <div className="flex flex-column px-8 py-5 gap-4" style={{ borderRadius: '12px', backgroundImage: 'radial-gradient(circle at left top, var(--primary-400), var(--primary-700))' }}>
                     <div className="inline-flex flex-column gap-2">
                         <label htmlFor="vacationname" className="text-primary-50 font-semibold">
@@ -127,12 +138,7 @@ const AddVacation = () => {
                         <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={locationRef}></InputText>
 
                     </div>
-                    {/* <div className="inline-flex flex-column gap-2">
-                        <label htmlFor="vacationname" className="text-primary-50 font-semibold">
-                            אזור
-                        </label>
-                        <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={areaRef}></InputText>
-                    </div> */}
+               
                     <div className="card flex justify-content-center">
                         <Dropdown value={selectedArea} onChange={(e) => setSelectedArea(e.value)} options={areas} optionLabel="name"
                             placeholder="בחר אזור" className="w-full md:w-14rem" />
@@ -150,14 +156,7 @@ const AddVacation = () => {
                         </label>
                         <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={targetAudienceRef}></InputText>
                     </div>
-                    {/* <div className="inline-flex flex-column gap-2">
-                        <label htmlFor="vacationname" className="text-primary-50 font-semibold">
-                            תאריך התחלה
-                        </label>
-                        <InputText id="vacationname"  className="bg-white-alpha-20 border-none p-3 text-primary-50"  ref={startDateRef}></InputText>
-                                     <Calendar className="w-full p-calendar-lg" style={{ borderRadius: '8px', border: '1px solid #007bff' }} value={order.date} onChange={(e) => setOrder({ ...order, date: e.value })} showIcon />
-
-                    </div> */}
+                    <Button label="פעיליות" icon="pi pi-user" onClick={() => {getActivities();setVisibleChooseActivity(true)}} />
                     <div className="flex-auto">
                         <label htmlFor="buttondisplay" className="font-bold block mb-2">
                             תאריך התחלה
@@ -170,12 +169,6 @@ const AddVacation = () => {
                         </label>
                         <Calendar id="buttondisplay" value={endDate} onChange={(e) => setEndDate(e.value)} showIcon dateFormat="dd/mm/yy" />
                     </div>
-                    {/* <div className="inline-flex flex-column gap-2">
-                        <label htmlFor="vacationname" className="text-primary-50 font-semibold">
-                            תאריך סיום
-                        </label>
-                        <InputText id="vacationname"  className="bg-white-alpha-20 border-none p-3 text-primary-50"  ref={endDateRef}></InputText>
-                    </div> */}
                     <div className="inline-flex flex-column gap-2">
                         <label htmlFor="vacationname" className="text-primary-50 font-semibold">
                             מקסימום משתתפים
@@ -222,12 +215,36 @@ const AddVacation = () => {
                     </div>
                     <div className="flex align-items-center gap-2">
                         <Button label="הוסף" onClick={(e) => { addVacation(); }} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
-                        {/* <Button label="ביטול" onClick={(e) => hide(e)} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button> */}
+                        <Button label="ביטול" onClick={(e) => navigate('/Trips/הכל')} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
                     </div>
                 </div>
-                {/* )}
-                 ></Dialog> */}
+                
             </div>
+            
+          
+               
+            <Dialog
+                 visible={visibleChooseActivity}
+                 modal
+                 onHide={() => { if (!visibleChooseActivity) return; setVisibleChooseActivity(false); }}
+                content={({ hide }) => (
+                    <div className="flex flex-column px-8 py-5 gap-4" style={{ maxHeight: '80vh', overflowY: 'auto',borderRadius: '12px', backgroundImage: 'radial-gradient(circle at left top, var(--primary-400), var(--primary-700))' }}>
+   <div className="activity-grid">
+            {activities.map(activity => (
+                <div className="activity-square" key={activity.id}>
+                    <Card title={activity.name} style={{ width: '100%', height: '100px' }}>
+                    <Image src={activity.imageSrc}  width="370px" height="200" style={{ width: '100%', height: '100%' }} />
+                    </Card>
+                </div>
+            ))}
+        </div>
+                        <div className="flex align-items-center gap-2">
+                            <Button label="הוסף" onClick={(e) =>{ hide(e)}} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
+                            <Button label="ביטול" onClick={(e) => hide(e)} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
+                        </div>
+                    </div>
+                )}
+            ></Dialog>
         </>
     )
 }

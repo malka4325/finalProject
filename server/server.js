@@ -22,6 +22,7 @@ app.use("/api/vacations",require("./routes/vacationRouter"))
 app.use("/api/auth", require("./routes/authRouter"))
 app.use("/api/users", require("./routes/userRouter"))
 app.use("/api/orders",require("./routes/orderRouter"))
+app.use("/api/activities",require("./routes/activityRouter"))
   
 
 const storage = multer.diskStorage({

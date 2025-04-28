@@ -22,17 +22,13 @@ const AddTrip = () => {
 
     // const mainActivity = useLocation();
     // const props = mainActivity.state || {};
-    const areaRef = useRef("")
     const mainActivityRef = useRef("")
     const descriptionRef = useRef("")
     const targetAudienceRef = useRef("")
-    const startDateRef = useRef(null)
-    const dateRef = useRef(null)
     const maxParticipantsRef = useRef("")
     const priceRef = useRef("")
-    const imageSrcRef = useRef("")
 
-    const [file, setFile] = useState(null);
+    //const [file, setFile] = useState(null);
 
     const [imageUrl, setImageUrl] = useState("");
 
@@ -75,7 +71,6 @@ const AddTrip = () => {
 
         console.log(newTrip);
 
-
         if (selectedArea) newTrip.area = selectedArea.name;
         if (mainActivityRef.current.value) newTrip.mainActivity = mainActivityRef.current.value;
         if (targetAudienceRef.current.value) newTrip.targetAudience = targetAudienceRef.current.value;
@@ -84,7 +79,6 @@ const AddTrip = () => {
         //if (activities) newTrip.activities = activities;
         if (maxParticipantsRef.current.value) newTrip.maxParticipants = maxParticipantsRef.current.value;
         if (priceRef.current.value) newTrip.price = priceRef.current.value;
-        // if (imageSrcRef.current.value) newTrip.imageSrc = imageSrcRef.current.value;
 
         try {
             const res = await axios.post('http://localhost:4300/api/trips', newTrip, {
@@ -108,11 +102,6 @@ const AddTrip = () => {
 
             <div className="card flex justify-content-center">
 
-                {/* <Dialog style={{ direction: "rtl" }} */}
-                {/* // visible={props.visible} */}
-                {/* modal */}
-                {/* // onHide={() => { if (!props.visible) return; props.setVisible(false); }} */}
-                {/* content={({ hide }) => ( */}
                 <div className="flex flex-column px-8 py-5 gap-4" style={{ borderRadius: '12px', backgroundImage: 'radial-gradient(circle at left top, var(--primary-400), var(--primary-700))' }}>
                     <div className="inline-flex flex-column gap-2">
                         <label htmlFor="tripname" className="text-primary-50 font-semibold">
@@ -121,12 +110,6 @@ const AddTrip = () => {
                         <InputText id="tripname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={mainActivityRef}></InputText>
 
                     </div>
-                    {/* <div className="inline-flex flex-column gap-2">
-                        <label htmlFor="tripname" className="text-primary-50 font-semibold">
-                            אזור
-                        </label>
-                        <InputText id="tripname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={areaRef}></InputText>
-                    </div> */}
                     <div className="card flex justify-content-center">
                         <Dropdown value={selectedArea} onChange={(e) => setSelectedArea(e.value)} options={areas} optionLabel="name"
                             placeholder=" בחר אזור" className="w-full md:w-14rem" />
@@ -165,12 +148,6 @@ const AddTrip = () => {
                         </label>
                         <InputText id="tripname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={priceRef}></InputText>
                     </div>
-                    {/* <div className="inline-flex flex-column gap-2">
-                                <label htmlFor="tripname" className="text-primary-50 font-semibold">
-                                    תמונה
-                                </label>
-                                <InputText id="tripname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={imageSrcRef}></InputText>
-                            </div> */}
                     <div className="inline-flex flex-column gap-2">
 
                         <FileUpload
@@ -198,11 +175,10 @@ const AddTrip = () => {
                     </div>
                     <div className="flex align-items-center gap-2">
                         <Button label="הוסף" onClick={(e) => { addTrip(); }} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
-                        {/* <Button label="ביטול" onClick={(e) => hide(e)} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button> */}
+                        <Button label="ביטול" onClick={(e) =>  navigate('/Trips/הכל')} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
                     </div>
                 </div>
-                {/* )}
-                 ></Dialog> */}
+              
             </div>
         </>
     )

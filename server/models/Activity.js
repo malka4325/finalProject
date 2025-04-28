@@ -17,7 +17,10 @@ const activitySchema = new mongoose.Schema({
         type:String,
         enum: ['מסלול', 'אטרקציה', 'תכנית'],
         default:'תכנית'
-    }
+    },
+     targetAudience: {
+        type: String,
+    },
 },
     { timestamps: true })
 

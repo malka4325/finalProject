@@ -17,6 +17,7 @@ import AllOrders from './Components/Orders/AllOrders';
 import ThankYouPage from './Components/ThankYouPage';
 import AddTrip from './Components/Trips/AddTrip';
 import OneTrip from './Components/Trips/OneTrip';
+import AddActivity from './Components/Activities/AddActivity';
 
 
 function App() {
@@ -40,7 +41,7 @@ function App() {
         {/* <AuthPage/> */}
         {/* <UserProvider  accessToken={token}> */}
 
-
+<AddActivity/>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/Login" element={<AuthPage />} />
