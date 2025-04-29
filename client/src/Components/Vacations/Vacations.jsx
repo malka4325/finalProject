@@ -21,6 +21,8 @@ const Vacations = () => {
     const navigate = useNavigate();
     const token = useSelector(state => state.TokenSlice.token)
     const user = useSelector(state => state.UserSlice.user)
+
+
     console.log(user);
     const { area } = useParams();
     const [vacations, setVacations] = useState([]);
@@ -202,12 +204,18 @@ const Vacations = () => {
     const listTemplate = (vacations) => {
         return <div className="grid grid-nogutter">{vacations.map((vacation) => gridItem(vacation))}</div>;
     };
+    const isAdmin = () => {
+        if (!user)
+            return false
+        return user.role == "Admin"
+    }
     return (
         <>
             <div className="card" style={{ margin: "40px" }}>
                 <h1>{area == 'הכל' ? 'כל הנופשים' : `נופשים ב${area}`}</h1>
                 <DataView value={vacations} listTemplate={listTemplate} />
-                <Button icon="pi pi-plus" visible={user.role == "Admin"} severity="Success" rounded aria-label="Filter" onClick={handleButtonAddVacation} style={{ marginLeft: "50px", marginBottom: '50px', left: 0, bottom: 0, position: 'fixed' }} direction="down-left" label="הוספת נופש" />
+                {console.log("user&&user.role == Admin", user)}
+                <Button icon="pi pi-plus" visible={isAdmin() } severity="Success" rounded aria-label="Filter" onClick={handleButtonAddVacation} style={{ marginLeft: "50px", marginBottom: '50px', left: 0, bottom: 0, position: 'fixed' }} direction="down-left" label="הוספת נופש" />
                 <Outlet />
             </div> </>
     )

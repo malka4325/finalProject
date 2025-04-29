@@ -7,6 +7,7 @@ import { Calendar } from 'primereact/calendar';
 import { Card } from 'primereact/card';
 import { useSelector } from 'react-redux';
 import { Dropdown } from 'primereact/dropdown';
+import { RadioButton } from "primereact/radiobutton";
 import { FileUpload } from 'primereact/fileupload';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
@@ -30,7 +31,7 @@ const AddVacation = () => {
     ];
     const getActivities= async () => {
         try {
-            const res = await axios.get(`http://localhost:4300/api/activities}`)
+            const res = await axios.get(`http://localhost:4300/api/activities`)
             if (res.status === 200) {
                 setActivities(res.data);
             }
@@ -44,10 +45,8 @@ const AddVacation = () => {
     const locationRef = useRef("")
     const descriptionRef = useRef("")
     const targetAudienceRef = useRef("")
-
     const maxParticipantsRef = useRef("")
     const priceRef = useRef("")
-    const imageSrcRef = useRef("")
     const ratingRef = useRef("")
 
     const [file, setFile] = useState(null);
@@ -103,7 +102,6 @@ const AddVacation = () => {
         //if (activities) newVacation.activities = activities;
         if (maxParticipantsRef.current.value) newVacation.maxParticipants = maxParticipantsRef.current.value;
         if (priceRef.current.value) newVacation.price = priceRef.current.value;
-        // if (imageSrcRef.current.value) newVacation.imageSrc = imageSrcRef.current.value;
         if (ratingRef.current.value) newVacation.rating = ratingRef.current.value;
 
         try {
@@ -125,7 +123,7 @@ const AddVacation = () => {
     }
 
     const [visibleChooseActivity, setVisibleChooseActivity] = useState(false);
-
+    const [ingredient, setIngredient] = useState('');
     return (
         <>
 
@@ -221,21 +219,25 @@ const AddVacation = () => {
                 
             </div>
             
-          
-               
             <Dialog
                  visible={visibleChooseActivity}
                  modal
                  onHide={() => { if (!visibleChooseActivity) return; setVisibleChooseActivity(false); }}
                 content={({ hide }) => (
                     <div className="flex flex-column px-8 py-5 gap-4" style={{ maxHeight: '80vh', overflowY: 'auto',borderRadius: '12px', backgroundImage: 'radial-gradient(circle at left top, var(--primary-400), var(--primary-700))' }}>
-   <div className="activity-grid">
-            {activities.map(activity => (
-                <div className="activity-square" key={activity.id}>
-                    <Card title={activity.name} style={{ width: '100%', height: '100px' }}>
-                    <Image src={activity.imageSrc}  width="370px" height="200" style={{ width: '100%', height: '100%' }} />
-                    </Card>
-                </div>
+   <div className="grid">
+            {activities.map((activity, index) => (
+    <div className="col-12 md:col-3" key={index} style={{ margin: '3rem' }}>
+                <Card className="activity-card p-shadow-3" style={{ borderRadius: '10px',height:'200px',width:'200px',overflow: 'hidden' }}>
+                <RadioButton inputId="ingredient4" name="pizza" value={activity.name} onChange={(e) => setIngredient(e.value)} checked={ingredient === activity.name} />
+                <Image src={activity.imageSrc} alt={activity.name} width="170px" height="100"  style={{ borderRadius: '10px',width: '100%', height: '100%', }} />
+                <h3 className="text-lg font-semibold">{activity.name}</h3>
+                <p><strong>קהל יעד:</strong> {activity.targetAudience}</p>
+                <p><strong>סוג:</strong> {activity.type}</p>
+                <p><strong>תיאור:</strong> {activity.description}</p>
+                <Button label="למידע נוסף" icon="pi pi-info-circle" className="p-button-secondary" />
+                </Card>
+            </div>
             ))}
         </div>
                         <div className="flex align-items-center gap-2">
@@ -250,3 +252,30 @@ const AddVacation = () => {
 }
 
 export default AddVacation
+
+
+
+
+  
+        // <div className="card flex justify-content-center">
+        //     <div className="flex flex-wrap gap-3">
+        //         <div className="flex align-items-center">
+        //             <RadioButton inputId="ingredient1" name="pizza" value="Cheese" onChange={(e) => setIngredient(e.value)} checked={ingredient === 'Cheese'} />
+        //             <label htmlFor="ingredient1" className="ml-2">Cheese</label>
+        //         </div>
+        //         <div className="flex align-items-center">
+        //             <RadioButton inputId="ingredient2" name="pizza" value="Mushroom" onChange={(e) => setIngredient(e.value)} checked={ingredient === 'Mushroom'} />
+        //             <label htmlFor="ingredient2" className="ml-2">Mushroom</label>
+        //         </div>
+        //         <div className="flex align-items-center">
+        //             <RadioButton inputId="ingredient3" name="pizza" value="Pepper" onChange={(e) => setIngredient(e.value)} checked={ingredient === 'Pepper'} />
+        //             <label htmlFor="ingredient3" className="ml-2">Pepper</label>
+        //         </div>
+        //         <div className="flex align-items-center">
+        //             <RadioButton inputId="ingredient4" name="pizza" value="Onion" onChange={(e) => setIngredient(e.value)} checked={ingredient === 'Onion'} />
+        //             <label htmlFor="ingredient4" className="ml-2">Onion</label>
+        //         </div>
+        //     </div>
+        // </div>
+ 
+        

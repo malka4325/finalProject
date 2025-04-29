@@ -68,6 +68,8 @@ const NavBar = () => {
                         const parsedValue = JSON.parse(currentValue);
                         parsedValue.TokenSlice = JSON.stringify({ token: '' });
                         localStorage.setItem('persist:root', JSON.stringify(parsedValue));
+                        parsedValue.UserSlice = JSON.stringify({ user: null });
+                        localStorage.setItem('persist:root', JSON.stringify(parsedValue));
                     }
                 }
             ] : []
