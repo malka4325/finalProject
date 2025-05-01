@@ -7,7 +7,9 @@ import { Calendar } from 'primereact/calendar';
 import { Card } from 'primereact/card';
 import { useSelector } from 'react-redux';
 import { Dropdown } from 'primereact/dropdown';
-import { RadioButton } from "primereact/radiobutton";
+import { ConfirmDialog } from 'primereact/confirmdialog';
+import { Toast } from 'primereact/toast';
+import { Checkbox } from "primereact/checkbox";
 import { FileUpload } from 'primereact/fileupload';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
@@ -49,7 +51,7 @@ const AddVacation = () => {
     const priceRef = useRef("")
     const ratingRef = useRef("")
 
-    const [file, setFile] = useState(null);
+    //const [file, setFile] = useState(null);
 
     const [imageUrl, setImageUrl] = useState("");
     const newVacation = {
@@ -85,14 +87,9 @@ const AddVacation = () => {
     };
     const addVacation = async () => {
 
-
         if (!newVacation.imageSrc) newVacation.imageSrc = 'http://localhost:4300/uploads/logo.jpg';
-        console.log("response", newVacation.imageSrc);
-
+        console.log("newVacation.imageSrc", newVacation.imageSrc);
         console.log(newVacation);
-
-
-
         if (selectedArea) newVacation.area = selectedArea.name;
         if (locationRef.current.value) newVacation.location = locationRef.current.value;
         if (targetAudienceRef.current.value) newVacation.targetAudience = targetAudienceRef.current.value;
@@ -123,7 +120,34 @@ const AddVacation = () => {
     }
 
     const [visibleChooseActivity, setVisibleChooseActivity] = useState(false);
-    const [ingredient, setIngredient] = useState('');
+    const [chooseActivities, setChooseActivities] = useState([]);
+    const [chooseActivitiesNames, setChooseActivitiesNames] = useState([]);
+
+    const onChooseActivitiesChange = (e) => {
+        console.log(e);
+        let _chooseActivities = [...chooseActivities];
+        let _chooseActivitiesNames = [...chooseActivitiesNames];
+
+        if (e.checked){
+            _chooseActivities.push(e.value);
+            _chooseActivitiesNames.push(e.target.name);
+        }
+        else{
+            _chooseActivities.splice(_chooseActivities.indexOf(e.value), 1);
+            _chooseActivitiesNames.splice(_chooseActivities.indexOf(e.target.name), 1);
+}
+        setChooseActivities(_chooseActivities);
+        setChooseActivitiesNames(_chooseActivitiesNames);
+    }
+    const [visibleConfirmActivities, setVisibleConfirmActivities] = useState(false);
+    const toast = useRef(null);
+    const accept = () => {
+        toast.current.show({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 3000 });
+    }
+
+    const reject = () => {
+        toast.current.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+    }
     return (
         <>
 
@@ -194,8 +218,6 @@ const AddVacation = () => {
                         />
                         {imageUrl && (
                             <div>
-                                {console.log(imageUrl)}
-
                                 <h3>התמונה שהועלתה:</h3>
                                 <img src={imageUrl} alt="Uploaded" width="300" />
                             </div>
@@ -213,7 +235,7 @@ const AddVacation = () => {
                     </div>
                     <div className="flex align-items-center gap-2">
                         <Button label="הוסף" onClick={(e) => { addVacation(); }} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
-                        <Button label="ביטול" onClick={(e) => navigate('/Trips/הכל')} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
+                        <Button label="ביטול" onClick={(e) => navigate('/Vacation/הכל')} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
                     </div>
                 </div>
                 
@@ -229,7 +251,7 @@ const AddVacation = () => {
             {activities.map((activity, index) => (
     <div className="col-12 md:col-3" key={index} style={{ margin: '3rem' }}>
                 <Card className="activity-card p-shadow-3" style={{ borderRadius: '10px',height:'200px',width:'200px',overflow: 'hidden' }}>
-                <RadioButton inputId="ingredient4" name="pizza" value={activity.name} onChange={(e) => setIngredient(e.value)} checked={ingredient === activity.name} />
+                <Checkbox inputId={activity._id} name={activity.name} value={activity._id} onChange={onChooseActivitiesChange} checked={chooseActivities.includes(activity._id)} />
                 <Image src={activity.imageSrc} alt={activity.name} width="170px" height="100"  style={{ borderRadius: '10px',width: '100%', height: '100%', }} />
                 <h3 className="text-lg font-semibold">{activity.name}</h3>
                 <p><strong>קהל יעד:</strong> {activity.targetAudience}</p>
@@ -241,12 +263,15 @@ const AddVacation = () => {
             ))}
         </div>
                         <div className="flex align-items-center gap-2">
-                            <Button label="הוסף" onClick={(e) =>{ hide(e)}} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
+                            <Button label="הוסף" onClick={(e) =>{ console.log('chooseActivities',chooseActivities,chooseActivitiesNames);setVisibleConfirmActivities(true);hide(e)}} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
                             <Button label="ביטול" onClick={(e) => hide(e)} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
                         </div>
                     </div>
                 )}
             ></Dialog>
+               <Toast ref={toast} />
+            <ConfirmDialog group="declarative"  visible={visibleConfirmActivities} onHide={() => setVisibleConfirmActivities(false)} message="Are you sure you want to proceed?" 
+                header="Confirmation" icon="pi pi-exclamation-triangle" accept={accept} reject={reject} />
         </>
     )
 }
@@ -256,26 +281,8 @@ export default AddVacation
 
 
 
-  
-        // <div className="card flex justify-content-center">
-        //     <div className="flex flex-wrap gap-3">
-        //         <div className="flex align-items-center">
-        //             <RadioButton inputId="ingredient1" name="pizza" value="Cheese" onChange={(e) => setIngredient(e.value)} checked={ingredient === 'Cheese'} />
-        //             <label htmlFor="ingredient1" className="ml-2">Cheese</label>
-        //         </div>
-        //         <div className="flex align-items-center">
-        //             <RadioButton inputId="ingredient2" name="pizza" value="Mushroom" onChange={(e) => setIngredient(e.value)} checked={ingredient === 'Mushroom'} />
-        //             <label htmlFor="ingredient2" className="ml-2">Mushroom</label>
-        //         </div>
-        //         <div className="flex align-items-center">
-        //             <RadioButton inputId="ingredient3" name="pizza" value="Pepper" onChange={(e) => setIngredient(e.value)} checked={ingredient === 'Pepper'} />
-        //             <label htmlFor="ingredient3" className="ml-2">Pepper</label>
-        //         </div>
-        //         <div className="flex align-items-center">
-        //             <RadioButton inputId="ingredient4" name="pizza" value="Onion" onChange={(e) => setIngredient(e.value)} checked={ingredient === 'Onion'} />
-        //             <label htmlFor="ingredient4" className="ml-2">Onion</label>
-        //         </div>
-        //     </div>
-        // </div>
- 
+        
+
+
+
         

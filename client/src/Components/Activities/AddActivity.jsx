@@ -10,8 +10,8 @@ import { useSelector } from 'react-redux';
 const AddActivity = () => {
     const nameRef = useRef("")
     const descriptionRef = useRef("")
- 
     const targetAudienceRef = useRef("")
+    const priceRef = useRef("")
     const token = useSelector(state => state.TokenSlice.token)
 
 
@@ -48,7 +48,7 @@ const AddActivity = () => {
             console.error("Error uploading file:", error);
         }
     };
-    const [selectedType, setSelectedType] = useState(null);
+    const [selectedType, setSelectedType] = useState({name: 'בחר סוג', code: 'LDN'});
     const types = [
         { name: 'מסלול', code: 'NY' },
         { name: 'אטרקציה', code: 'RM' },
@@ -65,6 +65,7 @@ const AddActivity = () => {
         if (descriptionRef.current.value) newActivity.description = descriptionRef.current.value
         if (selectedType) newActivity.type = selectedType.name
         if (targetAudienceRef.current.value) newActivity.targetAudience = targetAudienceRef.current.value
+        if (priceRef.current.value) newActivity.price = priceRef.current.value
 
 
         try {
@@ -83,8 +84,17 @@ const AddActivity = () => {
             alert(e.response.data.message)
         }
     }
+    const [selectedArea, setSelectedArea] = useState(null);
+    const areas = [
+        { name: 'צפון', code: 'NY' },
+        { name: 'דרום', code: 'RM' },
+        { name: 'אזור ירושלים', code: 'LDN' },
+        { name: 'מרכז', code: 'IST' }
 
+    ];
+    console.log('selectedType',selectedType.name !== 'תכנית',selectedType.name);
     const [visibleAddActivity, setVisibleAddActivity] = useState(false);
+    const [visibleChooseArea, setVisibleChooseArea] = useState(false);
     return (
 
         <div className="card flex justify-content-center">
@@ -111,12 +121,22 @@ const AddActivity = () => {
                         <Dropdown value={selectedType} onChange={(e) => setSelectedType(e.value)} options={types} optionLabel="name"
                             placeholder="בחר סוג אטרקציה" className="w-full md:w-14rem" />
                     </div>
-                     
+                    <div className="card justify-content-center" style={{ display: selectedType.name !== 'תכנית' ? 'flex' : 'none' }}>
+                        <Dropdown value={selectedArea} onChange={(e) => setSelectedArea(e.value)} options={areas} optionLabel="name"
+                            placeholder="בחר אזור" className="w-full md:w-14rem" />
+                    </div>  
+
                         <div className="inline-flex flex-column gap-2">
                         <label htmlFor="targetAudience" className="text-primary-50 font-semibold">
                             קהל יעד
                         </label>
                         <InputText id="targetAudience" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={targetAudienceRef}></InputText>
+                    </div>
+                    <div className="inline-flex flex-column gap-2">
+                        <label htmlFor="vacationname" className="text-primary-50 font-semibold">
+                            מחיר
+                        </label>
+                        <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={priceRef}></InputText>
                     </div>
                         <div className="inline-flex flex-column gap-2">
 
@@ -153,3 +173,8 @@ const AddActivity = () => {
 };
 
 export default AddActivity;           
+
+
+
+
+        

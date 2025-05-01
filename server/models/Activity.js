@@ -6,9 +6,19 @@ const activitySchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    area: {
+        type: String,
+        enum: ['צפון', 'דרום', 'מרכז', 'אזור ירושלים','תכנית'],
+        required: true,
+        default:'תכנית'
+    },
     imageSrc: {
         type: String,
         default: ''
+    },
+    price: {
+        type: Number,
+        required: true
     },
     description:{
         type: String,
