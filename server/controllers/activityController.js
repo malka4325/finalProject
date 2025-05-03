@@ -1,10 +1,10 @@
 const Activity = require("../models/Activity")
 
 const createNewActivity = async (req, res) => {
-    const { name, description,type,imageSrc} = req.body
-    if (!name)
+    const { name,price, description,type,imageSrc} = req.body
+    if (!name||!price)
         return res.status(400).json({ message: 'name is required' })
-    const activity = await Activity.create( { name,description, type,imageSrc})
+    const activity = await Activity.create( { name,price,description, type,imageSrc})
     if (!activity)
         return res.status(400).send('invalid activity')
     res.json(await Activity.find().lean())
@@ -41,7 +41,7 @@ const getActivityByType = async (req, res) => {
     res.json(activitys)
 }
 
- const updateActivity = async (req, res) => {
+const updateActivity = async (req, res) => {
     const { _id, name,type,description,imageSrc} = req.body
     if (!_id||!name)
         return res.status(400).json({ message: 'id and name are required' })

@@ -187,7 +187,7 @@ const OneVacation = () => {
           itemTemplate={(activity) => (
             <div className="border-1 surface-border border-round m-2 text-center py-4 px-3">
               <div className="mb-3 flex justify-content-center">
-                <Image src="/images/0210005.jpg" zoomSrc="/images/0210005.jpg" alt="Activity" width="100" height="80" preview />
+                <Image src={activity.imageSrc} zoomSrc={activity.imageSrc} alt="Activity" width="100" height="80" preview />
               </div>
               <h4 className="mb-1">{activity.name}</h4>
               <h6 className="text-sm">{activity.type}</h6>
