@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useEffect, useRef, useState } from 'react'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Calendar } from 'primereact/calendar';
 import { Card } from 'primereact/card';
 import { useSelector } from 'react-redux';
@@ -18,11 +18,14 @@ import { Dialog } from 'primereact/dialog';
 import { Image } from 'primereact/image';
 
 const AddVacation = () => {
+    const location = useLocation();
+    const { vacationToUpdate, isEditing } = location.state || {};
     const navigate = useNavigate()
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const token = useSelector(state => state.TokenSlice.token)
     const [activities, setActivities] = useState([]);
+
 
     const [selectedArea, setSelectedArea] = useState(null);
     const areas = [
@@ -53,7 +56,7 @@ const AddVacation = () => {
     const ratingRef = useRef("")
 
     //const [file, setFile] = useState(null);
-
+ 
 
 
     const handleUpload = async (e) => {
@@ -128,7 +131,25 @@ const AddVacation = () => {
     const reject = () => {
         setVisibleChooseActivity(true)
     }
+    useEffect(() => {
+        console.log("Editing:", isEditing, "Vacation to update:", vacationToUpdate);
+        if (isEditing && vacationToUpdate) {
+            // אם אנחנו במצב עדכון, מלא את השדות עם הנתונים הקיימים
+            setStartDate(new Date(vacationToUpdate.startDate));
+            setEndDate(new Date(vacationToUpdate.endDate));
+            setSelectedArea(areas.find(area => area.name === vacationToUpdate.area));
+            locationRef.current.value = vacationToUpdate.location;
+            targetAudienceRef.current.value = vacationToUpdate.targetAudience;
+            descriptionRef.current.value = vacationToUpdate.description;
+            maxParticipantsRef.current.value = vacationToUpdate.maxParticipants;
+            priceRef.current.value = vacationToUpdate.price;
+            ratingRef.current.value = vacationToUpdate.rating;
+            setImageUrl(vacationToUpdate.imageSrc);
+            setChooseActivities(vacationToUpdate.activities);
+        }
+    }, [isEditing, vacationToUpdate]);
     const addVacation = async () => {
+       // ה-ID שנמצא בתוך הנופש
 
         if (!newVacation.imageSrc) newVacation.imageSrc = 'http://localhost:4300/uploads/logo.jpg';
         //console.log("newVacation.imageSrc", newVacation.imageSrc);
@@ -144,22 +165,32 @@ const AddVacation = () => {
         if (priceRef.current.value) newVacation.price = priceRef.current.value;
         if (ratingRef.current.value) newVacation.rating = ratingRef.current.value;
         try {
+            let res;
+            if (isEditing) {
+                // אם אנחנו במצב עדכון, בצע עדכון
+                newVacation._id= vacationToUpdate._id
+                console.log(newVacation);
+                res = await axios.put(`http://localhost:4300/api/vacations`, newVacation, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+            } else {
+                // אם אנחנו במצב הוספה, בצע הוספה
+                res = await axios.post('http://localhost:4300/api/vacations', newVacation, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+            }
 
-            const res = await axios.post('http://localhost:4300/api/vacations', newVacation, {
-                headers: {
-                    'Authorization': `Bearer ${token}`, // שליחת הטוקן בכותרת Authorization
-                },
-            })
-            console.log(res);
             if (res.status === 200) {
-                console.log("res.data", res.data);
-                // props.setVacations(res.data)
                 navigate('/Vacations/הכל');
             }
         } catch (e) {
-            alert(e.response.data.message)
+            alert(e.response.data.message);
         }
-    }
+    };
 
     const message = (
         <div>
@@ -257,7 +288,7 @@ const AddVacation = () => {
                     <div className="inline-flex flex-column gap-2">
                     </div>
                     <div className="flex align-items-center gap-2">
-                        <Button label="הוסף" onClick={(e) => { addVacation(); }} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
+                        <Button label={isEditing?'עדכן':'הוסף'} onClick={(e) => { addVacation(); }} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
                         <Button label="ביטול" onClick={(e) => navigate('/Vacation/הכל')} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
                     </div>
                 </div>

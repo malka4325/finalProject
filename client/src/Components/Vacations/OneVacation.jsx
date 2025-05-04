@@ -18,7 +18,7 @@ const OneVacation = () => {
   const { id } = useParams()
   const [vacation, setVacation] = useState(null);
   const [activities, setActivities] = useState([]);
-  const [value, setValue] = useState(5)
+  const [joiners, setJoiners] = useState(5)
   // const context = useContext(Context);
   const token = useSelector(state => state.TokenSlice.token)
   useEffect(() => { getVacation(); }
@@ -44,12 +44,13 @@ const OneVacation = () => {
  
   const getActivities = async () => {
     try {
+      if(vacation?.activities.length!=0){
       const res = await axios.get(`http://localhost:4300/api/activities?ids=${vacation.activities}`)
       if (res.status === 200) {
         setActivities(res.data);
         
        
-      }
+      }}
     } catch (e) {
       console.error(e)
     }
@@ -113,7 +114,7 @@ const OneVacation = () => {
 
   const handleOrder = () => {
     if (token)
-      navigate(`/Orders/newOrder/${vacation._id}?num=${value}`);
+      navigate(`/Orders/newOrder/${vacation._id}?num=${joiners}`);
   }
   return (
     <div className="p-4">
@@ -175,7 +176,7 @@ const OneVacation = () => {
 
           </div>
           <div className="flex-1">
-            <InputNumber inputId="minmax-buttons" value={value} onValueChange={(e) => setValue(e.value)} mode="decimal" showButtons min={0} max={100} size="small" />
+            <InputNumber inputId="minmax-buttons" value={joiners} onValueChange={(e) => setJoiners(e.value)} mode="decimal" showButtons min={0} max={100} size="small" />
           </div>
           <Divider />
 
@@ -188,7 +189,7 @@ const OneVacation = () => {
               onClick={() => window.open(`https://www.google.com/maps?q=${encodeURIComponent(vacation.location)}`, '_blank')}
             />
 
-            <Button label="הזמן" rounded aria-label="Filter" onClick={handleOrder} />
+            <Button label="הזמן" rounded aria-label="Filter"     disabled={vacation.maxParticipants <= (vacation.currentParticipants + joiners)}  onClick={handleOrder} />
 
           </div>
         </div>

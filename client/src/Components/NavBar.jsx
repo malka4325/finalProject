@@ -47,10 +47,7 @@ const NavBar = () => {
         {
             label: 'עשה זאת בעצמך',
             icon: 'pi pi-palette',
-            items: [
-                { label: 'Styled', url: '/Vacations' },
-                { label: 'Unstyled', url: '/unstyled' }
-            ]
+         url:'/Trips/ByUser'
         },{},{},{},{},{},{},{},{},{},{},{},
         {
             label: token ? 'אזור אישי' : 'התחברות',

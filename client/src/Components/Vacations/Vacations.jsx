@@ -1,12 +1,13 @@
 
-import React from "react";
+import React, { useRef } from "react";
 
 import { useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { Rating } from 'primereact/rating';
 import { Tag } from 'primereact/tag';
-
+import { ConfirmDialog } from 'primereact/confirmdialog';
+import { Toast } from 'primereact/toast';
 import { Link, Outlet, useParams } from 'react-router-dom';
 import { Image } from 'primereact/image';
 import { useNavigate } from "react-router-dom";
@@ -26,6 +27,9 @@ const Vacations = () => {
     console.log(user);
     const { area } = useParams();
     const [vacations, setVacations] = useState([]);
+    const [selectedVacation, setSelectedVacation] = useState(null);
+    const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+    const toast = useRef(null);
     useEffect(() => {
         switch (area) {
             case 'הכל': getVacations()
@@ -106,7 +110,36 @@ const Vacations = () => {
         }
 
     }
+   const updateVacation=(event,vacation)=>{
+    setSelectedVacation(vacation)
+    event.stopPropagation();
+    if (token && user.role == "Admin")
+    navigate('/Vacations/AddVacation',{ state: { vacationToUpdate: vacation, isEditing: true } });
+   }
+   const deleteVacation=async(vacation)=>{
 
+    try {
+        const res = await axios.delete(`http://localhost:4300/api/vacations/${vacation._id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`, // שליחת הטוקן בכותרת Authorization
+            }
+        })
+        if (res.status === 200) {
+            getVacations()
+        }
+      } catch (e) {
+        console.error(e)
+      }
+   }
+ 
+
+   const acceptDelete = () => {
+    deleteVacation(selectedVacation)
+    }
+
+   const rejectDelete = () => {
+    setConfirmDeleteVisible(false);
+   }
     const handleButton = (vacation) => {
         if (token)
             navigate(`/Vacations/${vacation.area}/${vacation._id}`);
@@ -122,6 +155,11 @@ const Vacations = () => {
 
         freeParticipants(vacation);
         console.log(vacation);
+        const handleDelete = (event) => {
+            event.stopPropagation();
+            setSelectedVacation(vacation); // שומר את הנופש הנבחר
+            setConfirmDeleteVisible(true); // מציג את דיאלוג האישור
+        };
 
         return (
             <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-1" key={vacation._id}
@@ -151,9 +189,13 @@ const Vacations = () => {
                             }}><i className={classIcon} style={{ margin: "2px" }}></i></Tag>
 
                         </div>
+
                         <div className="flex flex-column align-items-center gap-2 py-2">
 
-
+                        <div className="flex justify-content w-full  gap-2" >
+        <Button icon="pi pi-pencil"visible={isAdmin()} rounded text severity="help" aria-label="update"onClick={(event) => updateVacation(event, vacation)} />
+        <Button icon="pi pi-trash" visible={isAdmin()}rounded text severity="danger" aria-label="Cancel" onClick={(event) =>{handleDelete(event)}}/>
+    </div>
                             <div className="text-2xl font-bold">{vacation.location}</div>
                             <div className="flex gap-5 mb-1" style={{ marginTop: "7px" }}>
 
@@ -215,14 +257,21 @@ const Vacations = () => {
                 <h1>{area == 'הכל' ? 'כל הנופשים' : `נופשים ב${area}`}</h1>
                 <DataView value={vacations} listTemplate={listTemplate} />
                 {console.log("user&&user.role == Admin", user)}
-                <Button icon="pi pi-plus" visible={isAdmin() } severity="Success" rounded aria-label="Filter" onClick={handleButtonAddVacation} style={{ marginLeft: "50px", marginBottom: '50px', left: 0, bottom: 0, position: 'fixed' }} direction="down-left" label="הוספת נופש" />
+                <Button icon="pi pi-plus" visible={isAdmin()} severity="Success" rounded aria-label="Filter" onClick={handleButtonAddVacation} style={{ marginLeft: "50px", marginBottom: '50px', left: 0, bottom: 0, position: 'fixed' }} direction="down-left" label="הוספת נופש" />
+                <Toast ref={toast} />
+            <ConfirmDialog group="declarative"  visible={confirmDeleteVisible} onHide={() => setConfirmDeleteVisible(false)} message="למחוק נופש?" 
+                header="למחוק?" icon="pi pi-exclamation-triangle" accept={acceptDelete} reject={rejectDelete} />
                 <Outlet />
+                
             </div> </>
     )
 }
 export default Vacations
 
 
+
+
+        
 
 
 

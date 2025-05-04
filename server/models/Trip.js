@@ -10,7 +10,6 @@ const tripSchema = new mongoose.Schema({
     mainActivity: {
         // type:mongoose.Schema.Types.ObjectId,
         // ref: 'Activity'
-        
         type: String,
     },
     description:{

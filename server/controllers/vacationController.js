@@ -68,7 +68,7 @@ const getVacationById = async (req, res) => {
 vacation.area=area
 vacation.location=location
 vacation.description=description
-vacation.targetAudience=TargetAudience
+vacation.targetAudience=targetAudience
 vacation.activities=activities
 vacation.startDate=new Date(startDate)
 vacation.endDate=new Date(endDate)

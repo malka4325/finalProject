@@ -18,6 +18,7 @@ import ThankYouPage from './Components/ThankYouPage';
 import AddTrip from './Components/Trips/AddTrip';
 import OneTrip from './Components/Trips/OneTrip';
 import AddActivity from './Components/Activities/AddActivity';
+import TripByUser from './Components/Trips/TripByUser';
 
 
 function App() {
@@ -56,6 +57,8 @@ function App() {
           <Route path="/Trips/:area" element={<Trips />} />
           <Route path="/Trips/AddTrip" element={<AddTrip />} />
           <Route path="/Trips/:area/:id" element={<OneTrip />} />
+
+          <Route path="/Trips/ByUser" element={<TripByUser/>} />
 
           <Route path="/Orders/newOrder/:id" element={<NewOrder />} />
           <Route path="/Orders/myOrders" element={<OldOrders />} />
