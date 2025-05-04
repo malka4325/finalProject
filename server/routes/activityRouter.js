@@ -5,7 +5,7 @@ const isAdmin = require("../middleware/isAdmin")
 const verifyJWT = require("../middleware/verifyJWT")
 
 
-router.get("/",activityController.getAllActivitys)
+router.get("/",activityController.getActivitys)
 router.get("/:id",activityController.getActivityById)
 // router.get("/byName/:name",activityController.getActivityByName)
 // router.get("/byType/:name",activityController.getActivityByType)

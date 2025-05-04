@@ -10,10 +10,24 @@ const createNewActivity = async (req, res) => {
     res.json(await Activity.find().lean())
 }
 
-const getAllActivitys = async (req, res) => {
-   const activitys=await Activity.find().lean()
-   if (!activitys)
-    return res.status(400).send('activitys not found')
+const getActivitys = async (req, res) => {
+    const {ids}=req.query; 
+    let activitys=[];
+    if(ids){
+    const idsArray=ids.split(",")
+    for (const id of idsArray) {
+    
+        const activity =await Activity.findById(id).lean()
+        if (!activity)
+            return res.status(400).send('activitys not found')
+        activitys.push(activity)
+    }
+    console.log(activitys);}
+    else {
+    activitys=await Activity.find().lean()
+    if (!activitys)
+        return res.status(400).send('activitys not found')}
+    console.log(activitys);
 res.json(activitys)
 }
 
@@ -71,4 +85,4 @@ return res.status(400).send('error delete')
 res.json(await Activity.find().lean())
 
 }
-module.exports = { createNewActivity,getAllActivitys,getActivityByType,getActivityById,updateActivity,deleteActivity ,getActivityByName}
+module.exports = { createNewActivity,getActivitys,getActivityByType,getActivityById,updateActivity,deleteActivity ,getActivityByName}

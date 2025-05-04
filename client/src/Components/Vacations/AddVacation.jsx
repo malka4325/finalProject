@@ -101,12 +101,12 @@ const AddVacation = () => {
         if (e.checked){
             _chooseActivities.push(e.value);
             _chooseActivitiesNames.push(e.target.name);
-            debugger
-            setSumPrice(sumPrice+Number(e.target.price))
+           
+           // setSumPrice(sumPrice+Number(e.target.price))
         }
         else{
             _chooseActivities.splice(_chooseActivities.indexOf(e.value), 1);
-            _chooseActivitiesNames.splice(_chooseActivities.indexOf(e.target.name), 1);
+            _chooseActivitiesNames.splice(_chooseActivitiesNames.indexOf(e.target.name), 1);
 }
         setChooseActivities(_chooseActivities);
         setChooseActivitiesNames(_chooseActivitiesNames);
