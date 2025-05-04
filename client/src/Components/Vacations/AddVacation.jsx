@@ -148,8 +148,7 @@ const AddVacation = () => {
             setChooseActivities(vacationToUpdate.activities);
         }
     }, [isEditing, vacationToUpdate]);
-    const addVacation = async () => {
-       // ה-ID שנמצא בתוך הנופש
+    const addOrUpdateVacation = async () => {
 
         if (!newVacation.imageSrc) newVacation.imageSrc = 'http://localhost:4300/uploads/logo.jpg';
         //console.log("newVacation.imageSrc", newVacation.imageSrc);
@@ -288,7 +287,7 @@ const AddVacation = () => {
                     <div className="inline-flex flex-column gap-2">
                     </div>
                     <div className="flex align-items-center gap-2">
-                        <Button label={isEditing?'עדכן':'הוסף'} onClick={(e) => { addVacation(); }} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
+                        <Button label={isEditing?'עדכן':'הוסף'} onClick={(e) => { addOrUpdateVacation(); }} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
                         <Button label="ביטול" onClick={(e) => navigate('/Vacation/הכל')} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
                     </div>
                 </div>

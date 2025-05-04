@@ -168,7 +168,7 @@ const Vacations = () => {
                 {/* {oneVacationVis && <OneVacation vacation={vacation} setOneVacationVis={setOneVacationVis} oneVacationVis={oneVacationVis} />} */}
                 <div className=" border-1 surface-border surface-card border-round" style={{
                     width: "370px", /* רוחב קבוע */
-                    height: '370px', /* גובה קבוע */
+                    height: '420px', /* גובה קבוע */
                     overflow: 'hidden', /* מסתיר תוכן שגדול מהכרטיס */
                     padding: 0, margin: 0
                 }}>
