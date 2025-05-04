@@ -1,36 +1,59 @@
-import React from 'react';
+import React, { useState,useEffect,useRef } from "react";
+import axios from "axios";
+import { Button } from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
+import { InputText } from "primereact/inputtext";
+import { Password } from "primereact/password";
 
+import { useNavigate } from "react-router-dom";
+import { useSelector,useDispatch } from "react-redux"
+import { setValue } from "../Store/TokenSlice";
+import { setValue as setUser } from "../Store/UserSlice";
+import { jwtDecode } from "jwt-decode"; 
 
-const update = async () => {
+const UpdateUser=()=> {
+
     const nameRef = useRef(null)
     const usernameRef = useRef(null)
     const emailRef = useRef(null)
     const addressRef = useRef(null)
     const phoneRef = useRef(null)
     const user = useSelector(state => state.UserSlice.user)
+    const token = useSelector(state => state.TokenSlice.token)
     const [visible, setVisible] = useState(false);
-    const newuser={
-        _id:user._id,
-        userName:usernameRef.current.value,
-        password:user.password,
-        name:nameRef.current.value,
-        email:emailRef.current.value,
-        address:addressRef.current.value,
-        phone:phoneRef.current.value,
-        role:user.role
-     }
-       
-   try {
-       const res = await axios.put('http://localhost:4300/api/users',newuser)
+    
+       const dispatch = useDispatch(); 
+       const update = async () => {
+        const newuser={
+            _id:user._id,
+            userName:usernameRef.current.value,
+            password:user.password,
+            name:nameRef.current.value,
+            email:emailRef.current.value,
+            address:addressRef.current.value,
+            phone:phoneRef.current.value,
+            role:user.role
+         }
+         console.log(user);
+         
+       try {
+       const res = await axios.put('http://localhost:4300/api/users',newuser, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+    });
        console.log(res.data);
        if (res.status === 200) {
+           dispatch(setValue(res.data.accessToken))
+            const decoded = jwtDecode(res.data.accessToken) 
+            dispatch(setUser(decoded));
            
        }
    } catch (e) {
     alert(e.response.data.message.toString())
    }
 
-
+       }
     return(
     <>
      <Button label="עדכן" icon="pi pi-pencil" onClick={() => setVisible(true)} rounded aria-label="Filter" severity='info' />
@@ -82,5 +105,4 @@ const update = async () => {
 
     );
 }
-
 export default UpdateUser;

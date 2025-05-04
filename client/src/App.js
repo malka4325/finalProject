@@ -19,6 +19,7 @@ import AddTrip from './Components/Trips/AddTrip';
 import OneTrip from './Components/Trips/OneTrip';
 import AddActivity from './Components/Activities/AddActivity';
 import TripByUser from './Components/Trips/TripByUser';
+import UpdateUser from './Components/UpdateUser';
 
 
 function App() {
@@ -63,7 +64,7 @@ function App() {
           <Route path="/Orders/newOrder/:id" element={<NewOrder />} />
           <Route path="/Orders/myOrders" element={<OldOrders />} />
           <Route path="/Orders/allOrders" element={<AllOrders />} />
-
+          <Route path="/Users/update" element={<UpdateUser/>} />
         </Routes>
 
         {/* </UserProvider> */}

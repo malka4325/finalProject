@@ -25,6 +25,20 @@ const NewOrder = () => {
 
       const token = useSelector(state => state.TokenSlice.token)
       const user = useSelector(state => state.UserSlice.user)
+      const handleEmail = async () => {
+    
+        try {
+            const response = await axios.post('/send-email', {
+                email:user.email,
+                subject: "Confirmation of Your Order",
+                message: `שלום ${user.name},\n\nתודה על ההזמנה שלך! \n\nפרטי ההזמנה:\nשם: ${name}\nטלפון: ${phone}\nמספר כרטיס: ${cardNumber}\nתוקף: ${expiry}\nCVV: ${cvv}`,
+            });
+            alert('Email sent successfully!');
+        } catch (error) {
+            console.error("There was an error sending the email:", error);
+            alert('Failed to send email.');
+        }
+    };
       const order= async ()=>{
         try {
           const res = await axios.post(  'http://localhost:4300/api/orders',
@@ -36,7 +50,7 @@ const NewOrder = () => {
             }
           );
           if (res.status === 200) {
-              //alert(res.data);
+              handleEmail();
               window.location.href = '/ThankYou'
           }
       } catch (e) {

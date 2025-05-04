@@ -37,8 +37,6 @@ const AuthPage=()=> {
         try {
             const res = await axios.post('http://localhost:4300/api/auth/register', formData)
            
- 
-
             if (res.status === 200) {
                 dispatch(setValue(res.data.accessToken))
                 const decoded = jwtDecode(res.data.accessToken) 

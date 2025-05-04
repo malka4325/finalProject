@@ -23,6 +23,33 @@ app.use("/api/auth", require("./routes/authRouter"))
 app.use("/api/users", require("./routes/userRouter"))
 app.use("/api/orders",require("./routes/orderRouter"))
 app.use("/api/activities",require("./routes/activityRouter"))
+
+app.post('/send-email', (req, res) => {
+  const { email, subject, message } = req.body;
+
+  let transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+          user: process.env.EMAIL_USER, // your email address
+          pass: process.env.EMAIL_PASS, // your email password
+      },
+  });
+
+  let mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: subject,
+      text: message,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+          return res.status(500).send(error.toString());
+      }
+      res.status(200).send('Email sent: ' + info.response);
+  });
+});
+
   
 
 const storage = multer.diskStorage({
