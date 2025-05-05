@@ -98,7 +98,8 @@ const TripByUser = () => {
         newTrip.madeById = user._id;
     }
     const AddTrip = async () => {
-
+        buildobject()
+       console.log(newTrip);
         try {
             const res = await axios.post('http://localhost:4300/api/trips', newTrip, {
                 headers: {
@@ -154,8 +155,11 @@ const TripByUser = () => {
                         </div>
                     </StepperPanel>
                     <StepperPanel header="שלב שני">
-                    <Button label="פעיליות" icon="pi pi-user" onClick={() =>  setShowChooseActivities(true) } />
-
+                    <Button label="פעילויות" icon="pi pi-user" onClick={() =>  setShowChooseActivities(true) } />
+                    <div className="card flex justify-content-center">
+                        <Dropdown value={selectedArea} onChange={(e) => setSelectedArea(e.value)} options={areas} optionLabel="name"
+                            placeholder=" בחר אזור" className="w-full md:w-14rem" />
+                    </div>
                     {showChooseActivities && (
                      <ChooseActivities
                      chooseActivities={newTrip.activities}
