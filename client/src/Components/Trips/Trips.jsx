@@ -6,7 +6,7 @@ import { Button } from 'primereact/button';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 
 import { Tag } from 'primereact/tag';
-
+import { ConfirmDialog } from 'primereact/confirmdialog';
 import { Link, Outlet, useParams } from 'react-router-dom';
 import { Image } from 'primereact/image';
 import { useNavigate } from "react-router-dom";
@@ -22,6 +22,8 @@ const Trips = () => {
     console.log(user);
     const { area } = useParams();
     const [trips, setTrips] = useState([]);
+    const [selectedTrip, setSelectedTrip] = useState(null);
+    const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
     useEffect(() => {
         switch (area) {
             case 'הכל': getTrips()
@@ -103,6 +105,34 @@ const Trips = () => {
         }
 
     }
+    const updateTrip=(event,trip)=>{
+        setSelectedTrip(trip)
+        event.stopPropagation();
+        if (token && user.role == "Admin")
+        navigate('/Trips/AddTrip',{ state: { tripToUpdate: trip, isEditing: true } });
+       }
+       const deleteTrip=async(trip)=>{
+    
+        try {
+            const res = await axios.delete(`http://localhost:4300/api/trips/${trip._id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`, // שליחת הטוקן בכותרת Authorization
+                }
+            })
+            if (res.status === 200) {
+                getTrips()
+            }
+          } catch (e) {
+            console.error(e)
+          }
+       }
+       const acceptDelete = () => {
+        deleteTrip(selectedTrip)
+        }
+    
+       const rejectDelete = () => {
+        setConfirmDeleteVisible(false);
+       }
 
     const handleButton = (trip) => {
         if (token)
@@ -115,6 +145,11 @@ const Trips = () => {
 
         freeParticipants(trip);
         console.log(trip);
+        const handleDelete = (event) => {
+            event.stopPropagation();
+            setSelectedTrip(trip); // שומר את הנופש הנבחר
+            setConfirmDeleteVisible(true); // מציג את דיאלוג האישור
+        };
 
         return (
             <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-1" key={trip._id}
@@ -144,6 +179,10 @@ const Trips = () => {
                             }}><i className={classIcon} style={{ margin: "2px" }}></i></Tag>
 
                         </div>
+                        <div className="flex justify-content w-full  gap-2" >
+        <Button icon="pi pi-pencil"visible={isAdmin()} rounded text severity="help" aria-label="update"onClick={(event) => updateTrip(event, trip)} />
+        <Button icon="pi pi-trash" visible={isAdmin()}rounded text severity="danger" aria-label="Cancel" onClick={(event) =>{handleDelete(event)}}/>
+    </div>
                         <div className="flex flex-column align-items-center gap-2 py-2">
 
 
@@ -187,11 +226,18 @@ const Trips = () => {
     const listTemplate = (trips) => {
         return <div className="grid grid-nogutter">{trips.map((trip) => gridItem(trip))}</div>;
     };
+    const isAdmin = () => {
+        if (!user)
+            return false
+        return user.role == "Admin"
+    }
     return (
         <>
             <div className="card" style={{ margin: "40px" }}>
                 <h1>{area == 'הכל' ? 'כל הטיולים' : `טיולים ב${area}`}</h1>
                 <DataView value={trips} listTemplate={listTemplate} />
+                <ConfirmDialog group="declarative"  visible={confirmDeleteVisible} onHide={() => setConfirmDeleteVisible(false)} message="למחוק נופש?" 
+                header="למחוק?" icon="pi pi-exclamation-triangle" accept={acceptDelete} reject={rejectDelete} />
                 <Outlet />
             </div> </>
     )

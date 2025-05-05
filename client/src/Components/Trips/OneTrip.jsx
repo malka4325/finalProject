@@ -62,26 +62,31 @@ const OneTrip = () => {
   //   alt: 'Gallery Image',
   //   title: 'Trip Image',
   // }));
-  const images = []
-  const itemTemplate = (item) => {
-    return <img src={item.source} alt={item.alt} style={{ width: '100%', display: 'block', margin: '0 auto', border: '5px solid #000' }} />;
-  };
+  const images = [{
+    source: trip.imageSrc,
+   thumbnail: trip.imageSrc,
+  alt: 'Gallery Image',
+    title: 'trip Image',
+ }]
+const itemTemplate = (item) => {
+ return <img src={item.source} alt={item.alt} style={{ width: '100%', display: 'block', margin: '0 auto', border: '5px solid #000' }} />;
+};
 
-  const thumbnailTemplate = (item) => {
-    return (
-      <img
-        src={item.thumbnail}
-        alt={item.alt}
-        style={{
-          display: 'block',
-          width: '100px',
-          height: '100px',
-          margin: '10px',
-          cursor: 'pointer',
-        }}
-      />
-    );
-  };
+const thumbnailTemplate = (item) => {
+ return (
+   <img
+     src={item.thumbnail}
+     alt={item.alt}
+     style={{
+       display: 'block',
+       width: '100px',
+       height: '100px',
+       margin: '10px',
+       cursor: 'pointer',
+     }}
+   />
+ );
+};
   const handleToTrips = () => {
 
     navigate(`/Trips/${trip.area}`); // שינוי URL עם state

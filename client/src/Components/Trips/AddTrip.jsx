@@ -1,8 +1,8 @@
 import axios from 'axios'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Calendar } from 'primereact/calendar';
 import { useSelector } from 'react-redux';
 import { Dropdown } from 'primereact/dropdown';
@@ -10,8 +10,10 @@ import { FileUpload } from 'primereact/fileupload';
 import ChooseActivities from '../Activities/ChooseActivities';
 const AddTrip = () => {
     const navigate = useNavigate()
-    const [date, setEndDate] = useState(null);
+    const [date, setDate] = useState(null);
     const token = useSelector(state => state.TokenSlice.token)
+    const location = useLocation();
+    const { tripToUpdate, isEditing } = location.state || {};
     const [selectedArea, setSelectedArea] = useState(null);
     const [showChooseActivities, setShowChooseActivities] = useState(false); 
     const [chooseActivities, setChooseActivities] = useState([]);
@@ -27,7 +29,7 @@ const AddTrip = () => {
 
     // const mainActivity = useLocation()
     // const props = mainActivity.state || {};
-    const mainActivityRef = useRef("")
+    const locationRef = useRef("")
     const descriptionRef = useRef("")
     const targetAudienceRef = useRef("")
     const maxParticipantsRef = useRef("")
@@ -70,39 +72,96 @@ const AddTrip = () => {
             console.error("Error uploading file:", error);
         }
     };
-    const addTrip = async () => {
+    // const addTrip = async () => {
 
+
+    //     if (!newTrip.imageSrc) newTrip.imageSrc = 'http://localhost:4300/uploads/logo.jpg';
+    //     console.log("response", newTrip.imageSrc);
+
+    //     console.log(newTrip);
+
+    //     if (selectedArea) newTrip.area = selectedArea.name;
+    //     if (mainActivityRef.current.value) newTrip.location = mainActivityRef.current.value;
+    //     if (targetAudienceRef.current.value) newTrip.targetAudience = targetAudienceRef.current.value;
+    //     if (descriptionRef.current.value) newTrip.description = descriptionRef.current.value;
+    //     if (date) newTrip.date = date;
+    //     //if (activities) newTrip.activities = activities;
+    //     if (maxParticipantsRef.current.value) newTrip.maxParticipants = maxParticipantsRef.current.value;
+    //     if (priceRef.current.value) newTrip.price = priceRef.current.value;
+
+    //     try {
+    //         const res = await axios.post('http://localhost:4300/api/trips', newTrip, {
+    //             headers: {
+    //                 'Authorization': `Bearer ${token}`, // שליחת הטוקן בכותרת Authorization
+    //             },
+    //         })
+    //         console.log(res);
+    //         if (res.status === 200) {
+    //             console.log("res.data", res.data);
+    //             // props.setTrips(res.data)
+    //             navigate('/Trips/הכל');
+    //         }
+    //     } catch (e) {
+    //         alert(e.response.data.message)
+    //     }
+    // }
+    useEffect(() => {
+        console.log("Editing:", isEditing, "Trip to update:", tripToUpdate);
+        if (isEditing && tripToUpdate) {
+            // אם אנחנו במצב עדכון, מלא את השדות עם הנתונים הקיימים
+            setDate(new Date(tripToUpdate.date));
+            setSelectedArea(areas.find(area => area.name === tripToUpdate.area));
+            locationRef.current.value = tripToUpdate.location;
+            targetAudienceRef.current.value = tripToUpdate.targetAudience;
+            descriptionRef.current.value = tripToUpdate.description;
+            maxParticipantsRef.current.value = tripToUpdate.maxParticipants;
+            priceRef.current.value = tripToUpdate.price;
+            setImageUrl(tripToUpdate.imageSrc);
+            setChooseActivities(tripToUpdate.activities);
+        }
+    }, [isEditing, tripToUpdate]);
+    const addOrUpdateTrip = async () => {
 
         if (!newTrip.imageSrc) newTrip.imageSrc = 'http://localhost:4300/uploads/logo.jpg';
-        console.log("response", newTrip.imageSrc);
-
+        //console.log("newTrip.imageSrc", newTrip.imageSrc);
         console.log(newTrip);
-
         if (selectedArea) newTrip.area = selectedArea.name;
-        if (mainActivityRef.current.value) newTrip.location = mainActivityRef.current.value;
+        if (locationRef.current.value) newTrip.location = locationRef.current.value;
         if (targetAudienceRef.current.value) newTrip.targetAudience = targetAudienceRef.current.value;
         if (descriptionRef.current.value) newTrip.description = descriptionRef.current.value;
         if (date) newTrip.date = date;
+        
         //if (activities) newTrip.activities = activities;
         if (maxParticipantsRef.current.value) newTrip.maxParticipants = maxParticipantsRef.current.value;
         if (priceRef.current.value) newTrip.price = priceRef.current.value;
-
+      
         try {
-            const res = await axios.post('http://localhost:4300/api/trips', newTrip, {
-                headers: {
-                    'Authorization': `Bearer ${token}`, // שליחת הטוקן בכותרת Authorization
-                },
-            })
-            console.log(res);
+            let res;
+            if (isEditing) {
+                // אם אנחנו במצב עדכון, בצע עדכון
+                newTrip._id= tripToUpdate._id
+                console.log(newTrip);
+                res = await axios.put(`http://localhost:4300/api/trips`, newTrip, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+            } else {
+                // אם אנחנו במצב הוספה, בצע הוספה
+                res = await axios.post('http://localhost:4300/api/trips', newTrip, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+            }
+
             if (res.status === 200) {
-                console.log("res.data", res.data);
-                // props.setTrips(res.data)
                 navigate('/Trips/הכל');
             }
         } catch (e) {
-            alert(e.response.data.message)
+            alert(e.response.data.message);
         }
-    }
+    };
 
     return (
         <>
@@ -114,7 +173,7 @@ const AddTrip = () => {
                         <label htmlFor="tripname" className="text-primary-50 font-semibold">
                             מיקום
                         </label>
-                        <InputText id="tripname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={mainActivityRef}></InputText>
+                        <InputText id="tripname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={locationRef}></InputText>
 
                     </div>
                     <div className="card flex justify-content-center">
@@ -148,7 +207,7 @@ const AddTrip = () => {
                         <label htmlFor="buttondisplay" className="font-bold block mb-2">
                             תאריך
                         </label>
-                        <Calendar id="buttondisplay" value={date} onChange={(e) => setEndDate(e.value)} showIcon dateFormat="dd/mm/yy" />
+                        <Calendar id="buttondisplay" value={date} onChange={(e) => setDate(e.value)} showIcon dateFormat="dd/mm/yy" />
                     </div>
 
                     <div className="inline-flex flex-column gap-2">
@@ -189,7 +248,7 @@ const AddTrip = () => {
                     <div className="inline-flex flex-column gap-2">
                     </div>
                     <div className="flex align-items-center gap-2">
-                        <Button label="הוסף" onClick={(e) => { addTrip(); }} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
+                    <Button label={isEditing?'עדכן':'הוסף'} onClick={(e) => { addOrUpdateTrip(); }} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
                         <Button label="ביטול" onClick={(e) =>  navigate('/Trips/הכל')} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
                     </div>
                 </div>

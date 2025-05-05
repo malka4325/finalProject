@@ -20,7 +20,7 @@ import ChooseActivities from '../Activities/ChooseActivities';
 import Vacations from './Vacations';
 
 const AddVacation = () => {
-    const location = useLocation();
+    const location = useLocation()
     const { vacationToUpdate, isEditing } = location.state || {};
     const navigate = useNavigate()
     const [startDate, setStartDate] = useState(null);
