@@ -12,23 +12,42 @@ const createNewActivity = async (req, res) => {
 
 const getActivitys = async (req, res) => {
     const {ids}=req.query; 
-    let activitys=[];
+    let query = {};
+    const {  area,targetAudience,type,maxPrice,name } = req.query;
+    console.log(area,targetAudience,type,maxPrice,name);
+    let activities=[];
     if(ids){
     const idsArray=ids.split(",")
     for (const id of idsArray) {
-    
         const activity =await Activity.findById(id).lean()
         if (!activity)
-            return res.status(400).send('activitys not found')
-        activitys.push(activity)
+            return res.status(400).send('activities not found')
+        activities.push(activity)
     }
-    console.log(activitys);}
+    }
     else {
-    activitys=await Activity.find().lean()
-    if (!activitys)
-        return res.status(400).send('activitys not found')}
-    console.log(activitys);
-res.json(activitys)
+        if (area) {
+            query.area = { $regex: area, $options: 'i' };
+        }
+        if (targetAudience) {
+            query.targetAudience = { $regex: targetAudience, $options: 'i' };
+        }
+        if (type) {
+            query.type = { $regex: type, $options: 'i' };
+        }
+        if (maxPrice) {
+            query.price = { $lte: Number(maxPrice), $options: 'i' };
+        }
+        if (name) {
+            query.name = { $regex: name, $options: 'i' };
+        }
+
+    activities=await Activity.find(query).lean()
+    console.log(activities);
+    if (!activities)
+        return res.status(400).send('activities not found')}
+
+res.json(activities)
 }
 
 const getActivityById = async (req, res) => {
@@ -38,22 +57,7 @@ const getActivityById = async (req, res) => {
      return res.status(400).send('activity not found')
  res.json(activity)
  }
- const getActivityByName = async (req, res) => {
-    const { name } = req.params
-    const activitys = await Activity.find({ name:{$regex :name}  }).lean()
-    if (!activitys) {
-        return res.json([])
-    }
-    res.json(activitys)
-}
-const getActivityByType = async (req, res) => {
-    const { type } = req.params
-    const activitys = await Activity.find({ type:type }).lean()
-    if (!activitys) {
-        return res.json([])
-    }
-    res.json(activitys)
-}
+
 
 const updateActivity = async (req, res) => {
     const { _id, name,type,description,imageSrc} = req.body
@@ -86,4 +90,4 @@ return res.status(400).send('error delete')
 res.json(await Activity.find().lean())
 
 }
-module.exports = { createNewActivity,getActivitys,getActivityByType,getActivityById,updateActivity,deleteActivity ,getActivityByName}
+module.exports = { createNewActivity,getActivitys,getActivityById,updateActivity,deleteActivity }

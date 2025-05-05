@@ -186,17 +186,7 @@ const AddVacation = () => {
         }
     };
 
-    // const message = (
-    //     <div>
-    //       <span>הפעילויות שבחרת:</span>
-    //       <br />
-    //       <div>{chooseActivitiesNames}</div>
-    
-    //     <span>במחיר כולל:</span>
-    //     <br/>
-    //     <span>{sumPrice}</span>
-    //         </div>
-    //   )
+
     return (
         <>
             <div className="card flex justify-content-center">

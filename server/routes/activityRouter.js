@@ -7,8 +7,7 @@ const verifyJWT = require("../middleware/verifyJWT")
 
 router.get("/",activityController.getActivitys)
 router.get("/:id",activityController.getActivityById)
-// router.get("/byName/:name",activityController.getActivityByName)
-// router.get("/byType/:name",activityController.getActivityByType)
+
 router.post("/",verifyJWT,isAdmin,activityController.createNewActivity)
 router.put("/",verifyJWT,isAdmin,activityController.updateActivity)
 router.delete("/:id",verifyJWT,isAdmin,activityController.deleteActivity)
