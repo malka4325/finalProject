@@ -17,6 +17,7 @@ import 'primeicons/primeicons.css';
 import { Dialog } from 'primereact/dialog';
 import { Image } from 'primereact/image';
 import ChooseActivities from '../Activities/ChooseActivities';
+import Vacations from './Vacations';
 
 const AddVacation = () => {
     const location = useLocation();
@@ -227,7 +228,7 @@ const AddVacation = () => {
                     <Button label="פעיליות" icon="pi pi-user" onClick={() => setShowChooseActivities(true)} />
                     {showChooseActivities && (
                      <ChooseActivities
-                     chooseActivities={chooseActivities}
+                     chooseActivities={newVacation.activities}
                      setChooseActivities={setChooseActivities}
                      visible={showChooseActivities} // העברת הנראות לדיאלוג
                      setVisible={setShowChooseActivities} // פונקציה לסגירת הדיאלוג

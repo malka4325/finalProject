@@ -7,11 +7,16 @@ import { Calendar } from 'primereact/calendar';
 import { useSelector } from 'react-redux';
 import { Dropdown } from 'primereact/dropdown';
 import { FileUpload } from 'primereact/fileupload';
+import ChooseActivities from '../Activities/ChooseActivities';
 const AddTrip = () => {
     const navigate = useNavigate()
     const [date, setEndDate] = useState(null);
     const token = useSelector(state => state.TokenSlice.token)
     const [selectedArea, setSelectedArea] = useState(null);
+    const [showChooseActivities, setShowChooseActivities] = useState(false); 
+    const [chooseActivities, setChooseActivities] = useState([]);
+
+
     const areas = [
         { name: 'צפון', code: 'NY' },
         { name: 'דרום', code: 'RM' },
@@ -33,7 +38,9 @@ const AddTrip = () => {
     const [imageUrl, setImageUrl] = useState("");
 
     const newTrip = {
-        imageSrc: imageUrl
+        imageSrc: imageUrl,
+        activities:chooseActivities
+
     };
 
     const handleUpload = async (e) => {
@@ -128,7 +135,15 @@ const AddTrip = () => {
                         <InputText id="tripname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={targetAudienceRef}></InputText>
                     </div>
 
-
+                    <Button label="פעיליות" icon="pi pi-user" onClick={() => setShowChooseActivities(true)} />
+                    {showChooseActivities && (
+                     <ChooseActivities
+                     chooseActivities={newTrip.activities}
+                     setChooseActivities={setChooseActivities}
+                     visible={showChooseActivities} // העברת הנראות לדיאלוג
+                     setVisible={setShowChooseActivities} // פונקציה לסגירת הדיאלוג
+                 />
+            )}
                     <div className="flex-auto">
                         <label htmlFor="buttondisplay" className="font-bold block mb-2">
                             תאריך

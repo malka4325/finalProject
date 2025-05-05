@@ -12,6 +12,7 @@ import { Checkbox } from "primereact/checkbox";
 import { Dropdown } from 'primereact/dropdown';
 import axios from "axios";
 import { Dialog } from "primereact/dialog";
+import ChooseActivities from "../Activities/ChooseActivities";
 const TripByUser = () => {
     const stepperRef = useRef(null);
     const navigate = useNavigate()
@@ -19,7 +20,8 @@ const TripByUser = () => {
     const [activities, setActivities] = useState([]);
     const user = useSelector(state => state.UserSlice.user)
     const token = useSelector(state => state.TokenSlice.token)
-    const [visibleChooseActivity, setVisibleChooseActivity] = useState(false);
+    const [showChooseActivities, setShowChooseActivities] = useState(true); 
+    const [chooseActivities, setChooseActivities] = useState([]);
     const [selectedArea, setSelectedArea] = useState(null);
     const areas = [
         { name: 'צפון', code: 'NY' },
@@ -49,10 +51,27 @@ const TripByUser = () => {
     // }, [maxPriceRef]);
     const [selectedActivities, setSelectedActivities] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
+    const [currentStep, setCurrentStep] = useState(0); // עוקב אחרי השלב הנוכחי
+
     const maxActivities = 6;
     useEffect(() => {
         getActivities();
     }, []);
+    useEffect(() => {
+        if (currentStep === 1) {
+            setShowChooseActivities(true); // פותח את הדיאלוג
+        }
+    }, [currentStep]);
+
+    const handleNextStep = () => {
+        setCurrentStep((prevStep) => prevStep + 1); // עדכון לשלב הבא
+        stepperRef.current.nextCallback();
+    };
+
+    const handlePrevStep = () => {
+        setCurrentStep((prevStep) => prevStep - 1); // עדכון לשלב הקודם
+        stepperRef.current.prevCallback();
+    };
     const handleSelect = (activity) => {
 
         console.log("פעילות שנבחרה:", activity);
@@ -77,7 +96,9 @@ const TripByUser = () => {
 
         };
     };
-    const newTrip = {}
+    const newTrip = {
+        activities:chooseActivities
+    }
     const AddTrip = async () => {
 
 
@@ -150,37 +171,24 @@ const TripByUser = () => {
                             </div>
                         </div>
                         <div className="flex pt-4 justify-content-end">
-                            <Button label="הבא" icon="pi pi-arrow-left" iconPos="right" onClick={() => stepperRef.current.nextCallback()} />
+                            <Button label="הבא" icon="pi pi-arrow-left" iconPos="right" onClick={() => handleNextStep()} />
                         </div>
                     </StepperPanel>
                     <StepperPanel header="שלב שני">
-    <div className="flex flex-column h-12rem">
-        <div className="grid">
-            {activities.map((activity, index) => (
-                <div className="col-12 md:col-3" key={index} style={{ margin: '3rem' }}>
-                    <Card className="activity-card p-shadow-3" style={{ borderRadius: '10px', height: '250px', width: '200px', overflow: 'hidden' }}>
-                        <Checkbox
-                            inputId={activity._id}
-                            name={activity.name}
-                            value={activity._id}
-                            onChange={() => handleSelect(activity)}
-                            checked={selectedActivities.some((a) => a._id === activity._id)}
-                        />
-                        <Image src={activity.imageSrc} alt={activity.name} width="170px" height="100" style={{ borderRadius: '10px', width: '100%', height: '100%' }} />
-                        <h3 className="text-lg font-semibold">{activity.price} ₪</h3>
-                        <p>קהל יעד: {activity.targetAudience}</p>
-                        <p>סוג: {activity.type}</p>
-                        <p>תיאור: {activity.description}</p>
-                        <label htmlFor={activity._id}>בחר</label>
-                        <Button label="למידע נוסף" icon="pi pi-info-circle" className="p-button-secondary mt-2" />
-                    </Card>
-                </div>
-            ))}
-        </div>
-    </div>
+                    <Button label="פעיליות" icon="pi pi-user" onClick={() =>  setShowChooseActivities(true) } />
+
+                    {showChooseActivities && (
+                     <ChooseActivities
+                     chooseActivities={newTrip.activities}
+                     setChooseActivities={setChooseActivities}
+                     visible={true} // העברת הנראות לדיאלוג
+                     setVisible={setShowChooseActivities} // פונקציה לסגירת הדיאלוג
+                 />
+            )}
+ 
     <div className="flex pt-4 justify-content-between">
-        <Button label="קודם" severity="secondary" icon="pi pi-arrow-right" onClick={() => stepperRef.current.prevCallback()} />
-        <Button label="הבא" icon="pi pi-arrow-left" iconPos="right" onClick={() => { stepperRef.current.nextCallback();  }} />
+        <Button label="קודם" severity="secondary" icon="pi pi-arrow-right" onClick={() => handlePrevStep()} />
+        <Button label="הבא" icon="pi pi-arrow-left" iconPos="right" onClick={() =>handleNextStep()} />
     </div>
 </StepperPanel>
                     <StepperPanel header="שלב שלישי">
@@ -188,7 +196,7 @@ const TripByUser = () => {
                             <div className="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">Content III</div>
                         </div>
                         <div className="flex pt-4 justify-content-start">
-                            <Button label="קודם" severity="secondary" icon="pi pi-arrow-right" onClick={() => stepperRef.current.prevCallback()} />
+                            <Button label="קודם" severity="secondary" icon="pi pi-arrow-right" onClick={() => handlePrevStep()} />
                             <Button label="לסיום" severity="secondary" icon="pi pi-arrow-left" onClick={() => {stepperRef.current.nextCallback();AddTrip();}} />
                         </div>
                     </StepperPanel>

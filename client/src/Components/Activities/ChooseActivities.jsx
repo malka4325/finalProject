@@ -21,6 +21,7 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
 
     useEffect(() => {
         getActivities();
+        console.log();
     }, []);
     const getActivities = async () => {
         try {
@@ -63,8 +64,25 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
             const activity = activities.find(activity => activity._id === activityId);
             return activity ? total + activity.price : total;
         }, 0);
+    
+        setChooseActivitiesNames(
+            chooseActivities.map(activityId => {
+                const activity = activities.find(activity => activity._id === activityId);
+                return activity ? activity.name : null;
+            }).filter(name => name !== null)
+        );
+    
         setSumPrice(total);
-    }, [chooseActivities]);
+    }, [chooseActivities, activities]);
+    // useEffect(() => {
+    //     const total = chooseActivities?.reduce((total, activityId) => {
+    //         const activity = activities.find(activity => activity._id === activityId);
+    //         if(activity)
+    //         chooseActivitiesNames.push(activity.name)
+    //         return activity ? total + activity.price : total;
+    //     }, 0);
+    //     setSumPrice(total);
+    // }, []);
     const reject = () => {
         setVisible(true)
         setVisibleConfirmActivities(false)
@@ -76,7 +94,7 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
         <div>
             <span>הפעילויות שבחרת:</span>
             <br />
-            <div>{chooseActivitiesNames}</div>
+            <div>{chooseActivitiesNames.join(", ")}</div>
 
             <span>במחיר כולל:</span>
             <br />
