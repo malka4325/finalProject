@@ -16,6 +16,7 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import { Dialog } from 'primereact/dialog';
 import { Image } from 'primereact/image';
+import ChooseActivities from '../Activities/ChooseActivities';
 
 const AddVacation = () => {
     const location = useLocation();
@@ -24,7 +25,8 @@ const AddVacation = () => {
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const token = useSelector(state => state.TokenSlice.token)
-    const [activities, setActivities] = useState([]);
+    const [chooseActivities, setChooseActivities] = useState([]);
+    const [showChooseActivities, setShowChooseActivities] = useState(false); 
 
 
     const [selectedArea, setSelectedArea] = useState(null);
@@ -35,16 +37,7 @@ const AddVacation = () => {
         { name: 'מרכז', code: 'IST' }
 
     ];
-    const getActivities= async () => {
-        try {
-            const res = await axios.get(`http://localhost:4300/api/activities`)
-            if (res.status === 200) {
-                setActivities(res.data);
-            }
-        } catch (e) {
-            console.error(e)
-        }
-    }
+ 
 
     // const location = useLocation();
     // const props = location.state || {};
@@ -86,51 +79,51 @@ const AddVacation = () => {
             console.error("Error uploading file:", error);
         }
     };
-    const [visibleChooseActivity, setVisibleChooseActivity] = useState(false);
-    const [chooseActivities, setChooseActivities] = useState([]);
-    const [chooseActivitiesNames, setChooseActivitiesNames] = useState([]);
+    // const [visibleChooseActivity, setVisibleChooseActivity] = useState(false);
+    // const [chooseActivities, setChooseActivities] = useState([]);
+    // const [chooseActivitiesNames, setChooseActivitiesNames] = useState([]);
     const [imageUrl, setImageUrl] = useState("");
-    const [sumPrice, setSumPrice] = useState(0);
+    // const [sumPrice, setSumPrice] = useState(0);
     const newVacation = {
         imageSrc: imageUrl,
         activities:chooseActivities
     };
 
-    const onChooseActivitiesChange = (e) => {
-        console.log(e);
-        let _chooseActivities = [...chooseActivities];
-        let _chooseActivitiesNames = [...chooseActivitiesNames];
+//     const onChooseActivitiesChange = (e) => {
+//         console.log(e);
+//         let _chooseActivities = [...chooseActivities];
+//         let _chooseActivitiesNames = [...chooseActivitiesNames];
 
-        if (e.checked){
-            _chooseActivities.push(e.value);
-            _chooseActivitiesNames.push(e.target.name);
+//         if (e.checked){
+//             _chooseActivities.push(e.value);
+//             _chooseActivitiesNames.push(e.target.name);
            
-           // setSumPrice(sumPrice+Number(e.target.price))
-        }
-        else{
-            _chooseActivities.splice(_chooseActivities.indexOf(e.value), 1);
-            _chooseActivitiesNames.splice(_chooseActivitiesNames.indexOf(e.target.name), 1);
-}
-        setChooseActivities(_chooseActivities);
-        setChooseActivitiesNames(_chooseActivitiesNames);
-    }
-    const [visibleConfirmActivities, setVisibleConfirmActivities] = useState(false);
-    const toast = useRef(null);
-    const accept = () => {
-        if(chooseActivities.length!=0)
-        newVacation.activities=chooseActivities
-        toast.current.show({ severity:'success', summary: 'הצליח', detail: 'פעילויות נוספו', life: 3000 });
-    }
-    useEffect(() => {
-        const total = chooseActivities.reduce((total, activityId) => {
-            const activity = activities.find(activity => activity._id === activityId);
-            return activity ? total + activity.price : total;
-        }, 0);
-        setSumPrice(total);
-    }, [chooseActivities]);
-    const reject = () => {
-        setVisibleChooseActivity(true)
-    }
+//            // setSumPrice(sumPrice+Number(e.target.price))
+//         }
+//         else{
+//             _chooseActivities.splice(_chooseActivities.indexOf(e.value), 1);
+//             _chooseActivitiesNames.splice(_chooseActivitiesNames.indexOf(e.target.name), 1);
+// }
+//         setChooseActivities(_chooseActivities);
+//         setChooseActivitiesNames(_chooseActivitiesNames);
+//     }
+//     const [visibleConfirmActivities, setVisibleConfirmActivities] = useState(false);
+//     const toast = useRef(null);
+//     const accept = () => {
+//         if(chooseActivities.length!=0)
+//         newVacation.activities=chooseActivities
+//         toast.current.show({ severity:'success', summary: 'הצליח', detail: 'פעילויות נוספו', life: 3000 });
+//     }
+//     useEffect(() => {
+//         const total = chooseActivities.reduce((total, activityId) => {
+//             const activity = activities.find(activity => activity._id === activityId);
+//             return activity ? total + activity.price : total;
+//         }, 0);
+//         setSumPrice(total);
+//     }, [chooseActivities]);
+//     const reject = () => {
+//         setVisibleChooseActivity(true)
+//     }
     useEffect(() => {
         console.log("Editing:", isEditing, "Vacation to update:", vacationToUpdate);
         if (isEditing && vacationToUpdate) {
@@ -191,17 +184,17 @@ const AddVacation = () => {
         }
     };
 
-    const message = (
-        <div>
-          <span>הפעילויות שבחרת:</span>
-          <br />
-          <div>{chooseActivitiesNames}</div>
+    // const message = (
+    //     <div>
+    //       <span>הפעילויות שבחרת:</span>
+    //       <br />
+    //       <div>{chooseActivitiesNames}</div>
     
-        <span>במחיר כולל:</span>
-        <br/>
-        <span>{sumPrice}</span>
-            </div>
-      )
+    //     <span>במחיר כולל:</span>
+    //     <br/>
+    //     <span>{sumPrice}</span>
+    //         </div>
+    //   )
     return (
         <>
             <div className="card flex justify-content-center">
@@ -231,7 +224,15 @@ const AddVacation = () => {
                         </label>
                         <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={targetAudienceRef}></InputText>
                     </div>
-                    <Button label="פעיליות" icon="pi pi-user" onClick={() => {getActivities();setVisibleChooseActivity(true)}} />
+                    <Button label="פעיליות" icon="pi pi-user" onClick={() => setShowChooseActivities(true)} />
+                    {showChooseActivities && (
+                     <ChooseActivities
+                     chooseActivities={chooseActivities}
+                     setChooseActivities={setChooseActivities}
+                     visible={showChooseActivities} // העברת הנראות לדיאלוג
+                     setVisible={setShowChooseActivities} // פונקציה לסגירת הדיאלוג
+                 />
+            )}
                     <div className="flex-auto">
                         <label htmlFor="buttondisplay" className="font-bold block mb-2">
                             תאריך התחלה
@@ -293,7 +294,7 @@ const AddVacation = () => {
                 </div>
                 
             </div>
-            <Dialog
+            {/* <Dialog
                  visible={visibleChooseActivity}
                  modal
                  onHide={() => { if (!visibleChooseActivity) return; setVisibleChooseActivity(false); }}
@@ -306,7 +307,7 @@ const AddVacation = () => {
                 <Checkbox inputId={activity._id} name={activity.name} price={activity.price}value={activity._id} onChange={onChooseActivitiesChange} checked={chooseActivities.includes(activity._id)} />
                 <Image src={activity.imageSrc} alt={activity.name} width="170px" height="100"  style={{ borderRadius: '10px',width: '100%', height: '100%', }} />
                 {/* <h3 className="text-lg font-semibold">{activity.name}</h3> */}
-                <h3 className="text-lg font-semibold">{activity.price}</h3>
+                {/* <h3 className="text-lg font-semibold">{activity.price}</h3>
                 <p>קהל יעד: {activity.targetAudience}</p>
                 <p>סוג: {activity.type}</p>
                 <p>תיאור: {activity.description}</p>
@@ -321,12 +322,12 @@ const AddVacation = () => {
                         </div>
                     </div>
                 )}
-            ></Dialog>
-               <Toast ref={toast} />
+            ></Dialog> */} 
+               {/* <Toast ref={toast} />
 
             <ConfirmDialog group="declarative"  visible={visibleConfirmActivities} onHide={() => setVisibleConfirmActivities(false)} message={message}
 
-                header="Confirmation" icon="pi pi-exclamation-triangle" accept={accept} reject={reject} />
+                header="Confirmation" icon="pi pi-exclamation-triangle" accept={accept} reject={reject} /> */}
         </>
     )
 }

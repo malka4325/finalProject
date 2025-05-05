@@ -20,7 +20,7 @@ const AddTrip = () => {
 
     ];
 
-    // const mainActivity = useLocation();
+    // const mainActivity = useLocation()
     // const props = mainActivity.state || {};
     const mainActivityRef = useRef("")
     const descriptionRef = useRef("")

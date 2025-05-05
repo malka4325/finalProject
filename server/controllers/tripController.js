@@ -1,10 +1,10 @@
 const Trip = require("../models/Trip")
 
 const createNewTrip = async (req, res) => {
-    const { area, mainActivity,description,targetAudience, date,activities,maxParticipants,currentParticipants,price,imageSrc,madeByType,madeById} = req.body
+    const { area, name,description,targetAudience, date,activities,maxParticipants,currentParticipants,price,imageSrc,madeByType,madeById} = req.body
     if (!area||!targetAudience||!date||!maxParticipants||!price)
         return res.status(400).json({ message: 'fields are required' })
-    const trip = await Trip.create({ area, mainActivity,description,targetAudience, date,activities,maxParticipants,currentParticipants,price,imageSrc,madeByType,madeById})
+    const trip = await Trip.create({ area, name,description,targetAudience, date,activities,maxParticipants,currentParticipants,price,imageSrc,madeByType,madeById})
     if (!trip)
         return res.status(400).send('invalid trip')
     res.json(await Trip.find().lean())
@@ -12,14 +12,18 @@ const createNewTrip = async (req, res) => {
 
 const getTrips = async (req, res) => {
     let query = {};
-    const { fromDate, toDate, area } = req.query;
+    const { fromDate, toDate, area,madeById,madeByType } = req.query;
 
     // הוספת תנאים על פי הפרמטרים שנשלחו
     if (area) {
         query.area = { $regex: area, $options: 'i' };
     }
- 
-
+    if (madeById) {
+        query.madeById = { $regex: madeById };
+    }
+    if (madeByType) {
+        query.madeByType = { $regex: madeByType };
+    }
     if (fromDate || toDate) {
         query.date = {};
         if (fromDate) {
@@ -45,7 +49,7 @@ const getTripById = async (req, res) => {
  }
  const getTripByName = async (req, res) => {
     const { name } = req.params
-    const trips = await Trip.find({ mainActivity:{$regex :name}  }).lean()
+    const trips = await Trip.find({ name:{$regex :name}  }).lean()
     if (!trips) {
         return res.json([])
     }
@@ -53,14 +57,14 @@ const getTripById = async (req, res) => {
 }
 
  const updateTrip = async (req, res) => {
-    const { _id, area, mainActivity,description,targetAudience, date,activities,maxParticipants,currentParticipants,price,imageSrc} = req.body
+    const { _id, area, name,description,targetAudience, date,activities,maxParticipants,currentParticipants,price,imageSrc} = req.body
     if (!_id||!area||!targetAudience||!date||!maxParticipants||!price)
         return res.status(400).json({ message: 'fields are required' })
     const trip = await Trip.findById(_id).exec()
     if (!trip)
         return res.status(400).send('trip not found')
 trip.area=area
-trip.mainActivity=mainActivity
+trip.name=name
 trip.description=description
 trip.targetAudience=targetAudience
 trip.activities=activities

@@ -23,6 +23,7 @@ import UpdateUser from './Components/UpdateUser';
 import { SpeedDial } from 'primereact/speeddial';
 import { Tooltip } from 'primereact/tooltip';
 import { useDispatch, useSelector } from 'react-redux';
+import ChooseActivities from './Components/Activities/ChooseActivities';
 
 
 
@@ -94,6 +95,7 @@ function App() {
           <Route path="/Trips/ByUser" element={<TripByUser/>} />
 
           <Route path="/Activities/AddActivity" element={<AddActivity/>} />
+          <Route path="/Activities/ChooseActivities" element={<ChooseActivities/>} />
 
 
           <Route path="/Orders/newOrder/:id" element={<NewOrder />} />
