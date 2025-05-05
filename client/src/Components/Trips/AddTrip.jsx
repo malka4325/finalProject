@@ -17,6 +17,7 @@ const AddTrip = () => {
     const [selectedArea, setSelectedArea] = useState(null);
     const [showChooseActivities, setShowChooseActivities] = useState(false); 
     const [chooseActivities, setChooseActivities] = useState([]);
+    const [sumPrice, setSumPrice] = useState(0);
 
 
     const areas = [
@@ -200,7 +201,9 @@ const AddTrip = () => {
                      chooseActivities={newTrip.activities}
                      setChooseActivities={setChooseActivities}
                      visible={showChooseActivities} // העברת הנראות לדיאלוג
-                     setVisible={setShowChooseActivities} // פונקציה לסגירת הדיאלוג
+                     setVisible={setShowChooseActivities}
+                     sumPrice ={sumPrice}
+                     setSumPrice ={setSumPrice}// פונקציה לסגירת הדיאלוג
                  />
             )}
                     <div className="flex-auto">

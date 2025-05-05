@@ -28,6 +28,7 @@ const AddVacation = () => {
     const token = useSelector(state => state.TokenSlice.token)
     const [chooseActivities, setChooseActivities] = useState([]);
     const [showChooseActivities, setShowChooseActivities] = useState(false); 
+    const [sumPrice, setSumPrice] = useState(0);
 
 
     const [selectedArea, setSelectedArea] = useState(null);
@@ -231,7 +232,9 @@ const AddVacation = () => {
                      chooseActivities={newVacation.activities}
                      setChooseActivities={setChooseActivities}
                      visible={showChooseActivities} // העברת הנראות לדיאלוג
-                     setVisible={setShowChooseActivities} // פונקציה לסגירת הדיאלוג
+                     setVisible={setShowChooseActivities}
+                     sumPrice ={sumPrice}
+                     setSumPrice ={setSumPrice} // פונקציה לסגירת הדיאלוג
                  />
             )}
                     <div className="flex-auto">

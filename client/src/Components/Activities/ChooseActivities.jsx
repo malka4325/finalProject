@@ -13,11 +13,12 @@ import { Image } from 'primereact/image';
 import axios from 'axios';
 import { ConfirmDialog } from 'primereact/confirmdialog';
 
-const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setVisible }) => {
+const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setVisible,maxPrice,sumPrice ,setSumPrice}) => {
     
     const [chooseActivitiesNames, setChooseActivitiesNames] = useState([]);
     const [activities, setActivities] = useState([]);
-    const [sumPrice, setSumPrice] = useState(0);
+    const maxActivities = 6;
+    //const [totalPrice, setTotalPrice] = useState(0);
 
     useEffect(() => {
         getActivities();
@@ -33,20 +34,31 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
             console.error(e)
         }
     }
-    const onChooseActivitiesChange = (e) => {
+    const onChooseActivitiesChange = (e,activity) => {
         console.log(e);
         let _chooseActivities = [...chooseActivities];
         let _chooseActivitiesNames = [...chooseActivitiesNames];
 
         if (e.checked) {
             _chooseActivities.push(e.value);
-            _chooseActivitiesNames.push(e.target.name);
+            _chooseActivitiesNames.push(activity.name);
+            if(maxPrice){
+            if (_chooseActivities.length >= maxActivities) {
+                alert('לא ניתן לבחור יותר מ-6 פעילויות');
+                return;
+            }
+
+            if (sumPrice + activity.price > maxPrice) {
+                alert('חצית את התקציב המקסימלי');
+                return;
+            }}
+            setSumPrice(sumPrice + activity.price)
 
             // setSumPrice(sumPrice+Number(e.target.price))
         }
         else {
             _chooseActivities.splice(_chooseActivities.indexOf(e.value), 1);
-            _chooseActivitiesNames.splice(_chooseActivitiesNames.indexOf(e.target.name), 1);
+            _chooseActivitiesNames.splice(_chooseActivitiesNames.indexOf(activity.name), 1);
         }
         setChooseActivities(_chooseActivities);
         setChooseActivitiesNames(_chooseActivitiesNames);
@@ -58,6 +70,11 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
         toast.current.show({ severity: 'success', summary: 'הצליח', detail: 'פעילויות נוספו', life: 3000 });
         setVisible(false);
         setVisibleConfirmActivities(false)
+    } 
+     const reject = () => {
+        setVisible(true)
+        setVisibleConfirmActivities(false)
+
     }
     useEffect(() => {
         const total = chooseActivities.reduce((total, activityId) => {
@@ -74,20 +91,31 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
     
         setSumPrice(total);
     }, [chooseActivities, activities]);
-    // useEffect(() => {
-    //     const total = chooseActivities?.reduce((total, activityId) => {
-    //         const activity = activities.find(activity => activity._id === activityId);
-    //         if(activity)
-    //         chooseActivitiesNames.push(activity.name)
-    //         return activity ? total + activity.price : total;
-    //     }, 0);
-    //     setSumPrice(total);
-    // }, []);
-    const reject = () => {
-        setVisible(true)
-        setVisibleConfirmActivities(false)
+    // const handleSelect = (activity) => {
 
-    }
+    //     console.log("פעילות שנבחרה:", activity);
+
+    //     const isSelected = selectedActivities.some((a) => a === activity._id);
+    //     if (isSelected) {
+    //         setSelectedActivities(selectedActivities.filter((a) => a !== activity._id));
+    //         setTotalPrice(totalPrice - activity.price);
+    //     } else {
+    //         if (selectedActivities.length >= maxActivities) {
+    //             alert('לא ניתן לבחור יותר מ-6 פעילויות');
+    //             return;
+    //         }
+
+    //         if (totalPrice + activity.price > maxPrice) {
+    //             alert('חצית את התקציב המקסימלי');
+    //             return;
+    //         }
+
+    //         setSelectedActivities([...selectedActivities, activity._id]);
+    //         setTotalPrice(totalPrice + activity.price);
+
+    //     };
+    // };
+  
 
 
     const message = (
@@ -110,11 +138,12 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
                 onHide={() => { if (!visible) return; setVisible(false); }}
                 content={({ hide }) => (
                     <div className="flex flex-column px-8 py-5 gap-4" style={{ maxHeight: '80vh', overflowY: 'auto', borderRadius: '12px', backgroundImage: 'radial-gradient(circle at left top, var(--primary-400), var(--primary-700))' }}>
-                        <div className="grid">
+                                    {maxPrice&&<div>{maxPrice - sumPrice}</div>}
+                                    <div className="grid">
                             {activities.map((activity, index) => (
                                 <div className="col-12 md:col-3" key={index} style={{ margin: '3rem' }}>
                                     <Card className="activity-card p-shadow-3" style={{ borderRadius: '10px', height: '200px', width: '200px', overflow: 'hidden' }}>
-                                        <Checkbox inputId={activity._id} name={activity.name} price={activity.price} value={activity._id} onChange={onChooseActivitiesChange} checked={chooseActivities.includes(activity._id)} />
+                                        <Checkbox inputId={activity._id} name={activity.name} price={activity.price} value={activity._id} onChange={(e)=>{  onChooseActivitiesChange(e,activity)}} checked={chooseActivities.includes(activity._id)} />
                                         <Image src={activity.imageSrc} alt={activity.name} width="170px" height="100" style={{ borderRadius: '10px', width: '100%', height: '100%', }} />
                                         {/* <h3 className="text-lg font-semibold">{activity.name}</h3> */}
                                         <h3 className="text-lg font-semibold">{activity.price}</h3>

@@ -22,6 +22,8 @@ const TripByUser = () => {
     const token = useSelector(state => state.TokenSlice.token)
     const [showChooseActivities, setShowChooseActivities] = useState(true); 
     const [chooseActivities, setChooseActivities] = useState([]);
+    const [sumPrice, setSumPrice] = useState(0);
+
     const [selectedArea, setSelectedArea] = useState(null);
     const areas = [
         { name: 'צפון', code: 'NY' },
@@ -43,14 +45,14 @@ const TripByUser = () => {
     const [date, setDate] = useState(null);
 
     const joinersRef = useRef("")
-    const maxPriceRef = useRef("")
+    //const maxPriceRef = useRef("")
 
     const targetAudienceRef = useRef("")
     // useEffect(() => {
     //     setMaxPrice(maxPriceRef.current.value)
     // }, [maxPriceRef]);
     const [selectedActivities, setSelectedActivities] = useState([]);
-    const [totalPrice, setTotalPrice] = useState(0);
+    // const [totalPrice, setTotalPrice] = useState(0);
     const [currentStep, setCurrentStep] = useState(0); // עוקב אחרי השלב הנוכחי
 
     const maxActivities = 6;
@@ -72,37 +74,13 @@ const TripByUser = () => {
         setCurrentStep((prevStep) => prevStep - 1); // עדכון לשלב הקודם
         stepperRef.current.prevCallback();
     };
-    const handleSelect = (activity) => {
 
-        console.log("פעילות שנבחרה:", activity);
-
-        const isSelected = selectedActivities.some((a) => a === activity._id);
-        if (isSelected) {
-            setSelectedActivities(selectedActivities.filter((a) => a !== activity._id));
-            setTotalPrice(totalPrice - activity.price);
-        } else {
-            if (selectedActivities.length >= maxActivities) {
-                alert('לא ניתן לבחור יותר מ-6 פעילויות');
-                return;
-            }
-
-            if (totalPrice + activity.price > maxPrice) {
-                alert('חצית את התקציב המקסימלי');
-                return;
-            }
-
-            setSelectedActivities([...selectedActivities, activity._id]);
-            setTotalPrice(totalPrice + activity.price);
-
-        };
-    };
     const newTrip = {
         activities:chooseActivities
     }
  
     const buildobject=()=>{
         
-
         if (!newTrip.imageSrc) newTrip.imageSrc = 'http://localhost:4300/uploads/logo.jpg';
         console.log("response", newTrip.imageSrc);
 
@@ -115,7 +93,7 @@ const TripByUser = () => {
             newTrip.maxParticipants = joinersRef.current.value
         }
 
-        if (totalPrice) newTrip.price = totalPrice;
+        if (sumPrice) newTrip.price = sumPrice;
         newTrip.madeByType = 'Client';
         newTrip.madeById = user._id;
     }
@@ -139,7 +117,7 @@ const TripByUser = () => {
 
     return (
         <>
-            {maxPriceRef.current.value - totalPrice}
+            {/* {maxPriceRef.current.value - totalPrice} */}
             <div className="card flex justify-content-center" style={{ direction: 'rtl' }}>
                 <Stepper ref={stepperRef} style={{ flexBasis: '50rem' }}>
                     <StepperPanel header="שלב ראשון" >
@@ -168,7 +146,7 @@ const TripByUser = () => {
                                 <label htmlFor="maxPrice" className="font-bold block mb-2">
                                     סכום יעד
                                 </label>
-                                <InputText id="maxPrice" label="name" className="font-bold block mb-2" style={{ backgroundColor: "bisque" }} ref={maxPriceRef} onChange={(e) => setMaxPrice(e.target.value)}></InputText>
+                                <InputText id="maxPrice" label="name" className="font-bold block mb-2" style={{ backgroundColor: "bisque" }}  onChange={(e) => setMaxPrice(e.target.value)}></InputText>
                             </div>
                         </div>
                         <div className="flex pt-4 justify-content-end">
@@ -183,7 +161,10 @@ const TripByUser = () => {
                      chooseActivities={newTrip.activities}
                      setChooseActivities={setChooseActivities}
                      visible={true} // העברת הנראות לדיאלוג
-                     setVisible={setShowChooseActivities} // פונקציה לסגירת הדיאלוג
+                     setVisible={setShowChooseActivities} 
+                     maxPrice={maxPrice}
+                     setSumPrice={setSumPrice}// פונקציה לסגירת הדיאלוג
+                     sumPrice={sumPrice}// פונקציה לסגירת הדיאלוג
                  />
             )}
  

@@ -50,7 +50,7 @@ const Trips = () => {
         const towWeeksFromNow = new Date();
         towWeeksFromNow.setDate(towWeeksFromNow.getDate() + 14);
         try {
-            const res = await axios.get(`http://localhost:4300/api/trips?fromDate=${now}&toDate=${towWeeksFromNow}`)
+            const res = await axios.get(`http://localhost:4300/api/trips?fromDate=${now}&toDate=${towWeeksFromNow}&madeByType=Admin`)
             if (res.status === 200) {
                 setTrips(res.data);
             }
