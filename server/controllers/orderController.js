@@ -4,6 +4,7 @@ const Vacation = require("../models/Vacation")
 const Trip = require("../models/Trip")
 const createNewOrder=async (req,res)=>{
  const {orderedBy,trip,vacation,numOfJoined}=req.body
+ 
  if(!orderedBy)
     return res.status(400).json({message:"orderedby is required"})
     if(vacation){
@@ -12,11 +13,12 @@ const createNewOrder=async (req,res)=>{
     return res.status(400).send("vacation not found")
     if(realVacation.currentParticipants+Number(numOfJoined)>realVacation.maxParticipants)
     return res.status(400).send("too mach joined")
-
+    
     realVacation.currentParticipants += Number(numOfJoined)
         const updatevacation=await realVacation.save()
     if (!updatevacation)
     return res.status(400).send('error update')
+
 }
 if(trip){
     const realTrip=await Trip.findById(trip).exec()
@@ -29,13 +31,14 @@ if(trip){
 if (!updateTrip)
 return res.status(400).send('error update')
 }
+
 const order = await Order.create({ orderedBy,trip,vacation,numOfJoined })
     if (!order)
         return res.status(400).send('not correct order')
     res.json("your orders code is: "+order._id)
 }
 const getAllOrders=async (req,res)=>{
-    const orders = await Order.find().lean().populate('orderedBy').populate('vacation')
+    const orders = await Order.find().lean().populate('orderedBy').populate('vacation').populate('trip')
         if (!orders)
             return res.status(400).send('no orders')
         res.json(orders)

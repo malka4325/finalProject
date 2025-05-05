@@ -89,7 +89,7 @@ const OneTrip = () => {
 
   const handleOrder = () => {
     if (token)
-      navigate(`/Orders/newOrder/${trip._id}?num=${value}`);
+      navigate(`/Orders/newOrder/${trip._id}?num=${value}&type=trip`);
   }
   return (
     <div className="p-4">

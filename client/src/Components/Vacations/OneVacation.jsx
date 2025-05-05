@@ -114,7 +114,7 @@ const OneVacation = () => {
 
   const handleOrder = () => {
     if (token)
-      navigate(`/Orders/newOrder/${vacation._id}?num=${joiners}`);
+      navigate(`/Orders/newOrder/${vacation._id}?num=${joiners}&type=vacation`);
   }
   return (
     <div className="p-4">

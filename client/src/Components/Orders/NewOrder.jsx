@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 const NewOrder = () => {
   const [searchParams] = useSearchParams();
   const numOfJoined = searchParams.get("num");
-    
+  const type= searchParams.get("type");
       const [name, setName] = useState("");
       const [phone, setPhone] = useState("");
       const [cardNumber, setCardNumber] = useState("");
@@ -42,7 +42,8 @@ const NewOrder = () => {
       const order= async ()=>{
         try {
           const res = await axios.post(  'http://localhost:4300/api/orders',
-            { orderedBy: user._id, vacation: id,numOfJoined }, // ה-body של הבקשה
+            { orderedBy: user._id,...(type === "vacation" && { vacation: id, numOfJoined }), 
+            ...(type === "trip" && { trip: id, numOfJoined }) }, 
             {
               headers: {
                 "Authorization": `Bearer ${token}`, // הכנסת ה-token לכותרת Authorization
@@ -50,7 +51,7 @@ const NewOrder = () => {
             }
           );
           if (res.status === 200) {
-              handleEmail();
+              //handleEmail();
               window.location.href = '/ThankYou'
           }
       } catch (e) {
