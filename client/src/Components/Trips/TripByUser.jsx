@@ -57,9 +57,9 @@ const TripByUser = () => {
 
         console.log("פעילות שנבחרה:", activity);
 
-        const isSelected = selectedActivities.some((a) => a._id === activity._id);
+        const isSelected = selectedActivities.some((a) => a === activity._id);
         if (isSelected) {
-            setSelectedActivities(selectedActivities.filter((a) => a._id !== activity._id));
+            setSelectedActivities(selectedActivities.filter((a) => a !== activity._id));
             setTotalPrice(totalPrice - activity.price);
         } else {
             if (selectedActivities.length >= maxActivities) {
@@ -72,14 +72,14 @@ const TripByUser = () => {
                 return;
             }
 
-            setSelectedActivities([...selectedActivities, activity]);
+            setSelectedActivities([...selectedActivities, activity._id]);
             setTotalPrice(totalPrice + activity.price);
 
         };
     };
     const newTrip = {}
-    const AddTrip = async () => {
-
+    const buildobject=()=>{
+        
 
         if (!newTrip.imageSrc) newTrip.imageSrc = 'http://localhost:4300/uploads/logo.jpg';
         console.log("response", newTrip.imageSrc);
@@ -87,25 +87,27 @@ const TripByUser = () => {
         if (selectedArea) newTrip.area = selectedArea.name;
         if (targetAudienceRef.current.value) newTrip.targetAudience = targetAudienceRef.current.value;
         if (date) newTrip.date = date;
-        //if (activities) newTrip.activities = activities;
+        if (selectedActivities) newTrip.activities = selectedActivities;
         if (joinersRef.current.value) {
             newTrip.currentParticipants = joinersRef.current.value;
             newTrip.maxParticipants = joinersRef.current.value
         }
-        
+
         if (totalPrice) newTrip.price = totalPrice;
-        newTrip.madeByType='Client';
-        newTrip.madeById=user._id;
+        newTrip.madeByType = 'Client';
+        newTrip.madeById = user._id;
+    }
+    const AddTrip = async () => {
+
         try {
             const res = await axios.post('http://localhost:4300/api/trips', newTrip, {
                 headers: {
-                    'Authorization': `Bearer ${token}`, // שליחת הטוקן בכותרת Authorization
+                    'Authorization': `Bearer ${token}`, 
                 },
             })
             console.log(res);
             if (res.status === 200) {
                 console.log("res.data", res.data);
-                // props.setTrips(res.data)
                 navigate('/Trips/הכל');
             }
         } catch (e) {
@@ -115,10 +117,10 @@ const TripByUser = () => {
 
     return (
         <>
-            {maxPriceRef.current.value-totalPrice}
+            {maxPriceRef.current.value - totalPrice}
             <div className="card flex justify-content-center" style={{ direction: 'rtl' }}>
                 <Stepper ref={stepperRef} style={{ flexBasis: '50rem' }}>
-                    <StepperPanel header="שלב ראשון">
+                    <StepperPanel header="שלב ראשון" >
                         <div className="flex flex-column h-12rem">
                             <div className="inline-flex flex-column gap-2">
                                 <label htmlFor="targetAudience" className="font-bold block mb-2">
@@ -126,10 +128,8 @@ const TripByUser = () => {
                                 </label>
                                 <InputText id="targetAudience" label="name" className="font-bold block mb-2" style={{ backgroundColor: "bisque" }} ref={targetAudienceRef}></InputText>
                             </div>
-                            <div className="card flex justify-content-center">
-                                <Dropdown value={selectedArea} onChange={(e) => setSelectedArea(e.value)} options={areas} optionLabel="name"
-                                    placeholder=" בחר אזור" className="w-full md:w-14rem" />
-                            </div>
+                            
+                            
                             <div className="inline-flex flex-column gap-2">
                                 <label htmlFor="joiners" className="font-bold block mb-2">
                                     כמות משתתפים
@@ -150,46 +150,54 @@ const TripByUser = () => {
                             </div>
                         </div>
                         <div className="flex pt-4 justify-content-end">
-                            <Button label="הבא" icon="pi pi-arrow-left" iconPos="right" onClick={() => stepperRef.current.nextCallback()} />
+                            <Button label="הבא" icon="pi pi-arrow-left" iconPos="right" onClick={() => { stepperRef.current.nextCallback(); 
+                                
+                            }} />
                         </div>
                     </StepperPanel>
                     <StepperPanel header="שלב שני">
-    <div className="flex flex-column h-12rem">
-        <div className="grid">
-            {activities.map((activity, index) => (
-                <div className="col-12 md:col-3" key={index} style={{ margin: '3rem' }}>
-                    <Card className="activity-card p-shadow-3" style={{ borderRadius: '10px', height: '250px', width: '200px', overflow: 'hidden' }}>
-                        <Checkbox
-                            inputId={activity._id}
-                            name={activity.name}
-                            value={activity._id}
-                            onChange={() => handleSelect(activity)}
-                            checked={selectedActivities.some((a) => a._id === activity._id)}
-                        />
-                        <Image src={activity.imageSrc} alt={activity.name} width="170px" height="100" style={{ borderRadius: '10px', width: '100%', height: '100%' }} />
-                        <h3 className="text-lg font-semibold">{activity.price} ₪</h3>
-                        <p>קהל יעד: {activity.targetAudience}</p>
-                        <p>סוג: {activity.type}</p>
-                        <p>תיאור: {activity.description}</p>
-                        <label htmlFor={activity._id}>בחר</label>
-                        <Button label="למידע נוסף" icon="pi pi-info-circle" className="p-button-secondary mt-2" />
-                    </Card>
-                </div>
-            ))}
-        </div>
-    </div>
-    <div className="flex pt-4 justify-content-between">
-        <Button label="קודם" severity="secondary" icon="pi pi-arrow-right" onClick={() => stepperRef.current.prevCallback()} />
-        <Button label="הבא" icon="pi pi-arrow-left" iconPos="right" onClick={() => { stepperRef.current.nextCallback();  }} />
-    </div>
-</StepperPanel>
+                        <div className="flex flex-column h-12rem">
+                        <div className="card flex justify-content-center">
+                                <Dropdown value={selectedArea} onChange={(e) => setSelectedArea(e.value)} options={areas} optionLabel="name"
+                                    placeholder=" בחר אזור" className="w-full md:w-14rem" />
+                            </div>
+                            <div className="grid">
+                                {activities.map((activity, index) => (
+                                    <div className="col-12 md:col-3" key={index} style={{ margin: '3rem' }}>
+                                        <Card className="activity-card p-shadow-3" style={{ borderRadius: '10px', height: '250px', width: '200px', overflow: 'hidden' }}>
+                                            <Checkbox
+                                                inputId={activity._id}
+                                                name={activity.name}
+                                                value={activity._id}
+                                                onChange={() => handleSelect(activity)}
+                                                checked={selectedActivities.some((a) => a === activity._id)}
+                                            />
+                                            <Image src={activity.imageSrc} alt={activity.name} width="170px" height="100" style={{ borderRadius: '10px', width: '100%', height: '100%' }} />
+                                            <h3 className="text-lg font-semibold">{activity.price} ₪</h3>
+                                            {console.log(activity)}
+                                            <p>קהל יעד: {activity.targetAudience}</p>
+                                            <p>סוג: {activity.type}</p>
+                                            <p>תיאור: {activity.description}</p>
+                                            <label htmlFor={activity._id}>בחר</label>
+                                            <Button label="למידע נוסף" icon="pi pi-info-circle" className="p-button-secondary mt-2" />
+                                        </Card>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="flex pt-4 justify-content-between">
+                            <Button label="קודם" severity="secondary" icon="pi pi-arrow-right" onClick={() => stepperRef.current.prevCallback()} />
+                            <Button label="הבא" icon="pi pi-arrow-left" iconPos="right" onClick={() => { stepperRef.current.nextCallback();buildobject(); }} />
+                        </div>
+                    </StepperPanel>
                     <StepperPanel header="שלב שלישי">
                         <div className="flex flex-column h-12rem">
-                            <div className="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">Content III</div>
+                            <h4>{newTrip.targetAudience}</h4>
+                            <h4>{user.name}</h4>
                         </div>
                         <div className="flex pt-4 justify-content-start">
                             <Button label="קודם" severity="secondary" icon="pi pi-arrow-right" onClick={() => stepperRef.current.prevCallback()} />
-                            <Button label="לסיום" severity="secondary" icon="pi pi-arrow-left" onClick={() => {stepperRef.current.nextCallback();AddTrip();}} />
+                            <Button label="לסיום" severity="secondary" icon="pi pi-arrow-left" onClick={() => { stepperRef.current.nextCallback(); AddTrip(); }} />
                         </div>
                     </StepperPanel>
                 </Stepper>
