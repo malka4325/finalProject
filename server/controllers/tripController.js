@@ -1,10 +1,10 @@
 const Trip = require("../models/Trip")
 
 const createNewTrip = async (req, res) => {
-    const { area, name,description,targetAudience, date,activities,maxParticipants,currentParticipants,price,imageSrc,madeByType,madeById} = req.body
+    const { area, location,description,targetAudience, date,activities,maxParticipants,currentParticipants,price,imageSrc,madeByType,madeById} = req.body
     if (!area||!targetAudience||!date||!maxParticipants||!price)
         return res.status(400).json({ message: 'fields are required' })
-    const trip = await Trip.create({ area, name,description,targetAudience, date,activities,maxParticipants,currentParticipants,price,imageSrc,madeByType,madeById})
+    const trip = await Trip.create({ area, location,description,targetAudience, date,activities,maxParticipants,currentParticipants,price,imageSrc,madeByType,madeById})
     if (!trip)
         return res.status(400).send('invalid trip')
     res.json(await Trip.find().lean())
@@ -47,9 +47,9 @@ const getTripById = async (req, res) => {
      return res.status(400).send('trip not found')
  res.json(trip)
  }
- const getTripByName = async (req, res) => {
-    const { name } = req.params
-    const trips = await Trip.find({ name:{$regex :name}  }).lean()
+ const getTripBylocation = async (req, res) => {
+    const { location } = req.params
+    const trips = await Trip.find({ location:{$regex :location}  }).lean()
     if (!trips) {
         return res.json([])
     }
@@ -57,14 +57,14 @@ const getTripById = async (req, res) => {
 }
 
  const updateTrip = async (req, res) => {
-    const { _id, area, name,description,targetAudience, date,activities,maxParticipants,currentParticipants,price,imageSrc} = req.body
+    const { _id, area, location,description,targetAudience, date,activities,maxParticipants,currentParticipants,price,imageSrc} = req.body
     if (!_id||!area||!targetAudience||!date||!maxParticipants||!price)
         return res.status(400).json({ message: 'fields are required' })
     const trip = await Trip.findById(_id).exec()
     if (!trip)
         return res.status(400).send('trip not found')
 trip.area=area
-trip.name=name
+trip.location=location
 trip.description=description
 trip.targetAudience=targetAudience
 trip.activities=activities
@@ -92,4 +92,4 @@ return res.status(400).send('error delete')
 res.json(await Trip.find().lean())
 
 }
-module.exports = { createNewTrip,getTrips,getTripById,updateTrip,deleteTrip ,getTripByName}
+module.exports = { createNewTrip,getTrips,getTripById,updateTrip,deleteTrip ,getTripBylocation}

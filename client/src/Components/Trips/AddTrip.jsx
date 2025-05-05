@@ -72,7 +72,7 @@ const AddTrip = () => {
         console.log(newTrip);
 
         if (selectedArea) newTrip.area = selectedArea.name;
-        if (mainActivityRef.current.value) newTrip.mainActivity = mainActivityRef.current.value;
+        if (mainActivityRef.current.value) newTrip.location = mainActivityRef.current.value;
         if (targetAudienceRef.current.value) newTrip.targetAudience = targetAudienceRef.current.value;
         if (descriptionRef.current.value) newTrip.description = descriptionRef.current.value;
         if (date) newTrip.date = date;

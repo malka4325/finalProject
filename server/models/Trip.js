@@ -7,7 +7,7 @@ const tripSchema = new mongoose.Schema({
         enum: ['צפון', 'דרום', 'מרכז', 'אזור ירושלים'],
         required: true
     },
-    name: {
+    location: {
         type: String,
     },
     description:{

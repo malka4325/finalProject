@@ -25,7 +25,14 @@ const AllOrders = () => {
         allorders()
     }, []);
    const itemTemplate = (data) => {
-           return (
+    if (data.vacation) {
+        data.vacation=data.vacation;
+    } else if (data.trip) {
+         data.vacation=data.trip;
+    } else {
+        console.log("לא vacation ולא trip");
+    }
+    return (
                <div className="col-12">
                    <div className="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
                        <img className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" src={data.vacation.imageSrc} alt={data.vacation.location} />
