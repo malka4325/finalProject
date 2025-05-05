@@ -11,6 +11,7 @@ const userSlice = createSlice({
             state.user = action.payload; 
             
           },
+          
     }
 })
 export const {setValue} = userSlice.actions

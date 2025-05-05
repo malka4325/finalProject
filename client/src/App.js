@@ -7,7 +7,7 @@ import Trips from './Components/Trips/Trips';
 import AuthPage from './Components/AuthPage';
 import OneVacation from './Components/Vacations/OneVacation'
 import Vacations from './Components/Vacations/Vacations';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import Upload from './Components/Upload';
 import NewOrder from './Components/Orders/NewOrder';
 import NavBar from './Components/NavBar';
@@ -20,13 +20,46 @@ import OneTrip from './Components/Trips/OneTrip';
 import AddActivity from './Components/Activities/AddActivity';
 import TripByUser from './Components/Trips/TripByUser';
 import UpdateUser from './Components/UpdateUser';
+import { SpeedDial } from 'primereact/speeddial';
+import { Tooltip } from 'primereact/tooltip';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 
 function App() {
-  // const [token, setToken] = useState();
-  // const setTokenCallback = (token) => {
-  //   setToken(token);
-  // }
+
+  const user = useSelector(state => state.UserSlice.user)
+  const isAdmin = () => {
+    if (!user)
+        return false
+    return user.role == "Admin"
+}
+
+    const items = [
+     
+        {
+            label: 'הוסף פעילות',
+            icon: 'pi pi-share-alt',
+            command: () => {
+              window.location.href = '/Activities/AddActivity';
+
+            }
+        },
+        {
+            label: 'הוסף טיול',
+            icon: 'pi pi-truck',
+            command: () => {
+              window.location.href = '/Trips/AddTrip';
+            }
+        },
+        {
+            label: 'הוסף נופש',
+            icon: 'pi pi-sun',
+            command: () => {
+                window.location.href = '/Vacations/AddVacation';
+            }
+        }
+    ];
   return (
     // <div className='card'>
     <Router>
@@ -43,7 +76,6 @@ function App() {
         {/* <AuthPage/> */}
         {/* <UserProvider  accessToken={token}> */}
 
-<AddActivity/>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/Login" element={<AuthPage />} />
@@ -61,6 +93,9 @@ function App() {
 
           <Route path="/Trips/ByUser" element={<TripByUser/>} />
 
+          <Route path="/Activities/AddActivity" element={<AddActivity/>} />
+
+
           <Route path="/Orders/newOrder/:id" element={<NewOrder />} />
           <Route path="/Orders/myOrders" element={<OldOrders />} />
           <Route path="/Orders/allOrders" element={<AllOrders />} />
@@ -68,6 +103,16 @@ function App() {
         </Routes>
 
         {/* </UserProvider> */}
+       
+<div style={{ position: 'relative', height: '350px' }} visible={isAdmin()}>
+    <Tooltip target=".speeddial-bottom-left .p-speeddial-action" position="left" />
+    <SpeedDial model={items} 
+               direction="up" 
+               className="speeddial-bottom-left left-0" 
+               buttonClassName="p-button-danger" 
+               style={{ position: 'fixed', bottom: '20px', overflow: 'visible',margin:'20px' }} />
+</div>
+        
 
       </div>  </Router>
     // {/* </div> */}
@@ -75,3 +120,8 @@ function App() {
 }
 
 export default App;
+
+
+
+
+        

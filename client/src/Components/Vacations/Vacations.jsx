@@ -146,11 +146,7 @@ const Vacations = () => {
         else
             navigate('/Login')
     }
-    const handleButtonAddVacation = () => {
 
-        if (token && user.role == "Admin")
-            navigate('/Vacations/AddVacation');
-    }
     const gridItem = (vacation) => {
 
         freeParticipants(vacation);
@@ -257,7 +253,6 @@ const Vacations = () => {
                 <h1>{area == 'הכל' ? 'כל הנופשים' : `נופשים ב${area}`}</h1>
                 <DataView value={vacations} listTemplate={listTemplate} />
                 {console.log("user&&user.role == Admin", user)}
-                <Button icon="pi pi-plus" visible={isAdmin()} severity="Success" rounded aria-label="Filter" onClick={handleButtonAddVacation} style={{ marginLeft: "50px", marginBottom: '50px', left: 0, bottom: 0, position: 'fixed' }} direction="down-left" label="הוספת נופש" />
                 <Toast ref={toast} />
             <ConfirmDialog group="declarative"  visible={confirmDeleteVisible} onHide={() => setConfirmDeleteVisible(false)} message="למחוק נופש?" 
                 header="למחוק?" icon="pi pi-exclamation-triangle" accept={acceptDelete} reject={rejectDelete} />

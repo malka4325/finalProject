@@ -288,7 +288,7 @@ const AddVacation = () => {
                     </div>
                     <div className="flex align-items-center gap-2">
                         <Button label={isEditing?'עדכן':'הוסף'} onClick={(e) => { addOrUpdateVacation(); }} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
-                        <Button label="ביטול" onClick={(e) => navigate('/Vacation/הכל')} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
+                        <Button label="ביטול" onClick={(e) => navigate('/Vacations/הכל')} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
                     </div>
                 </div>
                 

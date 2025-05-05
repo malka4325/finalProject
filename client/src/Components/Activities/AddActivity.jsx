@@ -6,6 +6,7 @@ import axios from 'axios';
 import { FileUpload } from 'primereact/fileupload';
 import { Dropdown } from 'primereact/dropdown';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const AddActivity = () => {
     const nameRef = useRef("")
@@ -13,6 +14,8 @@ const AddActivity = () => {
     const targetAudienceRef = useRef("")
     const priceRef = useRef("")
     const token = useSelector(state => state.TokenSlice.token)
+    const navigate = useNavigate()
+
 
 
     const [imageUrl, setImageUrl] = useState("");
@@ -98,12 +101,12 @@ const AddActivity = () => {
     return (
 
         <div className="card flex justify-content-center">
-            <Button label="הוספת פעילות" icon="pi pi-user" onClick={() => setVisibleAddActivity(true)} />
+            {/* <Button label="הוספת פעילות" icon="pi pi-user" onClick={() => setVisibleAddActivity(true)} />
             <Dialog
                 visible={visibleAddActivity}
                 modal
                 onHide={() => { if (!visibleAddActivity) return; setVisibleAddActivity(false); }}
-                content={({ hide }) => (
+                content={({ hide }) => ( */}
                     <div className="flex flex-column px-8 py-5 gap-4" style={{ maxHeight: '80vh', overflowY: 'auto',borderRadius: '12px', backgroundImage: 'radial-gradient(circle at left top, var(--primary-400), var(--primary-700))' }}>
 
                         <div className="inline-flex flex-column gap-2">
@@ -161,12 +164,12 @@ const AddActivity = () => {
 
                         </div>
                         <div className="flex align-items-center gap-2">
-                            <Button label="הוסף" onClick={(e) =>{ hide(e);addActivity()}} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
-                            <Button label="ביטול" onClick={(e) => hide(e)} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
+                        <Button label='הוסף' onClick={(e) => { addActivity(); }} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
+                        <Button label="ביטול" onClick={(e) => navigate('/')} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
                         </div>
                     </div>
-                )}
-            ></Dialog>
+                {/* )}
+            ></Dialog> */}
         </div>
 
     )

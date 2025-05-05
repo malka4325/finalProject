@@ -110,11 +110,7 @@ const Trips = () => {
         else
             navigate('/Login')
     }
-    const handleButtonAddTrip = () => {
 
-        if (token && user.role == "Admin")
-            navigate('/Trips/AddTrip');
-    }
     const gridItem = (trip) => {
 
         freeParticipants(trip);
@@ -196,7 +192,6 @@ const Trips = () => {
             <div className="card" style={{ margin: "40px" }}>
                 <h1>{area == 'הכל' ? 'כל הטיולים' : `טיולים ב${area}`}</h1>
                 <DataView value={trips} listTemplate={listTemplate} />
-                <Button icon="pi pi-plus" visible={user.role == "Admin"} severity="Success" rounded aria-label="Filter" onClick={handleButtonAddTrip} style={{ marginLeft: "50px", marginBottom: '50px', left: 0, bottom: 0, position: 'fixed' }} direction="down-left" label="הוספת טיול" />
                 <Outlet />
             </div> </>
     )
