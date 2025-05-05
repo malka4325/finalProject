@@ -1,0 +1,220 @@
+import React from 'react';
+
+
+import React from "react";
+
+import { useState, useEffect } from 'react';
+import { Button } from 'primereact/button';
+import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
+
+import { Tag } from 'primereact/tag';
+import { ConfirmDialog } from 'primereact/confirmdialog';
+import { Link, Outlet, useParams } from 'react-router-dom';
+import { Image } from 'primereact/image';
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+import { useSelector } from "react-redux";
+const MyTrips = () => {
+    // const context = useContext(Context);
+
+    const navigate = useNavigate();
+    const token = useSelector(state => state.TokenSlice.token)
+    const user = useSelector(state => state.UserSlice.user)
+    console.log(user);
+    const { area } = useParams();
+    const [trips, setTrips] = useState([]);
+    const [selectedTrip, setSelectedTrip] = useState(null);
+    const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+    useEffect(() => {
+      
+    }, [])
+    // useEffect(() => { getTrips() }, [])
+    const getTrips = async () => {
+        try {
+            const res = await axios.get(`http://localhost:4300/api/trips?fromDate=${new Date()}&madeByType=Admin`)
+            if (res.status === 200) {
+                setTrips(res.data);
+            }
+        } catch (e) {
+            console.error(e)
+        }
+    }
+   
+
+
+    const getSeverity = (full) => {
+        switch (full) {
+
+            case 'מקומות אחרונים':
+                return 'warning';
+
+            case 'מלא':
+                return 'danger';
+
+            default:
+                return null;
+        }
+    };
+
+    let full = '';
+    let classIcon = ""
+    const freeParticipants = (trip) => {
+        const tmp = trip.maxParticipants - trip.currentParticipants;
+
+        if (tmp > 0 && tmp < 20) {
+            full = 'מקומות אחרונים'
+            classIcon = "pi pi-exclamation-triangle"
+
+
+        }
+        else {
+            if (tmp === 0) {
+                full = 'מלא'
+                classIcon = "pi pi-minus-circle"
+            }
+            else
+                full = 'יש מקום'
+        }
+
+    }
+    const updateTrip=(event,trip)=>{
+        setSelectedTrip(trip)
+        event.stopPropagation();
+        if (token && user.role == "Admin")
+        navigate('/Trips/AddTrip',{ state: { tripToUpdate: trip, isEditing: true } });
+       }
+       const deleteTrip=async(trip)=>{
+    
+        try {
+            const res = await axios.delete(`http://localhost:4300/api/trips/${trip._id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`, // שליחת הטוקן בכותרת Authorization
+                }
+            })
+            if (res.status === 200) {
+                getTrips()
+            }
+          } catch (e) {
+            console.error(e)
+          }
+       }
+       const acceptDelete = () => {
+        deleteTrip(selectedTrip)
+        }
+    
+       const rejectDelete = () => {
+        setConfirmDeleteVisible(false);
+       }
+
+    const handleButton = (trip) => {
+        if (token)
+            navigate(`/Trips/${trip.area}/${trip._id}`);
+        else
+            navigate('/Login')
+    }
+
+    const gridItem = (trip) => {
+
+        freeParticipants(trip);
+        console.log(trip);
+        const handleDelete = (event) => {
+            event.stopPropagation();
+            setSelectedTrip(trip); // שומר את הנופש הנבחר
+            setConfirmDeleteVisible(true); // מציג את דיאלוג האישור
+        };
+
+        return (
+            <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-1" key={trip._id}
+            >
+
+                {/* {oneTripVis && <OneTrip trip={trip} setOneTripVis={setOneTripVis} oneTripVis={oneTripVis} />} */}
+                <div className=" border-1 surface-border surface-card border-round" style={{
+                    width: "370px", /* רוחב קבוע */
+                    height: '370px', /* גובה קבוע */
+                    overflow: 'hidden', /* מסתיר תוכן שגדול מהכרטיס */
+                    padding: 0, margin: 0
+                }}>
+                    <button onClick={() => { handleButton(trip) }} style={{ position: 'relative', backgroundColor: "white", borderWidth: "0px", padding: 0, margin: 0 }}>
+                        <div style={{ position: 'relative', width: '370px', height: '200px', overflow: 'hidden' }}>
+                            <Image src={trip.imageSrc} alt={trip.location} width="370px" height="200" style={{ width: '100%', height: '100%' }} />
+                            <div className="flex flex-wrap align-items-center justify-content-between gap-1" style={{ position: 'absolute', top: '5px', left: '5px', margin: 8 }}>
+                                <i className="pi pi-map-marker"></i>
+                                <span className="font-semibold text-xl">{trip.area}</span>
+                            </div>
+                            <Tag className="mr-2 text-lg " value={full} severity={getSeverity(full)} style={{
+                                visibility: full === 'יש מקום' ? "hidden" : "visible",
+                                position: "absolute",
+                                top: '10px', // התאם את המיקום
+                                right: '10px',
+                                whiteSpace: 'nowrap',
+                                zIndex: 2
+                            }}><i className={classIcon} style={{ margin: "2px" }}></i></Tag>
+
+                        </div>
+                        <div className="flex justify-content w-full  gap-2" >
+        <Button icon="pi pi-pencil"visible={isAdmin()} rounded text severity="help" aria-label="update"onClick={(event) => updateTrip(event, trip)} />
+        <Button icon="pi pi-trash" visible={isAdmin()}rounded text severity="danger" aria-label="Cancel" onClick={(event) =>{handleDelete(event)}}/>
+    </div>
+                        <div className="flex flex-column align-items-center gap-2 py-2">
+
+
+                            <div className="text-2xl font-bold">{trip.location}</div>
+                            <div className="flex gap-5 mb-1" style={{ marginTop: "7px" }}>
+
+                                <div className="flex-1" style={{ whiteSpace: 'nowrap' }}>
+                                    <div className="font-semibold text-gray-600">בתאריך </div>
+                                    <div className="text-xl text-gray-800">
+                                        {new Date(trip.date).toLocaleDateString('he-IL', {
+                                            year: 'numeric',
+                                            month: 'numeric',
+                                            day: 'numeric',
+                                        })}
+                                    </div>
+                                </div>
+                               
+                            </div>
+
+                            
+                        </div>
+                    </button>
+                    <div className="flex align-items-center justify-content-between" style={{ padding: "1px" }}>
+                        <span style={{ marginLeft: "8px", }}>
+                            <span className="text-xl font-semibold">{trip.price}$</span>
+                            <br /><span className="text-m font-semibold">ללילה</span>
+                        </span>
+                        <span className="text-m font-semibold">{trip.targetAudience}</span>
+
+
+
+                        {/* <Button className="p-button-rounded font-semibold" style={{
+                           backgroundColor: "Window",color:"ButtonText", borderColor: "orange", boxShadow: '0 0 0 0.2rem rgba(240, 134, 80, 0.5)',marginRight:"7px"
+                        }} onClick={() => { handleButton(trip) }}>הזמן עכשיו</Button> */}
+                    </div>
+                </div>
+
+            </div>
+        );
+    };
+    const listTemplate = (trips) => {
+        return <div className="grid grid-nogutter">{trips.map((trip) => gridItem(trip))}</div>;
+    };
+    const isAdmin = () => {
+        if (!user)
+            return false
+        return user.role == "Admin"
+    }
+    return (
+        <>
+            <div className="card" style={{ margin: "40px" }}>
+                <h1>{area == 'הכל' ? 'כל הטיולים' : `טיולים ב${area}`}</h1>
+                <DataView value={trips} listTemplate={listTemplate} />
+                <ConfirmDialog group="declarative"  visible={confirmDeleteVisible} onHide={() => setConfirmDeleteVisible(false)} message="למחוק נופש?" 
+                header="למחוק?" icon="pi pi-exclamation-triangle" accept={acceptDelete} reject={rejectDelete} />
+                <Outlet />
+            </div> </>
+    )
+}
+
+
+export default MyTrips;
