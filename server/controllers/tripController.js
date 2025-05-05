@@ -1,10 +1,10 @@
 const Trip = require("../models/Trip")
 
 const createNewTrip = async (req, res) => {
-    const { area, mainActivity,description,targetAudience, date,activities,maxParticipants,currentParticipants,price,imageSrc} = req.body
+    const { area, mainActivity,description,targetAudience, date,activities,maxParticipants,currentParticipants,price,imageSrc,madeByType,madeById} = req.body
     if (!area||!targetAudience||!date||!maxParticipants||!price)
         return res.status(400).json({ message: 'fields are required' })
-    const trip = await Trip.create({ area, mainActivity,description,targetAudience, date,activities,maxParticipants,currentParticipants,price,imageSrc})
+    const trip = await Trip.create({ area, mainActivity,description,targetAudience, date,activities,maxParticipants,currentParticipants,price,imageSrc,madeByType,madeById})
     if (!trip)
         return res.status(400).send('invalid trip')
     res.json(await Trip.find().lean())

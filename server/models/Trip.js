@@ -8,8 +8,6 @@ const tripSchema = new mongoose.Schema({
         required: true
     },
     mainActivity: {
-        // type:mongoose.Schema.Types.ObjectId,
-        // ref: 'Activity'
         type: String,
     },
     description:{
@@ -45,6 +43,16 @@ const tripSchema = new mongoose.Schema({
         type: String,
         default: 'http://localhost:4300/uploads/logo.jpg'
     },
+    madeByType:{
+        type: String,
+        enum: ['Client','Admin'],
+        default:'Admin'
+    },
+    madeById:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
+
 },
     { timestamps: true })
 
