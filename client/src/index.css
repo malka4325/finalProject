@@ -35,3 +35,29 @@ body {
 .fixed-logo:hover {
   opacity: 0.3; /* שקיפות מלאה במעבר עכבר */
 }
+
+/* אם אין לך קובץ CSS נפרד, תוכל לשים את זה בתוך index.css */
+.form-section {
+  background: #f4f4f9;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+}
+
+.field-label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.p-inputtext,
+.p-dropdown,
+.p-calendar {
+  width: 100%;
+}
+
+.stepper-container {
+  max-width: 900px;
+  margin: auto;
+  direction: rtl;
+}

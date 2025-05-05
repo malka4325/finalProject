@@ -23,7 +23,7 @@ const TripByUser = () => {
     const [showChooseActivities, setShowChooseActivities] = useState(true); 
     const [chooseActivities, setChooseActivities] = useState([]);
     const [sumPrice, setSumPrice] = useState(0);
-
+    const[BuildingTrip,setBuildingTrip]=useState({})
     const [selectedArea, setSelectedArea] = useState(null);
     const areas = [
         { name: 'צפון', code: 'NY' },
@@ -80,7 +80,6 @@ const TripByUser = () => {
     }
  
     const buildobject=()=>{
-        
         if (!newTrip.imageSrc) newTrip.imageSrc = 'http://localhost:4300/uploads/logo.jpg';
         console.log("response", newTrip.imageSrc);
 
@@ -96,6 +95,7 @@ const TripByUser = () => {
         if (sumPrice) newTrip.price = sumPrice;
         newTrip.madeByType = 'Client';
         newTrip.madeById = user._id;
+        setBuildingTrip(newTrip)
     }
     const AddTrip = async () => {
         buildobject()
@@ -119,7 +119,7 @@ const TripByUser = () => {
     return (
         <>
             {/* {maxPriceRef.current.value - totalPrice} */}
-            <div className="card flex justify-content-center" style={{ direction: 'rtl' }}>
+            {/* <div className="card flex justify-content-center" style={{ direction: 'rtl' }}>
                 <Stepper ref={stepperRef} style={{ flexBasis: '50rem' }}>
                     <StepperPanel header="שלב ראשון" >
                         <div className="flex flex-column h-12rem">
@@ -188,7 +188,96 @@ const TripByUser = () => {
                         </div>
                     </StepperPanel>
                 </Stepper>
-            </div>
+            </div> */}
+<div className="stepper-container">
+  <Stepper ref={stepperRef}>
+    <StepperPanel header="פרטי טיול">
+      <div className="form-section">
+        <div className="grid">
+          <div className="col-12 md:col-6">
+            <label className="field-label">למי?</label>
+            <InputText ref={targetAudienceRef} className="p-inputtext" />
+          </div>
+
+          <div className="col-12 md:col-6">
+            <label className="field-label">כמות משתתפים</label>
+            <InputText ref={joinersRef} className="p-inputtext" />
+          </div>
+
+          <div className="col-12 md:col-6">
+            <label className="field-label">תאריך</label>
+            <Calendar value={date} onChange={(e) => setDate(e.value)} showIcon dateFormat="dd/mm/yy" className="p-calendar" />
+          </div>
+
+          <div className="col-12 md:col-6">
+            <label className="field-label">סכום יעד</label>
+            <InputText onChange={(e) => setMaxPrice(e.target.value)} className="p-inputtext" />
+          </div>
+        </div>
+
+        <div className="flex justify-content-end mt-4">
+          <Button label="הבא" icon="pi pi-arrow-left" onClick={handleNextStep} />
+        </div>
+      </div>
+    </StepperPanel>
+
+    <StepperPanel header="בחירת פעילויות">
+      <div className="form-section">
+        <div className="mb-3">
+          <label className="field-label">בחר אזור</label>
+          <Dropdown
+            value={selectedArea}
+            onChange={(e) => setSelectedArea(e.value)}
+            options={areas}
+            optionLabel="name"
+            placeholder="בחר אזור"
+            className="p-dropdown"
+          />
+        </div>
+
+        <Button
+          label="בחר פעילויות"
+          icon="pi pi-list"
+          className="mb-3"
+          onClick={() => setShowChooseActivities(true)}
+        />
+
+        {showChooseActivities && (
+          <ChooseActivities
+            chooseActivities={newTrip.activities}
+            setChooseActivities={setChooseActivities}
+            visible={true}
+            setVisible={setShowChooseActivities}
+            maxPrice={maxPrice}
+            setSumPrice={setSumPrice}
+            sumPrice={sumPrice}
+          />
+        )}
+
+        <div className="flex justify-content-between mt-4">
+          <Button label="קודם" icon="pi pi-arrow-right" onClick={handlePrevStep} className="p-button-secondary" />
+          <Button label="הבא" icon="pi pi-arrow-left" onClick={() => { handleNextStep(); buildobject(); }} />
+        </div>
+      </div>
+    </StepperPanel>
+
+    <StepperPanel header="סקירה ושליחה">
+      <div className="form-section text-right">
+
+        <h4>טיול עבור: {BuildingTrip.targetAudience}</h4>
+        <h4>משתתפים: {BuildingTrip.currentParticipants}</h4>
+        <h4>תאריך: {date?.toLocaleDateString()}</h4>
+        <h4>סה"כ עלות: ₪{BuildingTrip.price}</h4>
+        <h4>שם יוצר: {user?.name}</h4>
+
+        <div className="flex justify-content-between mt-4">
+          <Button label="קודם" icon="pi pi-arrow-right" onClick={handlePrevStep} className="p-button-secondary" />
+          <Button label="סיום" icon="pi pi-check" severity="success" onClick={() => { stepperRef.current.nextCallback(); AddTrip(); }} />
+        </div>
+      </div>
+    </StepperPanel>
+  </Stepper>
+</div>
 
         </>
     )
