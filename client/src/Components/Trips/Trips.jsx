@@ -59,7 +59,7 @@ const Trips = () => {
     }
     const getTripsByArea = async () => {
         try {
-            const res = await axios.get(`http://localhost:4300/api/trips?fromDate=${new Date()}&area=${area}`)
+            const res = await axios.get(`http://localhost:4300/api/trips?fromDate=${new Date()}&area=${area}&madeByType=Admin`)
             if (res.status === 200) {
                 setTrips(res.data);
             }
