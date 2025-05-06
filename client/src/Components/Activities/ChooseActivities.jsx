@@ -172,51 +172,164 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
                 modal
                 onHide={() => { if (!visible) return; setVisible(false); }}
                 content={({ hide }) => (
-                    <div className="flex flex-column px-8 py-5 gap-4" style={{ maxHeight: '80vh', overflowY: 'auto', borderRadius: '12px', backgroundImage: 'radial-gradient(circle at left top, var(--primary-400), var(--primary-700))' }}>
-                        {maxPrice && <div>{maxPrice - sumPrice}</div>}
-                        <Dropdown showClear value={selectedArea} onChange={(e) => setSelectedArea(e.value)} options={areas} optionLabel="name"
-                            placeholder="בחר אזור" className="w-full md:w-14rem" />
-                               <Dropdown showClear value={selectedWhom} onChange={(e) => setSelectedWhom(e.value)} options={whoms} optionLabel="name"
-                            placeholder="למי?" className="w-full md:w-14rem" />
-                                   <Dropdown showClear value={selectedType} onChange={(e) => setSelectedType(e.value)} options={types} optionLabel="name"
-                            placeholder="סוג" className="w-full md:w-14rem" />
-                                 <div className="inline-flex flex-column gap-2">
-                        <label htmlFor="activityname" className="text-primary-50 font-semibold">
-                            מחיר
-                        </label>
-                        <InputNumber inputId="currency-us" value={maxPriceForOne} onChange={(e) =>{ setMaxPriceForOne(e.value); }}   />
-                        </div>
-                        <div className="grid">
+                    <div
+                        className="flex flex-column px-6 py-5 gap-4"
+                        style={{
+                            maxHeight: '80vh',
+                            overflowY: 'auto',
+                            borderRadius: '16px',
+                            backgroundColor: '#ffffff',
+                        }}
+                    >
+                        {maxPrice && (
+                            <div className="text-right font-semibold text-blue-800">
+                                סכום שנותר: ₪{maxPrice - sumPrice}
+                            </div>
+                        )}
 
+                        <div className="flex flex-wrap gap-3 justify-between">
+                            <Dropdown
+                                showClear
+                                value={selectedArea}
+                                onChange={(e) => setSelectedArea(e.value)}
+                                options={areas}
+                                optionLabel="name"
+                                placeholder="בחר אזור"
+                                className="w-full md:w-14rem "
+                            />
+                            <Dropdown
+                                showClear
+                                value={selectedWhom}
+                                onChange={(e) => setSelectedWhom(e.value)}
+                                options={whoms}
+                                optionLabel="name"
+                                placeholder="למי?"
+                                className="w-full md:w-14rem"
+                            />
+                            <Dropdown
+                                showClear
+                                value={selectedType}
+                                onChange={(e) => setSelectedType(e.value)}
+                                options={types}
+                                optionLabel="name"
+                                placeholder="סוג"
+                                className="w-full md:w-14rem"
+                            />
+                            <div className="inline-flex flex-column gap-2">
+                                <label htmlFor="activityname" className="text-blue-900 font-medium">
+                                    מחיר מקסימלי לאטרקציה
+                                </label>
+                                <InputNumber
+                                    inputId="currency-us"
+                                    value={maxPriceForOne}
+                                    onChange={(e) => setMaxPriceForOne(e.value)}
+                                    className="w-full"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="grid mt-4">
                             {activities.map((activity, index) => (
-                                <div className="col-12 md:col-3" key={index} style={{ margin: '3rem' }}>
-                                    <Card className="activity-card p-shadow-3" style={{ borderRadius: '10px', height: '200px', width: '200px', overflow: 'hidden' }}>
-                                        <Checkbox inputId={activity._id} name={activity.name} price={activity.price} value={activity._id} onChange={(e) => { onChooseActivitiesChange(e, activity) }} checked={chooseActivities.includes(activity._id)} />
-                                        <Button icon="pi pi-pen-to-square"visible={isAdmin()} rounded text severity="help" aria-label="update"onClick={(event) => updateActivity(event, activity)} />
-                                        <Image src={activity.imageSrc} alt={activity.name} width="170px" height="100" style={{ borderRadius: '10px', width: '100%', height: '100%', }} />
-                                        {/* <h3 className="text-lg font-semibold">{activity.name}</h3> */}
-                                        <h3 className="text-lg font-semibold">{activity.price}</h3>
-                                        <p>קהל יעד: {activity.targetAudience}</p>
-                                        <p>סוג: {activity.type}</p>
-                                        <p>תיאור: {activity.description}</p>
-                                        <Button label="למידע נוסף" icon="pi pi-info-circle" className="p-button-secondary" />
+                                <div className="col-12 md:col-3" key={index}>
+                                    <Card
+                                        className="activity-card"
+                                        style={{
+                                            borderRadius: '16px',
+                                            padding: '1rem',
+                                            backgroundColor: '#f4faff',
+                                            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+                                            height: 'auto',
+                                        }}
+                                    >
+                                        <div className="flex justify-between mb-2">
+                                            <Checkbox
+                                                inputId={activity._id}
+                                                name={activity.name}
+                                                price={activity.price}
+                                                value={activity._id}
+                                                onChange={(e) => { onChooseActivitiesChange(e, activity); }}
+                                                checked={chooseActivities.includes(activity._id)}
+                                            />
+                                            {isAdmin() && (
+                                                <Button
+                                                    icon="pi pi-pen-to-square"
+                                                    rounded
+                                                    text
+                                                    severity="help"
+                                                    aria-label="update"
+                                                    onClick={(event) => updateActivity(event, activity)}
+                                                />
+                                            )}
+                                        </div>
+
+                                        <Image
+                                            src={activity.imageSrc}
+                                            alt={activity.name}
+                                            width="100%"
+                                            height="120"
+                                            style={{
+                                                borderRadius: '10px',
+                                                objectFit: 'cover',
+                                                marginBottom: '0.5rem'
+                                            }}
+                                        />
+                                        <h3 className="text-lg font-semibold text-blue-900">{activity.name}</h3>
+                                        <p className="text-orange-600 font-semibold">₪{activity.price}</p>
+                                        <p className="text-sm text-gray-700">קהל יעד: {activity.targetAudience}</p>
+                                        <p className="text-sm text-gray-700">סוג: {activity.type}</p>
+                                        <p className="text-sm text-gray-600">תיאור: {activity.description}</p>
+
+                                        <Button
+                                            label="למידע נוסף"
+                                            icon="pi pi-info-circle"
+                                            className="p-button-sm mt-2"
+                                            style={{
+                                                backgroundColor: '#ff9800',
+                                                borderColor: '#ff9800',
+                                                color: '#fff',
+                                                width: '100%'
+                                            }}
+                                        />
                                     </Card>
                                 </div>
                             ))}
                         </div>
-                        <div className="flex align-items-center gap-2">
-                            <Button label="הוסף" onClick={() => { setVisibleConfirmActivities(true); }} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
-                            <Button label="ביטול" onClick={(e) => hide(e)} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
+
+                        <div className="flex align-items-center gap-3 mt-4">
+                            <Button
+                                label="הוסף"
+                                onClick={() => { setVisibleConfirmActivities(true); }}
+                                className="p-button-sm"
+                                style={{
+                                    backgroundColor: '#0288d1',
+                                    color: 'white',
+                                    width: '100%',
+                                    borderRadius: '8px'
+                                }}
+                            />
+                            <Button
+                                label="ביטול"
+                                onClick={(e) => hide(e)}
+                                className="p-button-sm"
+                                style={{
+                                    backgroundColor: '#eeeeee',
+                                    color: '#333',
+                                    width: '100%',
+                                    borderRadius: '8px'
+                                }}
+                            />
                         </div>
                     </div>
                 )}
-            ></Dialog>
+            />
+
             <Toast ref={toast} />
 
             <ConfirmDialog group="declarative" visible={visibleConfirmActivities} onHide={() => setVisibleConfirmActivities(false)} message={message}
 
                 header="Confirmation" icon="pi pi-exclamation-triangle" accept={accept} reject={reject} />
         </>
+
     )
 };
 

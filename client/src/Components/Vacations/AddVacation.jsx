@@ -190,33 +190,33 @@ const AddVacation = () => {
     return (
         <>
             <div className="card flex justify-content-center">
-                <div className="flex flex-column px-8 py-5 gap-4" style={{ borderRadius: '12px', backgroundImage: 'radial-gradient(circle at left top, var(--surface-0), var(--primary-200))', }}>
+                <div className="custom-form-container flex flex-column px-8 py-5 gap-4" >
                     <div className="inline-flex flex-column gap-2">
-                        <label htmlFor="vacationname" className="text-primary-50 font-semibold">
+                        <label htmlFor="vacationname" className="custom-label">
                             מיקום
                         </label>
-                        <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={locationRef}></InputText>
+                        <InputText id="vacationname" className="custom-input" ref={locationRef}></InputText>
 
                     </div>
                
                     <div className="card flex justify-content-center">
                         <Dropdown value={selectedArea} onChange={(e) => setSelectedArea(e.value)} options={areas} optionLabel="name"
-                            placeholder="בחר אזור" className="w-full md:w-14rem" />
+                            placeholder="בחר אזור" className="custom-input w-full md:w-14rem" />
                     </div>
                     <div className="inline-flex flex-column gap-2">
-                        <label htmlFor="description" className="text-primary-50 font-semibold">
+                        <label htmlFor="description" className="custom-label">
                             תאור
                         </label>
-                        <InputText id="description" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={descriptionRef}></InputText>
+                        <InputText id="description" className="custom-input" ref={descriptionRef}></InputText>
                     </div>
 
                     <div className="inline-flex flex-column gap-2">
-                        <label htmlFor="vacationname" className="text-primary-50 font-semibold">
+                        <label htmlFor="vacationname" className="custom-label">
                             קהל יעד
                         </label>
-                        <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={targetAudienceRef}></InputText>
+                        <InputText id="vacationname" className="custom-input" ref={targetAudienceRef}></InputText>
                     </div>
-                    <Button label="פעיליות" icon="pi pi-user" onClick={() => setShowChooseActivities(true)} />
+                    <Button label="פעיליות" icon="pi pi-user" className="custom-button" onClick={() => setShowChooseActivities(true)} />
                     {showChooseActivities && (
                      <ChooseActivities
                      chooseActivities={newVacation.activities}
@@ -228,28 +228,28 @@ const AddVacation = () => {
                  />
             )}
                     <div className="flex-auto">
-                        <label htmlFor="buttondisplay" className="font-bold block mb-2">
+                        <label htmlFor="buttondisplay" className="custom-label">
                             תאריך התחלה
                         </label>
                         <Calendar id="buttondisplay" value={startDate} onChange={(e) => setStartDate(e.value)} showIcon dateFormat="dd/mm/yy" />
                     </div>
                     <div className="flex-auto">
-                        <label htmlFor="buttondisplay" className="font-bold block mb-2">
+                        <label htmlFor="buttondisplay" className="custom-label">
                             תאריך סיום
                         </label>
                         <Calendar id="buttondisplay" value={endDate} onChange={(e) => setEndDate(e.value)} showIcon dateFormat="dd/mm/yy" />
                     </div>
                     <div className="inline-flex flex-column gap-2">
-                        <label htmlFor="vacationname" className="text-primary-50 font-semibold">
+                        <label htmlFor="vacationname" className="custom-label">
                             מקסימום משתתפים
                         </label>
-                        <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={maxParticipantsRef}></InputText>
+                        <InputText id="vacationname" className="custom-input" ref={maxParticipantsRef}></InputText>
                     </div>
                     <div className="inline-flex flex-column gap-2">
-                        <label htmlFor="vacationname" className="text-primary-50 font-semibold">
+                        <label htmlFor="vacationname" className="custom-label">
                             מחיר
                         </label>
-                        <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={priceRef}></InputText>
+                        <InputText id="vacationname" className="custom-input" ref={priceRef}></InputText>
                     </div>
 
                     <div className="inline-flex flex-column gap-2">
@@ -262,7 +262,7 @@ const AddVacation = () => {
                             uploadHandler={handleUpload}
                             chooseLabel="בחר והעלה תמונה"
                             auto={false}
-                            className="w-full max-w-xs"
+                            className="custom-upload"
                         />
                         {imageUrl && (
                             <div>
@@ -274,54 +274,20 @@ const AddVacation = () => {
                     </div>
 
                     <div className="inline-flex flex-column gap-2">
-                        <label htmlFor="vacationname" className="text-primary-50 font-semibold">
+                        <label htmlFor="vacationname" className="custom-label">
                             ניקוד
                         </label>
-                        <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={ratingRef}></InputText>
+                        <InputText id="vacationname" className="custom-input" ref={ratingRef}></InputText>
                     </div>
                     <div className="inline-flex flex-column gap-2">
                     </div>
                     <div className="flex align-items-center gap-2">
-                        <Button label={isEditing?'עדכן':'הוסף'} onClick={(e) => { addOrUpdateVacation(); }} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
-                        <Button label="ביטול" onClick={(e) => navigate('/Vacations/הכל')} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
+                        <Button label={isEditing?'עדכן':'הוסף'} onClick={(e) => { addOrUpdateVacation(); }} className="custom-button w-full"></Button>
+                        <Button label="ביטול" onClick={(e) => navigate('/Vacations/הכל')} className="custom-button secondary w-full"></Button>
                     </div>
                 </div>
                 
             </div>
-            {/* <Dialog
-                 visible={visibleChooseActivity}
-                 modal
-                 onHide={() => { if (!visibleChooseActivity) return; setVisibleChooseActivity(false); }}
-                content={({ hide }) => (
-                    <div className="flex flex-column px-8 py-5 gap-4" style={{ maxHeight: '80vh', overflowY: 'auto',borderRadius: '12px', backgroundImage: 'radial-gradient(circle at left top, var(--primary-400), var(--primary-700))' }}>
-   <div className="grid">
-            {activities.map((activity, index) => (
-    <div className="col-12 md:col-3" key={index} style={{ margin: '3rem' }}>
-                <Card className="activity-card p-shadow-3" style={{ borderRadius: '10px',height:'200px',width:'200px',overflow: 'hidden' }}>
-                <Checkbox inputId={activity._id} name={activity.name} price={activity.price}value={activity._id} onChange={onChooseActivitiesChange} checked={chooseActivities.includes(activity._id)} />
-                <Image src={activity.imageSrc} alt={activity.name} width="170px" height="100"  style={{ borderRadius: '10px',width: '100%', height: '100%', }} />
-                {/* <h3 className="text-lg font-semibold">{activity.name}</h3> */}
-                {/* <h3 className="text-lg font-semibold">{activity.price}</h3>
-                <p>קהל יעד: {activity.targetAudience}</p>
-                <p>סוג: {activity.type}</p>
-                <p>תיאור: {activity.description}</p>
-                <Button label="למידע נוסף" icon="pi pi-info-circle" className="p-button-secondary" />
-                </Card> 
-            </div>
-            ))}
-        </div>
-                        <div className="flex align-items-center gap-2">
-                            <Button label="הוסף" onClick={(e) =>{ console.log('chooseActivities',chooseActivities,chooseActivitiesNames);setVisibleConfirmActivities(true);hide(e)}} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
-                            <Button label="ביטול" onClick={(e) => hide(e)} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
-                        </div>
-                    </div>
-                )}
-            ></Dialog> */} 
-               {/* <Toast ref={toast} />
-
-            <ConfirmDialog group="declarative"  visible={visibleConfirmActivities} onHide={() => setVisibleConfirmActivities(false)} message={message}
-
-                header="Confirmation" icon="pi pi-exclamation-triangle" accept={accept} reject={reject} /> */}
         </>
     )
 }

@@ -36,53 +36,71 @@
     transform: rotate(360deg);
   }
 }
-.p-dialog {
-  background: #fff;
-  background: linear-gradient(to right, rgb(209, 187, 155), rgb(179, 157, 122));
-  border-radius: 10px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  direction: rtl;
-  /* width: 100%; */
-  /* max-width: 420px; */
-  overflow: hidden;
+
+.custom-form-container {
+  background-color: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
+  color: #333;
 }
 
-.p-dialog .p-dialog-header {
-  background: linear-gradient(to right, rgb(209, 187, 155), rgb(179, 157, 122));
-  color: white;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  padding: 1rem;
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
+.custom-label {
+  font-weight: 600;
+  color: #005f73;
+  margin-bottom: 0.25rem;
 }
 
-.p-dialog .p-dialog-content {
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  font-family: var(--main-font);
+.custom-input,
+.p-calendar,
+.p-dropdown {
+  background-color: #f0f9ff !important;
+  border: 1px solid #90e0ef !important;
+  border-radius: 6px !important;
+  padding: 0.5rem !important;
+  color: #023047 !important;
 }
 
-.p-dialog .p-dialog-footer {
-  padding: 1rem;
-  display: flex;
-  justify-content: center;
+.custom-input:focus,
+.p-calendar:focus-within,
+.p-dropdown:focus-within {
+  border-color: #fb8500 !important;
+  box-shadow: 0 0 0 2px rgba(251, 133, 0, 0.2);
+  outline: none;
 }
 
-.p-dialog .p-button {
-  background: linear-gradient(to right, rgb(209, 187, 155), rgb(179, 157, 122));
+.custom-upload .p-button {
+  background-color: #00b4d8 !important;
   border: none;
-  font-weight: bold;
-  padding: 0.75rem 1.5rem;
-  border-radius: 10px;
   color: white;
-  background-image: linear-gradient(to right, rgb(209, 187, 155), rgb(179, 157, 122));
+  border-radius: 6px;
+  font-weight: bold;
 }
 
-.flex .flex-column .px-8 .py-5 .gap-4{
-  background: linear-gradient(to right, rgb(209, 187, 155), rgb(179, 157, 122));
+.custom-upload .p-button:hover {
+  background-color: #fb8500 !important;
+}
+
+.custom-button {
+  background-color: #00b4d8;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.custom-button:hover {
+  background-color: #fb8500;
+}
+
+.custom-button.secondary {
+  background-color: #e0f7fa;
+  color: #0077b6;
+}
+
+.custom-button.secondary:hover {
+  background-color: #ffb703;
+  color: white;
 }

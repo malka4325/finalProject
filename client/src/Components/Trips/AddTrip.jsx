@@ -155,7 +155,7 @@ const AddTrip = () => {
                     },
                 });
             }
-
+             debugger
             if (res.status === 200) {
                 navigate('/Trips/הכל');
             }
@@ -165,99 +165,87 @@ const AddTrip = () => {
     };
 
     return (
-        <>
+      <>
 
-            <div className="card flex justify-content-center">
-
-                <div className="flex flex-column px-8 py-5 gap-4" style={{ borderRadius: '12px', backgroundImage: 'radial-gradient(circle at left top, var(--primary-400), var(--primary-700))' }}>
-                    <div className="inline-flex flex-column gap-2">
-                        <label htmlFor="tripname" className="text-primary-50 font-semibold">
-                            מיקום
-                        </label>
-                        <InputText id="tripname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={locationRef}></InputText>
-
-                    </div>
-                    <div className="card flex justify-content-center">
-                        <Dropdown value={selectedArea} onChange={(e) => setSelectedArea(e.value)} options={areas} optionLabel="name"
-                            placeholder=" בחר אזור" className="w-full md:w-14rem" />
-                    </div>
-                    <div className="inline-flex flex-column gap-2">
-                        <label htmlFor="description" className="text-primary-50 font-semibold">
-                            תאור
-                        </label>
-                        <InputText id="description" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={descriptionRef}></InputText>
-                    </div>
-
-                    <div className="inline-flex flex-column gap-2">
-                        <label htmlFor="tripname" className="text-primary-50 font-semibold">
-                            קהל יעד
-                        </label>
-                        <InputText id="tripname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={targetAudienceRef}></InputText>
-                    </div>
-
-                    <Button label="פעיליות" icon="pi pi-user" onClick={() => setShowChooseActivities(true)} />
-                    {showChooseActivities && (
-                     <ChooseActivities
-                     chooseActivities={newTrip.activities}
-                     setChooseActivities={setChooseActivities}
-                     visible={showChooseActivities} // העברת הנראות לדיאלוג
-                     setVisible={setShowChooseActivities}
-                     sumPrice ={sumPrice}
-                     setSumPrice ={setSumPrice}// פונקציה לסגירת הדיאלוג
-                 />
+      <div className="card flex justify-content-center">
+        <div className="custom-form-container flex flex-column px-8 py-5 gap-4">
+          <div className="inline-flex flex-column gap-2">
+            <label htmlFor="tripname" className="custom-label">מיקום</label>
+            <InputText id="tripname" className="custom-input" ref={locationRef} />
+          </div>
+      
+          <div className="card flex justify-content-center">
+            <Dropdown value={selectedArea} onChange={(e) => setSelectedArea(e.value)} options={areas} optionLabel="name"
+              placeholder="בחר אזור" className="custom-input w-full md:w-10rem" />
+          </div>
+      
+          <div className="inline-flex flex-column gap-2">
+            <label htmlFor="description" className="custom-label">תיאור</label>
+            <InputText id="description" className="custom-input" ref={descriptionRef} />
+          </div>
+      
+          <div className="inline-flex flex-column gap-2">
+            <label htmlFor="target" className="custom-label">קהל יעד</label>
+            <InputText id="target" className="custom-input" ref={targetAudienceRef} />
+          </div>
+      
+          <Button label="פעילויות" icon="pi pi-user" className="custom-button" onClick={() => setShowChooseActivities(true)} />
+      
+          {showChooseActivities && (
+             <ChooseActivities
+             chooseActivities={newTrip.activities}
+             setChooseActivities={setChooseActivities}
+             visible={showChooseActivities} // העברת הנראות לדיאלוג
+             setVisible={setShowChooseActivities}
+             sumPrice ={sumPrice}
+             setSumPrice ={setSumPrice}// פונקציה לסגירת הדיאלוג
+         />
+          )}
+      
+          <div className="flex-auto">
+            <label htmlFor="calendar" className="custom-label">תאריך</label>
+            <Calendar id="calendar" value={date} onChange={(e) => setDate(e.value)} showIcon dateFormat="dd/mm/yy"
+              className="custom-input" />
+          </div>
+      
+          <div className="inline-flex flex-column gap-2">
+            <label className="custom-label">מקסימום משתתפים</label>
+            <InputText className="custom-input" ref={maxParticipantsRef} />
+          </div>
+      
+          <div className="inline-flex flex-column gap-2">
+            <label className="custom-label">מחיר</label>
+            <InputText className="custom-input" ref={priceRef} />
+          </div>
+      
+          <div className="inline-flex flex-column gap-2">
+            <FileUpload
+              mode="basic"
+              name="demo[]"
+              accept="image/*"
+              customUpload
+              uploadHandler={handleUpload}
+              chooseLabel="בחר והעלה תמונה"
+              auto={false}
+              className="custom-upload"
+            />
+            {imageUrl && (
+              <div>
+                <h3>התמונה שהועלתה:</h3>
+                <img src={imageUrl} alt="Uploaded" width="300" />
+              </div>
             )}
-                    <div className="flex-auto">
-                        <label htmlFor="buttondisplay" className="font-bold block mb-2">
-                            תאריך
-                        </label>
-                        <Calendar id="buttondisplay" value={date} onChange={(e) => setDate(e.value)} showIcon dateFormat="dd/mm/yy" />
-                    </div>
-
-                    <div className="inline-flex flex-column gap-2">
-                        <label htmlFor="tripname" className="text-primary-50 font-semibold">
-                            מקסימום משתתפים
-                        </label>
-                        <InputText id="tripname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={maxParticipantsRef}></InputText>
-                    </div>
-                    <div className="inline-flex flex-column gap-2">
-                        <label htmlFor="tripname" className="text-primary-50 font-semibold">
-                            מחיר
-                        </label>
-                        <InputText id="tripname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={priceRef}></InputText>
-                    </div>
-                    <div className="inline-flex flex-column gap-2">
-
-                        <FileUpload
-                            mode="basic"
-                            name="demo[]"
-                            accept="image/*"
-                            customUpload
-                            uploadHandler={handleUpload}
-                            chooseLabel="בחר והעלה תמונה"
-                            auto={false}
-                            className="w-full max-w-xs"
-                        />
-                        {imageUrl && (
-                            <div>
-                                {console.log(imageUrl)}
-
-                                <h3>התמונה שהועלתה:</h3>
-                                <img src={imageUrl} alt="Uploaded" width="300" />
-                            </div>
-                        )}
-
-                    </div>
-
-                    <div className="inline-flex flex-column gap-2">
-                    </div>
-                    <div className="flex align-items-center gap-2">
-                    <Button label={isEditing?'עדכן':'הוסף'} onClick={(e) => { addOrUpdateTrip(); }} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
-                        <Button label="ביטול" onClick={(e) =>  navigate('/Trips/הכל')} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
-                    </div>
-                </div>
-              
-            </div>
-        </>
+          </div>
+      
+          <div className="flex align-items-center gap-2">
+            <Button label={isEditing ? 'עדכן' : 'הוסף'} onClick={addOrUpdateTrip} className="custom-button w-full" />
+            <Button label="ביטול" onClick={() => navigate('/Trips/הכל')} className="custom-button secondary w-full" />
+          </div>
+        </div>
+      </div>
+      
+              </>
+      
     )
 }
 
