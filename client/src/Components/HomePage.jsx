@@ -1,8 +1,18 @@
 import React from 'react';
 import { Button } from 'primereact/button';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 
-export default function HomePage() {
+const HomePage=()=> {
+    const navigate = useNavigate();
+    const token = useSelector(state => state.TokenSlice.token)
+    const moveTo = (page) => {
+        if (token)
+            navigate(`/${page}`)
+        else
+            navigate("/login")
+    }
     const testimonies = [
         {
             name: 'שירה מ.',
@@ -27,9 +37,9 @@ export default function HomePage() {
                 </p>
 
                 <div className="home-buttons">
-                    <Button label="הזמן טיול" className="home-btn home-btn-blue" />
-                    <Button label="צור טיול בעצמך" className="home-btn home-btn-orange" />
-                </div>
+                    <Button label="הזמן טיול" className="home-btn home-btn-blue" onClick={()=>moveTo("Trips/הכל")} />
+                    <Button label="צור טיול בעצמך" className="home-btn home-btn-orange" onClick={()=>moveTo("Trips/ByUser")}/>
+                </div> <Button label="הזמן נופש" className="home-btn home-btn-blue" onClick={()=>moveTo("Vacations/הכל")} />
 
                 <div className="testimonies-section">
                     <h2 className="testimonies-title">מה אומרים עלינו?</h2>
@@ -48,3 +58,4 @@ export default function HomePage() {
         </div>
     );
 }
+export default HomePage;

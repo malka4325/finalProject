@@ -114,7 +114,7 @@ function App() {
         <SpeedDial model={items} 
                    direction="up" 
                    className="speeddial-bottom-left left-0" 
-                   buttonClassName="p-button-danger" 
+                   buttonClassName="bg-orange-400  text-white" 
                    style={{ position: 'fixed', bottom: '20px', overflow: 'visible', margin: '20px' }} />
     )}
 </div>
