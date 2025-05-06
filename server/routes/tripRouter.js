@@ -7,7 +7,7 @@ const verifyJWT = require("../middleware/verifyJWT")
 
 router.get("/",tripController.getTrips)
 router.get("/:id",tripController.getTripById)
-// router.get("/byName/:name",tripController.getTripByName)
+router.put("/:id",tripController.approvedTrip)
 router.post("/",verifyJWT,tripController.createNewTrip)
 router.put("/",verifyJWT,isAdmin,tripController.updateTrip)
 router.delete("/:id",verifyJWT,isAdmin,tripController.deleteTrip)

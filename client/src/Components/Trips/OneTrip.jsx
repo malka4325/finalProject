@@ -18,7 +18,7 @@ const OneTrip = () => {
   const navigate = useNavigate();
   const { id } = useParams()
   const [trip, setTrip] = useState([]);
-  const [value, setValue] = useState(10)
+  const [joiners, setJoiners] = useState(10)
   const [activities, setActivities] = useState([]);
   // const context = useContext(Context);
   const token = useSelector(state => state.TokenSlice.token)
@@ -109,14 +109,11 @@ const OneTrip = () => {
       />
     );
   };
-  const handleToTrips = () => {
 
-    navigate(`/Trips/${trip.area}`); // שינוי URL עם state
-  }
 
   const handleOrder = () => {
     if (token)
-      navigate(`/Orders/newOrder/${trip._id}?num=${value}&type=trip`);
+      navigate(`/Orders/newOrder/${trip._id}?num=${joiners}&type=trip`);
   }
   return (
     <div className="p-4">
@@ -169,7 +166,7 @@ const OneTrip = () => {
 
           </div>
           <div className="flex-1">
-            <InputNumber inputId="minmax-buttons" value={value} onValueChange={(e) => setValue(e.value)} mode="decimal" showButtons min={0} max={100} size="small" />
+            <InputNumber inputId="minmax-buttons" value={joiners} onValueChange={(e) => setJoiners(e.value)} mode="decimal" showButtons min={0} max={100} size="small" />
           </div>
           <Divider />
 
@@ -182,7 +179,7 @@ const OneTrip = () => {
               onClick={() => window.open(`https://www.google.com/maps?q=${encodeURIComponent(trip.location)}`, '_blank')}
             />
 
-            <Button label="הזמן" rounded aria-label="Filter" onClick={handleOrder} />
+<Button label="הזמן" rounded aria-label="Filter"     disabled={trip.maxParticipants <= (trip.currentParticipants + joiners)}  onClick={handleOrder} />
 
           </div>
         </div>

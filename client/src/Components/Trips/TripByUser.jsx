@@ -95,6 +95,7 @@ const TripByUser = () => {
         if (sumPrice) newTrip.price = sumPrice;
         newTrip.madeByType = 'Client';
         newTrip.madeById = user._id;
+        newTrip.isApproved = false;
         setBuildingTrip(newTrip)
     }
     const AddTrip = async () => {

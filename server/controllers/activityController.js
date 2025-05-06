@@ -63,6 +63,7 @@ const getActivityById = async (req, res) => {
  }
 
 
+
 const updateActivity = async (req, res) => {
     const { _id, name,targetAudience,area,type,price,description,imageSrc} = req.body
     if (!_id||!name)

@@ -1,10 +1,10 @@
 const Trip = require("../models/Trip")
 const mongoose = require('mongoose');
 const createNewTrip = async (req, res) => {
-    const { area, location,description,targetAudience, date,activities,maxParticipants,currentParticipants,price,imageSrc,madeByType,madeById} = req.body
+    const { area, location,description,targetAudience,isApproved, date,activities,maxParticipants,currentParticipants,price,imageSrc,madeByType,madeById} = req.body
     if (!area||!targetAudience||!date||!maxParticipants||!price)
         return res.status(400).json({ message: 'fields are required' })
-    const trip = await Trip.create({ area, location,description,targetAudience, date,activities,maxParticipants,currentParticipants,price,imageSrc,madeByType,madeById})
+    const trip = await Trip.create({ area, location,description,targetAudience,isApproved, date,activities,maxParticipants,currentParticipants,price,imageSrc,madeByType,madeById})
     if (!trip)
         return res.status(400).send('invalid trip')
     res.json(await Trip.find().lean())
@@ -48,14 +48,14 @@ const getTripById = async (req, res) => {
      return res.status(400).send('trip not found')
  res.json(trip)
  }
- const getTripBylocation = async (req, res) => {
-    const { location } = req.params
-    const trips = await Trip.find({ location:{$regex :location}  }).lean()
-    if (!trips) {
-        return res.json([])
-    }
-    res.json(trips)
-}
+ const approvedTrip = async (req, res) => {
+    const {id}=req.params
+    const trip=await Trip.findById(id).lean()
+    if (!trip)
+     return res.status(400).send('trip not found')
+     trip.isApproved=true;
+ res.json(trip)
+ }
 
  const updateTrip = async (req, res) => {
     const { _id, area, location,description,targetAudience, date,activities,maxParticipants,currentParticipants,price,imageSrc} = req.body
@@ -93,4 +93,4 @@ return res.status(400).send('error delete')
 res.json(await Trip.find().lean())
 
 }
-module.exports = { createNewTrip,getTrips,getTripById,updateTrip,deleteTrip ,getTripBylocation}
+module.exports = { createNewTrip,getTrips,getTripById,updateTrip,deleteTrip ,approvedTrip}

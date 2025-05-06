@@ -45,45 +45,48 @@ const MyTrips = () => {
         if (token && user.role == "Admin")
         navigate('/Trips/AddTrip',{ state: { tripToUpdate: trip, isEditing: true } });
        }
-       const deleteTrip=async(trip)=>{
+    //    const deleteTrip=async(trip)=>{
     
-        try {
-            const res = await axios.delete(`http://localhost:4300/api/trips/${trip._id}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`, // שליחת הטוקן בכותרת Authorization
-                }
-            })
-            if (res.status === 200) {
-                getTrips()
-            }
-          } catch (e) {
-            console.error(e)
-          }
-       }
-       const acceptDelete = () => {
-        deleteTrip(selectedTrip)
-        }
+    //     try {
+    //         const res = await axios.delete(`http://localhost:4300/api/trips/${trip._id}`, {
+    //             headers: {
+    //                 'Authorization': `Bearer ${token}`, // שליחת הטוקן בכותרת Authorization
+    //             }
+    //         })
+    //         if (res.status === 200) {
+    //             getTrips()
+    //         }
+    //       } catch (e) {
+    //         console.error(e)
+    //       }
+    //    }
+    //    const acceptDelete = () => {
+    //     deleteTrip(selectedTrip)
+    //     }
     
-       const rejectDelete = () => {
-        setConfirmDeleteVisible(false);
-       }
+    //    const rejectDelete = () => {
+    //     setConfirmDeleteVisible(false);
+    //    }
 
-    const handleButton = (trip) => {
+    // const handleButton = (trip) => {
+    //     if (token)
+    //         navigate(`/Trips/${trip.area}/${trip._id}`);
+    //     else
+    //         navigate('/Login')
+    // }
+    const handleOrder = (trip) => {
         if (token)
-            navigate(`/Trips/${trip.area}/${trip._id}`);
-        else
-            navigate('/Login')
-    }
-
+          navigate(`/Orders/newOrder/${trip._id}?num=${trip.currentParticipants}&type=trip`);
+      }
     const gridItem = (trip) => {
 
         
         console.log(trip);
-        const handleDelete = (event) => {
-            event.stopPropagation();
-            setSelectedTrip(trip); // שומר את הנופש הנבחר
-            setConfirmDeleteVisible(true); // מציג את דיאלוג האישור
-        };
+        // const handleDelete = (event) => {
+        //     event.stopPropagation();
+        //     setSelectedTrip(trip); // שומר את הנופש הנבחר
+        //     setConfirmDeleteVisible(true); // מציג את דיאלוג האישור
+        // };
 
         return (
             <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-1" key={trip._id}
@@ -96,18 +99,26 @@ const MyTrips = () => {
                     overflow: 'hidden', /* מסתיר תוכן שגדול מהכרטיס */
                     padding: 0, margin: 0
                 }}>
-                    <button onClick={() => { handleButton(trip) }} style={{ position: 'relative', backgroundColor: "white", borderWidth: "0px", padding: 0, margin: 0 }}>
+                    {/* <button onClick={() => { handleButton(trip) }} style={{ position: 'relative', backgroundColor: "white", borderWidth: "0px", padding: 0, margin: 0 }}> */}
                         <div style={{ position: 'relative', width: '370px', height: '200px', overflow: 'hidden' }}>
                             <Image src={trip.imageSrc} alt={trip.location} width="370px" height="200" style={{ width: '100%', height: '100%' }} />
                             <div className="flex flex-wrap align-items-center justify-content-between gap-1" style={{ position: 'absolute', top: '5px', left: '5px', margin: 8 }}>
                                 <i className="pi pi-map-marker"></i>
                                 <span className="font-semibold text-xl">{trip.area}</span>
                             </div>
-                           
+                            {console.log(trip.isApproved)}
+                            <Tag className="mr-2 text-lg " value={"לא אושר עדין"} severity={'info'} style={{
+                                visibility: trip.isApproved ? "hidden" : "visible",
+                                position: "absolute",
+                                top: '10px', // התאם את המיקום
+                                right: '10px',
+                                whiteSpace: 'nowrap',
+                                zIndex: 2
+                            }}></Tag>
                         </div>
                         <div className="flex justify-content w-full  gap-2" >
-        <Button icon="pi pi-pencil" rounded text severity="help" aria-label="update"onClick={(event) => updateTrip(event, trip)} />
-        <Button icon="pi pi-trash" rounded text severity="danger" aria-label="Cancel" onClick={(event) =>{handleDelete(event)}}/>
+        <Button icon="pi pi-pen-to-square" rounded text severity="help" aria-label="update"onClick={(event) => updateTrip(event, trip)} />
+        {/* <Button icon="pi pi-trash" rounded text severity="danger" aria-label="Cancel" onClick={(event) =>{handleDelete(event)}}/> */}
     </div>
                         <div className="flex flex-column align-items-center gap-2 py-2">
 
@@ -130,7 +141,9 @@ const MyTrips = () => {
 
                             
                         </div>
-                    </button>
+                    {/* </button> */}
+                    <Button label="הזמן" rounded aria-label="Filter"     disabled={!trip.isApproved}  onClick={()=>{handleOrder(trip)}} />
+
                     <div className="flex align-items-center justify-content-between" style={{ padding: "1px" }}>
                         <span style={{ marginLeft: "8px", }}>
                             <span className="text-xl font-semibold">{trip.price}$</span>
@@ -158,8 +171,8 @@ const MyTrips = () => {
             <div className="card" style={{ margin: "40px" }}>
                 <h1>הטיולים שלי</h1>
                 <DataView value={trips} listTemplate={listTemplate} />
-                <ConfirmDialog group="declarative"  visible={confirmDeleteVisible} onHide={() => setConfirmDeleteVisible(false)} message="למחוק נופש?" 
-                header="למחוק?" icon="pi pi-exclamation-triangle" accept={acceptDelete} reject={rejectDelete} />
+                {/* <ConfirmDialog group="declarative"  visible={confirmDeleteVisible} onHide={() => setConfirmDeleteVisible(false)} message="למחוק נופש?" 
+                header="למחוק?" icon="pi pi-exclamation-triangle" accept={acceptDelete} reject={rejectDelete} /> */}
                 <Outlet />
             </div> </>
     )
