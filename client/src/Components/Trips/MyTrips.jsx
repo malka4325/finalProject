@@ -64,19 +64,40 @@ const MyTrips = () => {
                 if (res.status === 200) {
                     alert("טיול אושר");
                     getTrips();
-                    handleEmail();
+                     const ownerTrip=await getOwnerTrip(trip.madeById)
+                    console.log(ownerTrip);
+                    //debugger
+                    await  handleEmail(ownerTrip);
                 }
             } catch (e) {
                 console.error(e)
             }
         }
     }
-      const handleEmail = async () => {
+    const getOwnerTrip = async ( id) => {
+    
+       
+            try {
+                const res = await axios.get(`http://localhost:4300/api/users/${id}`,{
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+                if (res.status === 200) {
+                  const user =res.data;
+                  return user
+                }
+            } catch (e) {
+                console.error(e)
+            }
+        }
+    
+      const handleEmail = async (user) => {
     
         try {
             const response = await axios.post('http://localhost:4300/send-email', {
                 email:user.email,
-                subject: "Confirmation of Your Order",
+                subject: "הטיול אושר",
                 message:`שלום ${user.name} הטיול שלך אושר!\n\n אתה יכול להכנס לאתר ולהזמין אותו`,
             });
             alert('Email sent successfully!');

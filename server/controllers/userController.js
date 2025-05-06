@@ -10,6 +10,13 @@ const getAllUsers = async (req, res) => {
     res.json(users)
 }
 
+const getUserById = async (req, res) => {
+    const {id}=req.params
+    const user=await User.findById(id).lean()
+    if (!user)
+     return res.status(400).send('user not found')
+ res.json(user)
+ }
 
 const deleteUser = async (req, res) => {
     const { id } = req.params
@@ -54,4 +61,4 @@ const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET)
 
 }
 
-module.exports={getAllUsers,deleteUser,updateUser}
+module.exports={getAllUsers,deleteUser,updateUser,getUserById}

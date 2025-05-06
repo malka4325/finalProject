@@ -30,8 +30,8 @@ const NewOrder = () => {
         try {
             const response = await axios.post('http://localhost:4300/send-email', {
                 email:user.email,
-                subject: "Confirmation of Your Order",
-                message: `שלום ${user.name},\n\nתודה על ההזמנה שלך! \n\nפרטי ההזמנה:\nשם: ${name}\nטלפון: ${phone}\nמספר כרטיס: ${cardNumber}\nתוקף: ${expiry}\nCVV: ${cvv}`,
+                subject: "הזמנה התקבלה",
+                message: `שלום ${user.name},\n\nתודה על ההזמנה שלך! \n\nפרטי ההזמנה:\nשם: ${name}\nטלפון: ${phone}\n`,
             });
             alert('Email sent successfully!');
         } catch (error) {
