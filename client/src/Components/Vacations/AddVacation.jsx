@@ -190,7 +190,7 @@ const AddVacation = () => {
     return (
         <>
             <div className="card flex justify-content-center">
-                <div className="flex flex-column px-8 py-5 gap-4" style={{ borderRadius: '12px', backgroundImage: 'radial-gradient(circle at left top, var(--primary-400), var(--primary-700))' }}>
+                <div className="flex flex-column px-8 py-5 gap-4" style={{ borderRadius: '12px', backgroundImage: 'radial-gradient(circle at left top, var(--surface-0), var(--primary-200))', }}>
                     <div className="inline-flex flex-column gap-2">
                         <label htmlFor="vacationname" className="text-primary-50 font-semibold">
                             מיקום

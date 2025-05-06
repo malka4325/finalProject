@@ -38,6 +38,7 @@
 }
 .p-dialog {
   background: #fff;
+  background: linear-gradient(to right, rgb(209, 187, 155), rgb(179, 157, 122));
   border-radius: 10px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   direction: rtl;
@@ -79,4 +80,9 @@
   padding: 0.75rem 1.5rem;
   border-radius: 10px;
   color: white;
+  background-image: linear-gradient(to right, rgb(209, 187, 155), rgb(179, 157, 122));
+}
+
+.flex .flex-column .px-8 .py-5 .gap-4{
+  background: linear-gradient(to right, rgb(209, 187, 155), rgb(179, 157, 122));
 }
