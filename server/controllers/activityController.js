@@ -2,7 +2,7 @@ const Activity = require("../models/Activity")
 
 const createNewActivity = async (req, res) => {
     const { area,name,price, description,type,imageSrc,targetAudience} = req.body
-    if (!name||!price||!area)
+    if (!name||!price)
         return res.status(400).json({ message: 'name is required' })
     const activity = await Activity.create( { area,name,price,description, type,imageSrc,targetAudience})
     if (!activity)
