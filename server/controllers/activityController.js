@@ -1,10 +1,10 @@
 const Activity = require("../models/Activity")
 
 const createNewActivity = async (req, res) => {
-    const { name,price, description,type,imageSrc,targetAudience} = req.body
-    if (!name||!price)
+    const { area,name,price, description,type,imageSrc,targetAudience} = req.body
+    if (!name||!price||!area)
         return res.status(400).json({ message: 'name is required' })
-    const activity = await Activity.create( { name,price,description, type,imageSrc,targetAudience})
+    const activity = await Activity.create( { area,name,price,description, type,imageSrc,targetAudience})
     if (!activity)
         return res.status(400).send('invalid activity')
     res.json(await Activity.find().lean())
@@ -30,13 +30,16 @@ const getActivitys = async (req, res) => {
             query.area = { $regex: area, $options: 'i' };
         }
         if (targetAudience) {
-            query.targetAudience = { $regex: targetAudience, $options: 'i' };
+            query.$or = [
+                { targetAudience: { $regex: targetAudience, $options: 'i' } },
+                { targetAudience: { $exists: false } }
+            ];
         }
         if (type) {
             query.type = { $regex: type, $options: 'i' };
         }
         if (maxPrice) {
-            query.price = { $lte: Number(maxPrice), $options: 'i' };
+            query.price = { $lte: Number(maxPrice)};
         }
         if (name) {
             query.name = { $regex: name, $options: 'i' };

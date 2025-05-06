@@ -13,7 +13,7 @@ import { Image } from 'primereact/image';
 import axios from 'axios';
 import { ConfirmDialog } from 'primereact/confirmdialog';
 import { Dropdown } from 'primereact/dropdown';
-import { InputText } from 'primereact/inputtext';
+import { InputNumber } from 'primereact/inputnumber';
 
 const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setVisible, maxPrice, sumPrice, setSumPrice }) => {
 
@@ -21,6 +21,7 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
     const [activities, setActivities] = useState([]);
     const maxActivities = 6;
     const [selectedArea, setSelectedArea] = useState(null);
+    const [maxPriceForOne, setMaxPriceForOne] = useState(null);
     const priceRef=useRef("")
     const areas = [
         { name: 'צפון', code: 'NY' },
@@ -45,9 +46,10 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
     useEffect(() => {
         getActivities();
         console.log();
-    }, [selectedType,selectedWhom,selectedArea]);
+    }, [selectedType,selectedWhom,selectedArea,maxPriceForOne]);
     const getActivities = async () => {
-        try {     let url = 'http://localhost:4300/api/activities?';
+        try {    
+             let url = 'http://localhost:4300/api/activities?';
         if (selectedArea) {
             url += `area=${selectedArea.name}&`;
            
@@ -58,8 +60,8 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
         if (selectedType) {
             url += `type=${selectedType.name}&`;
         }
-        if (priceRef!="") {
-            url += `price=${priceRef.current.value}&`;
+        if (maxPriceForOne) {
+            url += `maxPrice=${maxPriceForOne}&`;
         }
         // מסיר את ה- '&' האחרון אם יש
         url = url.endsWith('&') ? url.slice(0, -1) : url;
@@ -136,9 +138,6 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
         setSumPrice(total);
     }, [chooseActivities, activities]);
 
-
-
-
     const message = (
         <div>
             <span>הפעילויות שבחרת:</span>
@@ -170,8 +169,8 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
                         <label htmlFor="vacationname" className="text-primary-50 font-semibold">
                             מחיר
                         </label>
-                        <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={priceRef}></InputText>
-                    </div>
+                        <InputNumber inputId="currency-us" value={maxPriceForOne} onChange={(e) =>{ setMaxPriceForOne(e.value); }}   />
+                        </div>
                         <div className="grid">
 
                             {activities.map((activity, index) => (
