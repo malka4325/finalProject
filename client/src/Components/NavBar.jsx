@@ -55,6 +55,7 @@ const NavBar = () => {
             icon: <FaUser style={{ fontSize: '24px' }} />,
             items: token ? [
                 { label: 'הזמנות שלי', url: '/Orders/myOrders' },
+                { label: ' טיולים שלי', url: '/Trips/MyTrips' },
                 { label: 'לעדכון פרטים', url: '/Users/update' },
                 ...(user?.role === 'Admin' ? [{ label: 'כל ההזמנות', url: '/Orders/allOrders' }] : []),
                // { label: 'עדכון פרטים', url: '/Orders/myOrders' },

@@ -1,8 +1,6 @@
 import React from 'react';
 
 
-import React from "react";
-
 import { useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
@@ -22,17 +20,16 @@ const MyTrips = () => {
     const token = useSelector(state => state.TokenSlice.token)
     const user = useSelector(state => state.UserSlice.user)
     console.log(user);
-    const { area } = useParams();
     const [trips, setTrips] = useState([]);
     const [selectedTrip, setSelectedTrip] = useState(null);
     const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
     useEffect(() => {
-      
+      getTrips()
     }, [])
     // useEffect(() => { getTrips() }, [])
     const getTrips = async () => {
         try {
-            const res = await axios.get(`http://localhost:4300/api/trips?fromDate=${new Date()}&madeByType=Admin`)
+            const res = await axios.get(`http://localhost:4300/api/trips?fromDate=${new Date()}&madeById=${user._id}`)
             if (res.status === 200) {
                 setTrips(res.data);
             }
@@ -41,43 +38,7 @@ const MyTrips = () => {
         }
     }
    
-
-
-    const getSeverity = (full) => {
-        switch (full) {
-
-            case 'מקומות אחרונים':
-                return 'warning';
-
-            case 'מלא':
-                return 'danger';
-
-            default:
-                return null;
-        }
-    };
-
-    let full = '';
-    let classIcon = ""
-    const freeParticipants = (trip) => {
-        const tmp = trip.maxParticipants - trip.currentParticipants;
-
-        if (tmp > 0 && tmp < 20) {
-            full = 'מקומות אחרונים'
-            classIcon = "pi pi-exclamation-triangle"
-
-
-        }
-        else {
-            if (tmp === 0) {
-                full = 'מלא'
-                classIcon = "pi pi-minus-circle"
-            }
-            else
-                full = 'יש מקום'
-        }
-
-    }
+ 
     const updateTrip=(event,trip)=>{
         setSelectedTrip(trip)
         event.stopPropagation();
@@ -116,7 +77,7 @@ const MyTrips = () => {
 
     const gridItem = (trip) => {
 
-        freeParticipants(trip);
+        
         console.log(trip);
         const handleDelete = (event) => {
             event.stopPropagation();
@@ -142,19 +103,11 @@ const MyTrips = () => {
                                 <i className="pi pi-map-marker"></i>
                                 <span className="font-semibold text-xl">{trip.area}</span>
                             </div>
-                            <Tag className="mr-2 text-lg " value={full} severity={getSeverity(full)} style={{
-                                visibility: full === 'יש מקום' ? "hidden" : "visible",
-                                position: "absolute",
-                                top: '10px', // התאם את המיקום
-                                right: '10px',
-                                whiteSpace: 'nowrap',
-                                zIndex: 2
-                            }}><i className={classIcon} style={{ margin: "2px" }}></i></Tag>
-
+                           
                         </div>
                         <div className="flex justify-content w-full  gap-2" >
-        <Button icon="pi pi-pencil"visible={isAdmin()} rounded text severity="help" aria-label="update"onClick={(event) => updateTrip(event, trip)} />
-        <Button icon="pi pi-trash" visible={isAdmin()}rounded text severity="danger" aria-label="Cancel" onClick={(event) =>{handleDelete(event)}}/>
+        <Button icon="pi pi-pencil" rounded text severity="help" aria-label="update"onClick={(event) => updateTrip(event, trip)} />
+        <Button icon="pi pi-trash" rounded text severity="danger" aria-label="Cancel" onClick={(event) =>{handleDelete(event)}}/>
     </div>
                         <div className="flex flex-column align-items-center gap-2 py-2">
 
@@ -199,15 +152,11 @@ const MyTrips = () => {
     const listTemplate = (trips) => {
         return <div className="grid grid-nogutter">{trips.map((trip) => gridItem(trip))}</div>;
     };
-    const isAdmin = () => {
-        if (!user)
-            return false
-        return user.role == "Admin"
-    }
+  
     return (
         <>
             <div className="card" style={{ margin: "40px" }}>
-                <h1>{area == 'הכל' ? 'כל הטיולים' : `טיולים ב${area}`}</h1>
+                <h1>הטיולים שלי</h1>
                 <DataView value={trips} listTemplate={listTemplate} />
                 <ConfirmDialog group="declarative"  visible={confirmDeleteVisible} onHide={() => setConfirmDeleteVisible(false)} message="למחוק נופש?" 
                 header="למחוק?" icon="pi pi-exclamation-triangle" accept={acceptDelete} reject={rejectDelete} />

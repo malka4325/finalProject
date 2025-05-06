@@ -1,5 +1,5 @@
 const Trip = require("../models/Trip")
-
+const mongoose = require('mongoose');
 const createNewTrip = async (req, res) => {
     const { area, location,description,targetAudience, date,activities,maxParticipants,currentParticipants,price,imageSrc,madeByType,madeById} = req.body
     if (!area||!targetAudience||!date||!maxParticipants||!price)
@@ -19,7 +19,8 @@ const getTrips = async (req, res) => {
         query.area = { $regex: area, $options: 'i' };
     }
     if (madeById) {
-        query.madeById = { $regex: madeById };
+     
+        query.madeById = new mongoose.Types.ObjectId(madeById);
     }
     if (madeByType) {
         query.madeByType = { $regex: madeByType };

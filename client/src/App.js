@@ -24,6 +24,7 @@ import { SpeedDial } from 'primereact/speeddial';
 import { Tooltip } from 'primereact/tooltip';
 import { useDispatch, useSelector } from 'react-redux';
 import ChooseActivities from './Components/Activities/ChooseActivities';
+import MyTrips from './Components/Trips/MyTrips';
 
 
 
@@ -94,7 +95,7 @@ function App() {
           <Route path="/Trips/:area/:id" element={<OneTrip />} />
 
           <Route path="/Trips/ByUser" element={<TripByUser/>} />
-
+          <Route path="/Trips/MyTrips" element={<MyTrips/>} />
           <Route path="/Activities/AddActivity" element={<AddActivity/>} />
           <Route path="/Activities/ChooseActivities" element={<ChooseActivities/>} />
 
