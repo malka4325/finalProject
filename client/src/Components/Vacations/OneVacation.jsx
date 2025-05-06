@@ -107,10 +107,7 @@ const OneVacation = () => {
       />
     );
   };
-  const handleToVacations = () => {
-
-    navigate(`/Vacations/${vacation.area}`); // שינוי URL עם state
-  }
+  
 
   const handleOrder = () => {
     if (token)
@@ -224,7 +221,7 @@ const OneVacation = () => {
           )}
         />
       </div>
-      <Button onClick={handleToVacations}> חזרה לנופשים</Button>
+      <Button onClick={()=>{navigate(-1)}}> חזרה לנופשים</Button>
     </div>
   );
 };

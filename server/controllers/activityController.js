@@ -32,7 +32,8 @@ const getActivitys = async (req, res) => {
         if (targetAudience) {
             query.$or = [
                 { targetAudience: { $regex: targetAudience, $options: 'i' } },
-                { targetAudience: { $exists: false } }
+                { targetAudience: { $exists: false } },
+                { targetAudience: { $regex: "undefined"}}
             ];
         }
         if (type) {

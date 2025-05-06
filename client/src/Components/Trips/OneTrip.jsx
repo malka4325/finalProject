@@ -217,7 +217,7 @@ const OneTrip = () => {
           )}
         />
       </div>
-      <Button onClick={handleToTrips}> חזרה לנופשים</Button>
+      <Button onClick={()=>{navigate(-1)}}> חזרה לנופשים</Button>
     </div>
   );
 };
