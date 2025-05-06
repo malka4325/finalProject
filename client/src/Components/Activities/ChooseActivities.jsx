@@ -49,21 +49,27 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
     const getActivities = async () => {
         try {     let url = 'http://localhost:4300/api/activities?';
         if (selectedArea) {
-            url += `area=${selectedArea}&`;
+            url += `area=${selectedArea.name}&`;
+           
         }
         if (selectedWhom) {
-            url += `targetAudience=${selectedWhom}&`;
+            url += `targetAudience=${selectedWhom.name}&`;
         }
         if (selectedType) {
-            url += `type=${selectedType}&`;
+            url += `type=${selectedType.name}&`;
         }
         if (priceRef!="") {
-            url += `type=${selectedType}&`;
+            url += `price=${priceRef.current.value}&`;
         }
         // מסיר את ה- '&' האחרון אם יש
         url = url.endsWith('&') ? url.slice(0, -1) : url;
 
-            const res = await axios.get(url)
+        console.log("Fetching activities from URL:", url); // לבדוק את ה-URL
+
+        const res = await axios.get(url);
+        console.log("Activities response:", res.data); // לבדוק את הנתונים המתקבלים
+
+
             if (res.status === 200) {
                 setActivities(res.data);
             }

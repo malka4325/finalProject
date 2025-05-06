@@ -43,7 +43,7 @@ const getActivitys = async (req, res) => {
         }
 
     activities=await Activity.find(query).lean()
-    console.log(activities);
+    //console.log(activities);
     if (!activities)
         return res.status(400).send('activities not found')}
 

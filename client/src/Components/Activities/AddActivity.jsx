@@ -80,8 +80,7 @@ const AddActivity = () => {
             console.log(res);
             if (res.status === 200) {
                 console.log("res.data", res.data);
-                // props.setTrips(res.data)
-                // navigate('/Trips/הכל');
+                 navigate('/');
             }
         } catch (e) {
             alert(e.response.data.message)

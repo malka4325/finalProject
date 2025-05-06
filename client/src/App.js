@@ -31,7 +31,7 @@ function App() {
 
   const user = useSelector(state => state.UserSlice.user)
   const isAdmin = () => {
-    debugger
+    
     if (!user)
         return false
     return user.role == "Admin"
