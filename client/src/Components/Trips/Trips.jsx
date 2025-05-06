@@ -154,7 +154,7 @@ const Trips = () => {
 
                         </div>
                         <div className="flex justify-content w-full  gap-2" >
-        <Button icon="pi pi-pencil"visible={isAdmin()} rounded text severity="help" aria-label="update"onClick={(event) => updateTrip(event, trip)} />
+        <Button icon="pi pi-pen-to-square"visible={isAdmin()} rounded text severity="help" aria-label="update"onClick={(event) => updateTrip(event, trip)} />
     </div>
                         <div className="flex flex-column align-items-center gap-2 py-2">
 

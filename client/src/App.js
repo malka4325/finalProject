@@ -50,7 +50,7 @@ function App() {
         },
         {
             label: 'הוסף טיול',
-            icon: 'pi pi-truck',
+            icon: 'pi pi-map',
             command: () => {
               window.location.href = '/Trips/AddTrip';
             }

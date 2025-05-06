@@ -11,12 +11,12 @@ const NavBar = () => {
     const items = [
         {
             label: 'דף הבית',
-            icon: 'pi pi-palette',
-            url:"/"
+            icon: <span style={{ marginLeft: '8px' }}><i className="pi pi-home"></i></span>,
+            url: "/"
         },
         {
             label: 'נופשים',
-            icon: 'pi pi-palette',
+            icon: <span style={{ marginLeft: '8px' }}><i className="pi pi-sun"></i></span>,
             items: [
                 { label: 'צפון', url: '/Vacations/צפון' },
                 { label: 'דרום', url: '/Vacations/דרום' },
@@ -27,7 +27,7 @@ const NavBar = () => {
         },
         {
             label: 'טיולים',
-            icon: 'pi pi-palette',
+            icon: <span style={{ marginLeft: '8px' }}><i className="pi pi-map"></i></span>,
             items: [
                 { label: 'צפון', url: '/Trips/צפון' },
                 { label: 'דרום', url: '/Trips/דרום' },
@@ -38,7 +38,7 @@ const NavBar = () => {
         },
         {
             label: 'הרגע האחרון',
-            icon: 'pi pi-palette',
+            icon: <span style={{ marginLeft: '8px' }}><i className="pi pi-clock"></i></span>,
             items: [
                 { label: 'נופשים בקרוב', url: '/Vacations/קרוב' },
                 { label: 'טיולים בקרוב', url:  '/Trips/קרוב' }
@@ -46,9 +46,10 @@ const NavBar = () => {
         },
         {
             label: 'עשה זאת בעצמך',
-            icon: 'pi pi-palette',
+            icon: <span style={{ marginLeft: '8px' }}><i className="pi pi-cog"></i></span>,
          url:'/Trips/ByUser'
         },{},{},{},{},{},{},{},{},{},{},{},
+        
         {
             label: token ? 'אזור אישי' : 'התחברות',
             url: token ? '' : '/Login',
