@@ -59,7 +59,8 @@ const NavBar = () => {
                 { label: ' טיולים שלי', url: '/Trips/MyTrips' },
                 { label: 'לעדכון פרטים', url: '/Users/update' },
                 ...(user?.role === 'Admin' ? [{ label: 'כל ההזמנות', url: '/Orders/allOrders' }] : []),
-               // { label: 'עדכון פרטים', url: '/Orders/myOrders' },
+                ...(user?.role === 'Admin' ? [{ label: 'כל הטיולים שנוצרו ', url: '/Trips/MyTrips?forAdmin=true' }] : []),
+              
                 {
                     label: 'התנתקות',
                     url: '/',

@@ -12,7 +12,8 @@ const createNewTrip = async (req, res) => {
 
 const getTrips = async (req, res) => {
     let query = {};
-    const { fromDate, toDate, area,madeById,madeByType } = req.query;
+    let trips=[];
+    const { fromDate, toDate, area,madeById,madeByType ,sort} = req.query;
 
     // הוספת תנאים על פי הפרמטרים שנשלחו
     if (area) {
@@ -34,7 +35,10 @@ const getTrips = async (req, res) => {
             query.date.$lte = new Date(toDate);
         }
     }
-    const trips = await Trip.find(query).lean();
+    if(sort)
+     trips = await Trip.find(query).sort(sort).lean();
+     else
+     trips = await Trip.find(query).lean();
    if (!trips)
     return res.status(400).send('trips not found')
 res.json(trips)
@@ -50,10 +54,14 @@ const getTripById = async (req, res) => {
  }
  const approvedTrip = async (req, res) => {
     const {id}=req.params
-    const trip=await Trip.findById(id).lean()
+    const trip=await Trip.findById(id)
     if (!trip)
      return res.status(400).send('trip not found')
-     trip.isApproved=true;
+     trip.isApproved=true
+
+const updatetrip=await trip.save();
+if (!updatetrip)
+return res.status(400).send('error update')
  res.json(trip)
  }
 

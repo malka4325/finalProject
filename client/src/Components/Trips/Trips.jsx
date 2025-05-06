@@ -123,7 +123,7 @@ const Trips = () => {
 
         freeParticipants(trip);
         console.log(trip);
-       
+        
 
         return (
             <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-1" key={trip._id}
