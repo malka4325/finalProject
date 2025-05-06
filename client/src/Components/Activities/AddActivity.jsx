@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
@@ -6,9 +6,11 @@ import axios from 'axios';
 import { FileUpload } from 'primereact/fileupload';
 import { Dropdown } from 'primereact/dropdown';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const AddActivity = () => {
+    const location = useLocation()
+    const { activityToUpdate, isEditing } = location.state || {};
     const nameRef = useRef("")
     const descriptionRef = useRef("")
     const targetAudienceRef = useRef("")
@@ -51,41 +53,12 @@ const AddActivity = () => {
             console.error("Error uploading file:", error);
         }
     };
-    const [selectedType, setSelectedType] = useState({name: 'בחר סוג', code: 'LDN'});
+    const [selectedType, setSelectedType] = useState({ name: 'בחר סוג', code: 'LDN' });
     const types = [
         { name: 'מסלול', code: 'NY' },
         { name: 'אטרקציה', code: 'RM' },
         { name: 'תכנית', code: 'LDN' },
     ];
-  
-    const addActivity = async () => {
-
-
-        if (!newActivity.imageSrc) newActivity.imageSrc = 'http://localhost:4300/uploads/logo.jpg';
-        
-
-        if (nameRef.current.value) newActivity.name = nameRef.current.value
-        if (descriptionRef.current.value) newActivity.description = descriptionRef.current.value
-        if (selectedType) newActivity.type = selectedType.name
-        if (targetAudienceRef.current.value) newActivity.targetAudience = targetAudienceRef.current.value
-        if (priceRef.current.value) newActivity.price = priceRef.current.value
-
-
-        try {
-            const res = await axios.post('http://localhost:4300/api/activities', newActivity, {
-                headers: {
-                    'Authorization': `Bearer ${token}`, // שליחת הטוקן בכותרת Authorization
-                },
-            })
-            console.log(res);
-            if (res.status === 200) {
-                console.log("res.data", res.data);
-                 navigate('/');
-            }
-        } catch (e) {
-            alert(e.response.data.message)
-        }
-    }
     const [selectedArea, setSelectedArea] = useState(null);
     const areas = [
         { name: 'צפון', code: 'NY' },
@@ -94,9 +67,64 @@ const AddActivity = () => {
         { name: 'מרכז', code: 'IST' }
 
     ];
-    console.log('selectedType',selectedType.name !== 'תכנית',selectedType.name);
-    const [visibleAddActivity, setVisibleAddActivity] = useState(false);
-    const [visibleChooseArea, setVisibleChooseArea] = useState(false);
+
+    useEffect(() => {
+        console.log("Editing:", isEditing, "Activity to update:", activityToUpdate);
+        if (isEditing && activityToUpdate) {
+            setSelectedArea(areas.find(area => area.name === activityToUpdate.area));
+            setSelectedType(types.find(type => type.name === activityToUpdate.type));
+            nameRef.current.value = activityToUpdate.name;
+            targetAudienceRef.current.value = activityToUpdate.targetAudience;
+            descriptionRef.current.value = activityToUpdate.description;
+            priceRef.current.value = activityToUpdate.price;
+            setImageUrl(activityToUpdate.imageSrc);
+        }
+    }, [isEditing, activityToUpdate]);
+    const addOrUpdateActivity = async () => {
+
+        if (!newActivity.imageSrc) newActivity.imageSrc = 'http://localhost:4300/uploads/logo.jpg';
+
+
+        if (nameRef.current.value) newActivity.name = nameRef.current.value
+        if (descriptionRef.current.value) newActivity.description = descriptionRef.current.value
+        if (selectedArea) newActivity.area = selectedArea.name
+        if (selectedType) newActivity.type = selectedType.name
+        if (targetAudienceRef.current.value) newActivity.targetAudience = targetAudienceRef.current.value
+        if (priceRef.current.value) newActivity.price = priceRef.current.value
+        try {
+            let res;
+            if (isEditing) {
+                // אם אנחנו במצב עדכון, בצע עדכון
+                newActivity._id = activityToUpdate._id
+                console.log(newActivity);
+                res = await axios.put(`http://localhost:4300/api/activities`, newActivity, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+            }
+
+            else
+        {
+                    const res = await axios.post('http://localhost:4300/api/activities', newActivity, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`, // שליחת הטוקן בכותרת Authorization
+                        },
+                    })
+                }
+                    
+                    if (res.status === 200) {
+                        navigate(-1);              
+                          }
+        
+
+                } catch (e) {
+                    alert(e.response.data.message)
+                }
+        
+    }
+
+
     return (
 
         <div className="card flex justify-content-center">
@@ -106,77 +134,76 @@ const AddActivity = () => {
                 modal
                 onHide={() => { if (!visibleAddActivity) return; setVisibleAddActivity(false); }}
                 content={({ hide }) => ( */}
-                    <div className="flex flex-column px-8 py-5 gap-4" style={{ maxHeight: '80vh', overflowY: 'auto',borderRadius: '12px', backgroundImage: 'radial-gradient(circle at left top, var(--primary-400), var(--primary-700))' }}>
+            <div className="flex flex-column px-8 py-5 gap-4" style={{ maxHeight: '80vh', overflowY: 'auto', borderRadius: '12px', backgroundImage: 'radial-gradient(circle at left top, var(--primary-400), var(--primary-700))' }}>
 
-                        <div className="inline-flex flex-column gap-2">
-                            <label htmlFor="username" className="text-primary-50 font-semibold">
-                                שם האטרקציה
-                            </label>
-                            <InputText id="name" label="name" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={nameRef}></InputText>
+                <div className="inline-flex flex-column gap-2">
+                    <label htmlFor="username" className="text-primary-50 font-semibold">
+                        שם האטרקציה
+                    </label>
+                    <InputText id="name" label="name" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={nameRef}></InputText>
+                </div>
+                <div className="inline-flex flex-column gap-2">
+                    <label htmlFor="description" className="text-primary-50 font-semibold">
+                        תאור האטרקציה
+                    </label>
+                    <InputText id="description" label="description" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={descriptionRef} ></InputText>
+                </div>                 <div className="card flex justify-content-center">
+                    <Dropdown value={selectedType} onChange={(e) => setSelectedType(e.value)} options={types} optionLabel="name"
+                        placeholder="בחר סוג אטרקציה" className="w-full md:w-14rem" />
+                </div>
+                <div className="card justify-content-center" style={{ display: selectedType.name !== 'תכנית' ? 'flex' : 'none' }}>
+                    <Dropdown value={selectedArea} onChange={(e) => setSelectedArea(e.value)} options={areas} optionLabel="name"
+                        placeholder="בחר אזור" className="w-full md:w-14rem" />
+                </div>
+
+                <div className="inline-flex flex-column gap-2">
+                    <label htmlFor="targetAudience" className="text-primary-50 font-semibold">
+                        קהל יעד
+                    </label>
+                    <InputText id="targetAudience" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={targetAudienceRef}></InputText>
+                </div>
+                <div className="inline-flex flex-column gap-2">
+                    <label htmlFor="activityname" className="text-primary-50 font-semibold">
+                        מחיר
+                    </label>
+                    <InputText id="activityname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={priceRef}></InputText>
+                </div>
+                <div className="inline-flex flex-column gap-2">
+
+                    <FileUpload
+                        mode="basic"
+                        name="demo[]"
+                        accept="image/*"
+                        customUpload
+                        uploadHandler={handleUpload}
+                        chooseLabel="בחר והעלה תמונה"
+                        auto={false}
+                        className="w-full max-w-xs"
+                    />
+                    {imageUrl && (
+                        <div>
+                            {console.log(imageUrl)}
+
+                            <h3>התמונה שהועלתה:</h3>
+                            <img src={imageUrl} alt="Uploaded" width="300" />
                         </div>
-                        <div className="inline-flex flex-column gap-2">
-                            <label htmlFor="description" className="text-primary-50 font-semibold">
-                                תאור האטרקציה
-                            </label>
-                            <InputText id="description" label="description" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={descriptionRef} ></InputText>
-                        </div>                 <div className="card flex justify-content-center">
-                        <Dropdown value={selectedType} onChange={(e) => setSelectedType(e.value)} options={types} optionLabel="name"
-                            placeholder="בחר סוג אטרקציה" className="w-full md:w-14rem" />
-                    </div>
-                    <div className="card justify-content-center" style={{ display: selectedType.name !== 'תכנית' ? 'flex' : 'none' }}>
-                        <Dropdown value={selectedArea} onChange={(e) => setSelectedArea(e.value)} options={areas} optionLabel="name"
-                            placeholder="בחר אזור" className="w-full md:w-14rem" />
-                    </div>  
+                    )}
 
-                        <div className="inline-flex flex-column gap-2">
-                        <label htmlFor="targetAudience" className="text-primary-50 font-semibold">
-                            קהל יעד
-                        </label>
-                        <InputText id="targetAudience" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={targetAudienceRef}></InputText>
-                    </div>
-                    <div className="inline-flex flex-column gap-2">
-                        <label htmlFor="vacationname" className="text-primary-50 font-semibold">
-                            מחיר
-                        </label>
-                        <InputText id="vacationname" className="bg-white-alpha-20 border-none p-3 text-primary-50" ref={priceRef}></InputText>
-                    </div>
-                        <div className="inline-flex flex-column gap-2">
-
-                            <FileUpload
-                                mode="basic"
-                                name="demo[]"
-                                accept="image/*"
-                                customUpload
-                                uploadHandler={handleUpload}
-                                chooseLabel="בחר והעלה תמונה"
-                                auto={false}
-                                className="w-full max-w-xs"
-                            />
-                            {imageUrl && (
-                                <div>
-                                    {console.log(imageUrl)}
-
-                                    <h3>התמונה שהועלתה:</h3>
-                                    <img src={imageUrl} alt="Uploaded" width="300" />
-                                </div>
-                            )}
-
-                        </div>
-                        <div className="flex align-items-center gap-2">
-                        <Button label='הוסף' onClick={(e) => { addActivity(); }} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
-                        <Button label="ביטול" onClick={(e) => navigate('/')} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
-                        </div>
-                    </div>
-                {/* )}
+                </div>
+                <div className="flex align-items-center gap-2">
+                    <Button label={isEditing?'עדכן':'הוסף'} onClick={(e) => { addOrUpdateActivity(); }} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
+                    <Button label="ביטול" onClick={(e) =>   navigate(-1)} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
+                </div>
+            </div>
+            {/* )}
             ></Dialog> */}
         </div>
 
     )
 };
 
-export default AddActivity;           
+export default AddActivity;
 
 
 
 
-        

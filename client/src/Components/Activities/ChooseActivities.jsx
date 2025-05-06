@@ -14,15 +14,18 @@ import axios from 'axios';
 import { ConfirmDialog } from 'primereact/confirmdialog';
 import { Dropdown } from 'primereact/dropdown';
 import { InputNumber } from 'primereact/inputnumber';
+import { useSelector } from 'react-redux';
 
 const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setVisible, maxPrice, sumPrice, setSumPrice }) => {
+    const navigate = useNavigate();
+    const token = useSelector(state => state.TokenSlice.token)
+    const user = useSelector(state => state.UserSlice.user)
 
     const [chooseActivitiesNames, setChooseActivitiesNames] = useState([]);
     const [activities, setActivities] = useState([]);
     const maxActivities = 6;
     const [selectedArea, setSelectedArea] = useState(null);
     const [maxPriceForOne, setMaxPriceForOne] = useState(null);
-    const priceRef=useRef("")
     const areas = [
         { name: 'צפון', code: 'NY' },
         { name: 'דרום', code: 'RM' },
@@ -43,6 +46,11 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
         { name: 'מסלול', code: 'RM' },
         { name: 'תוכנית', code: 'LDN' },
     ];
+    const isAdmin = () => {
+        if (!user)
+            return false
+        return user.role == "Admin"
+    }
     useEffect(() => {
         getActivities();
         console.log();
@@ -137,6 +145,12 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
 
         setSumPrice(total);
     }, [chooseActivities, activities]);
+    const updateActivity=(event,activity)=>{
+        //setSelectedActivity(activity)
+        event.stopPropagation();
+        if (token && user.role == "Admin")
+        navigate('/Activities/AddActivity',{ state: { activityToUpdate: activity, isEditing: true } });
+       }
 
     const message = (
         <div>
@@ -149,6 +163,7 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
             <span>{sumPrice}</span>
         </div>
     )
+
     return (
 
         <>
@@ -166,7 +181,7 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
                                    <Dropdown showClear value={selectedType} onChange={(e) => setSelectedType(e.value)} options={types} optionLabel="name"
                             placeholder="סוג" className="w-full md:w-14rem" />
                                  <div className="inline-flex flex-column gap-2">
-                        <label htmlFor="vacationname" className="text-primary-50 font-semibold">
+                        <label htmlFor="activityname" className="text-primary-50 font-semibold">
                             מחיר
                         </label>
                         <InputNumber inputId="currency-us" value={maxPriceForOne} onChange={(e) =>{ setMaxPriceForOne(e.value); }}   />
@@ -177,6 +192,7 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
                                 <div className="col-12 md:col-3" key={index} style={{ margin: '3rem' }}>
                                     <Card className="activity-card p-shadow-3" style={{ borderRadius: '10px', height: '200px', width: '200px', overflow: 'hidden' }}>
                                         <Checkbox inputId={activity._id} name={activity.name} price={activity.price} value={activity._id} onChange={(e) => { onChooseActivitiesChange(e, activity) }} checked={chooseActivities.includes(activity._id)} />
+                                        <Button icon="pi pi-pencil"visible={isAdmin()} rounded text severity="help" aria-label="update"onClick={(event) => updateActivity(event, activity)} />
                                         <Image src={activity.imageSrc} alt={activity.name} width="170px" height="100" style={{ borderRadius: '10px', width: '100%', height: '100%', }} />
                                         {/* <h3 className="text-lg font-semibold">{activity.name}</h3> */}
                                         <h3 className="text-lg font-semibold">{activity.price}</h3>

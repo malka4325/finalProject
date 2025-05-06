@@ -9,12 +9,12 @@ const activitySchema = new mongoose.Schema({
     area: {
         type: String,
         enum: ['צפון', 'דרום', 'מרכז', 'אזור ירושלים','תכנית'],
-        required: true,
+        
         default:'תכנית'
     },
     imageSrc: {
         type: String,
-        default: ''
+        default: 'http://localhost:4300/uploads/logo.jpg'
     },
     price: {
         type: Number,

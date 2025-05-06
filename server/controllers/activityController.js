@@ -63,7 +63,7 @@ const getActivityById = async (req, res) => {
 
 
 const updateActivity = async (req, res) => {
-    const { _id, name,type,description,imageSrc} = req.body
+    const { _id, name,targetAudience,area,type,price,description,imageSrc} = req.body
     if (!_id||!name)
         return res.status(400).json({ message: 'id and name are required' })
     const activity = await Activity.findById(_id).exec()
@@ -71,6 +71,8 @@ const updateActivity = async (req, res) => {
         return res.status(400).send('activity not found')
 activity.name=name
 activity.type=type
+activity.price=price
+activity.area=area
 activity.imageSrc=imageSrc
 activity.description=description
 activity.targetAudience=targetAudience
