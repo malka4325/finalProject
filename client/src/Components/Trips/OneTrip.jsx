@@ -19,6 +19,7 @@ const OneTrip = () => {
   const { id } = useParams()
   const [trip, setTrip] = useState([]);
   const [value, setValue] = useState(10)
+  const [activities, setActivities] = useState([]);
   // const context = useContext(Context);
   const token = useSelector(state => state.TokenSlice.token)
   useEffect(() => { getTrip() }, [])
@@ -35,7 +36,26 @@ const OneTrip = () => {
   useEffect(() => {
     console.log(trip);
   }, [])
+  useEffect(() => { 
+    if(trip?.activities?.length!=0)
+    getActivities();}
+  , [trip])
   const [visible, setVisible] = useState(false);
+  if (!trip) return null;
+  const getActivities = async () => {
+    try {
+      if(trip?.activities.length!=0){
+      const res = await axios.get(`http://localhost:4300/api/activities?ids=${trip.activities}`)
+      if (res.status === 200) {
+        setActivities(res.data);
+        
+       
+      }}
+    } catch (e) {
+      console.error(e)
+    }
+  }
+  console.log(activities);
   if (!trip) return null;
   const responsiveOptions = [
     {
@@ -181,7 +201,7 @@ const thumbnailTemplate = (item) => {
 
         <Carousel
 
-          value={trip.activities || []}
+          value={activities || []}
           numVisible={3}
           numScroll={3}
 
@@ -192,7 +212,7 @@ const thumbnailTemplate = (item) => {
           itemTemplate={(activity) => (
             <div className="border-1 surface-border border-round m-2 text-center py-4 px-3">
               <div className="mb-3 flex justify-content-center">
-                <Image src="/images/0210005.jpg" zoomSrc="/images/0210005.jpg" alt="Activity" width="100" height="80" preview />
+                <Image src={activity.imageSrc} zoomSrc={activity.imageSrc} alt="Activity" width="100" height="80" preview />
               </div>
               <h4 className="mb-1">{activity.name}</h4>
               <h6 className="text-sm">{activity.type}</h6>
