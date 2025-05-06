@@ -31,6 +31,7 @@ function App() {
 
   const user = useSelector(state => state.UserSlice.user)
   const isAdmin = () => {
+    debugger
     if (!user)
         return false
     return user.role == "Admin"
@@ -106,13 +107,15 @@ function App() {
 
         {/* </UserProvider> */}
        
-<div style={{ position: 'relative', height: '350px' }} visible={isAdmin()}>
-    <Tooltip target=".speeddial-bottom-left .p-speeddial-action" position="left" />
-    <SpeedDial model={items} 
-               direction="up" 
-               className="speeddial-bottom-left left-0" 
-               buttonClassName="p-button-danger" 
-               style={{ position: 'fixed', bottom: '20px', overflow: 'visible',margin:'20px' }} />
+        <div style={{ position: 'relative', height: '350px' }}>
+    <Tooltip target=".speeddial-bottom-left .p-speeddial-action" position="left"  />
+    {isAdmin() && (
+        <SpeedDial model={items} 
+                   direction="up" 
+                   className="speeddial-bottom-left left-0" 
+                   buttonClassName="p-button-danger" 
+                   style={{ position: 'fixed', bottom: '20px', overflow: 'visible', margin: '20px' }} />
+    )}
 </div>
         
 
