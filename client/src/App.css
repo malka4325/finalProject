@@ -104,3 +104,103 @@
   background-color: #ffb703;
   color: white;
 }
+
+.home-container {
+  background-color: white;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.home-content {
+  text-align: center;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  padding: 3rem;
+  max-width: 700px;
+  width: 100%;
+  background-color: #fff;
+  border: 2px solid #f2f2f2;
+}
+
+.home-title {
+  font-size: 2.5rem;
+  color: #FF6B00;
+  margin-bottom: 1rem;
+}
+
+.home-description {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+.home-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+
+.home-btn {
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.home-btn-blue {
+  background-color: #00BFFF;
+  color: white;
+}
+
+.home-btn-blue:hover {
+  background-color: #009fdc;
+}
+
+.home-btn-orange {
+  background-color: #FF6B00;
+  color: white;
+}
+
+.home-btn-orange:hover {
+  background-color: #e85d00;
+}
+
+.testimonies-section {
+  margin-top: 2rem;
+}
+
+.testimonies-title {
+  font-size: 1.6rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.testimonies-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.testimony-card {
+  background-color: #f9f9f9;
+  border-left: 4px solid #00BFFF;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: right;
+}
+
+.testimony-comment {
+  font-style: italic;
+  color: #555;
+}
+
+.testimony-name {
+  font-weight: bold;
+  color: #FF6B00;
+  margin-top: 0.5rem;
+}
+
