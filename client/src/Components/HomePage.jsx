@@ -33,13 +33,14 @@ const HomePage=()=> {
             <div className="home-content">
                 <h1 className="home-title">תכננו את החוויה הבאה שלכם</h1>
                 <p className="home-description">
-                    הזמינו טיול מושלם או עצבו בעצמכם חוויה בלתי נשכחת
+                    הזמינו טיול או נופש מושלם או עצבו בעצמכם חוויה בלתי נשכחת
                 </p>
 
                 <div className="home-buttons">
                     <Button label="הזמן טיול" className="home-btn home-btn-blue" onClick={()=>moveTo("Trips/הכל")} />
                     <Button label="צור טיול בעצמך" className="home-btn home-btn-orange" onClick={()=>moveTo("Trips/ByUser")}/>
-                </div> <Button label="הזמן נופש" className="home-btn home-btn-blue" onClick={()=>moveTo("Vacations/הכל")} />
+                    <Button label="הזמן נופש" className="home-btn home-btn-blue" onClick={()=>moveTo("Vacations/הכל")} />
+                </div> 
 
                 <div className="testimonies-section">
                     <h2 className="testimonies-title">מה אומרים עלינו?</h2>
