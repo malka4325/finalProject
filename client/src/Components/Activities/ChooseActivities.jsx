@@ -192,7 +192,7 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
                                 <div className="col-12 md:col-3" key={index} style={{ margin: '3rem' }}>
                                     <Card className="activity-card p-shadow-3" style={{ borderRadius: '10px', height: '200px', width: '200px', overflow: 'hidden' }}>
                                         <Checkbox inputId={activity._id} name={activity.name} price={activity.price} value={activity._id} onChange={(e) => { onChooseActivitiesChange(e, activity) }} checked={chooseActivities.includes(activity._id)} />
-                                        <Button icon="pi pi-pencil"visible={isAdmin()} rounded text severity="help" aria-label="update"onClick={(event) => updateActivity(event, activity)} />
+                                        <Button icon="pi pi-pen-to-square"visible={isAdmin()} rounded text severity="help" aria-label="update"onClick={(event) => updateActivity(event, activity)} />
                                         <Image src={activity.imageSrc} alt={activity.name} width="170px" height="100" style={{ borderRadius: '10px', width: '100%', height: '100%', }} />
                                         {/* <h3 className="text-lg font-semibold">{activity.name}</h3> */}
                                         <h3 className="text-lg font-semibold">{activity.price}</h3>

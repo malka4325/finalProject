@@ -161,8 +161,8 @@ const Vacations = () => {
                         <div className="flex flex-column align-items-center gap-2 py-2">
 
                         <div className="flex justify-content w-full  gap-2" >
-        <Button icon="pi pi-pencil"visible={isAdmin()} rounded text severity="help" aria-label="update"onClick={(event) => updateVacation(event, vacation)} />
-      
+              <Button icon="pi pi-pen-to-square"visible={isAdmin()} rounded text severity="help" aria-label="update"onClick={(event) => updateVacation(event, vacation)} />
+
     </div>
                             <div className="text-2xl font-bold">{vacation.location}</div>
                             <div className="flex gap-5 mb-1" style={{ marginTop: "7px" }}>
@@ -201,10 +201,6 @@ const Vacations = () => {
                         <span className="text-m font-semibold">{vacation.targetAudience}</span>
 
 
-
-                        {/* <Button className="p-button-rounded font-semibold" style={{
-                           backgroundColor: "Window",color:"ButtonText", borderColor: "orange", boxShadow: '0 0 0 0.2rem rgba(240, 134, 80, 0.5)',marginRight:"7px"
-                        }} onClick={() => { handleButton(vacation) }}>הזמן עכשיו</Button> */}
                     </div>
                 </div>
 
