@@ -142,7 +142,7 @@ const OneVacation = () => {
             <strong>אזור:</strong> {vacation.area}
           </div>
           <div className="text-lg mb-3">
-            <strong>קהל יעד:</strong> {vacation.TargetAudience}
+            <strong>קהל יעד:</strong> {vacation.targetAudience}
           </div>
           <div className="text-lg mb-4 flex items-center">
             <strong>מחיר:</strong>

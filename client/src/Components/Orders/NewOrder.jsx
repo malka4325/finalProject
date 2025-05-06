@@ -40,6 +40,10 @@ const NewOrder = () => {
         }
     };
       const order= async ()=>{
+        if (!name || !phone || !cardNumber || !expiry || !cvv) {
+          alert('כל השדות הדרושים חייבים להיות מלאים.');
+          return;
+      }
         try {
           const res = await axios.post(  'http://localhost:4300/api/orders',
             { orderedBy: user._id,...(type === "vacation" && { vacation: id, numOfJoined }), 
@@ -71,8 +75,9 @@ const NewOrder = () => {
               <InputText
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full"
+                className={`w-full ${name === '' ? 'p-invalid' : ''}`}
                 placeholder="שם בעל הכרטיס"
+                required 
               />
             </div>
     
@@ -83,8 +88,9 @@ const NewOrder = () => {
               <InputText
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full"
+                className={`w-full ${phone === '' ? 'p-invalid' : ''}`}
                 placeholder="050-1234567"
+                required 
               />
             </div>
     
@@ -96,10 +102,10 @@ const NewOrder = () => {
             <div className="field">
               <label className="block text-900 font-medium mb-2">מספר כרטיס</label>
               <InputText
+                required
                 value={cardNumber}
                 onChange={(e) => setCardNumber(e.target.value)}
-                className="w-full"
-                
+                className={`w-full ${cardNumber === '' ? 'p-invalid' : ''}`} 
                 placeholder="1234 5678 9012 3456"
               />
             </div>
@@ -112,8 +118,9 @@ const NewOrder = () => {
                 <InputText
                   value={expiry}
                   onChange={(e) => setExpiry(e.target.value)}
-                  className="w-full"
+                  className={`w-full ${expiry === '' ? 'p-invalid' : ''}`}
                   placeholder="12/25"
+                  required 
                 />
               </div>
     
@@ -123,9 +130,10 @@ const NewOrder = () => {
                 <Password
                   value={cvv}
                   onChange={(e) => setCvv(e.target.value)}
-                  className="w-full"
+                  className={`w-full ${cvv === '' ? 'p-invalid' : ''}`}
                   feedback={false}
                   placeholder="123"
+                  required
                 />
               </div>
             </div>
