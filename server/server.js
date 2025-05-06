@@ -3,6 +3,7 @@ const express=require("express")
 const cors=require("cors")
 const corsOptions=require("./config/corsOptions")
 const path = require("path");
+const nodemailer = require('nodemailer');
 
 const connectDB=require("./config/dbConn")
 const { default: mongoose } = require("mongoose")
@@ -26,6 +27,7 @@ app.use("/api/activities",require("./routes/activityRouter"))
 
 app.post('/send-email', (req, res) => {
   const { email, subject, message } = req.body;
+console.log("email",email);
 
   let transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -41,7 +43,8 @@ app.post('/send-email', (req, res) => {
       subject: subject,
       text: message,
   };
-
+  console.log("mailOptions");
+  
   transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
           return res.status(500).send(error.toString());

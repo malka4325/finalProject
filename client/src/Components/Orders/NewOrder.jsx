@@ -28,7 +28,7 @@ const NewOrder = () => {
       const handleEmail = async () => {
     
         try {
-            const response = await axios.post('/send-email', {
+            const response = await axios.post('http://localhost:4300/send-email', {
                 email:user.email,
                 subject: "Confirmation of Your Order",
                 message: `שלום ${user.name},\n\nתודה על ההזמנה שלך! \n\nפרטי ההזמנה:\nשם: ${name}\nטלפון: ${phone}\nמספר כרטיס: ${cardNumber}\nתוקף: ${expiry}\nCVV: ${cvv}`,
@@ -55,7 +55,7 @@ const NewOrder = () => {
             }
           );
           if (res.status === 200) {
-              //handleEmail();
+              handleEmail();
               window.location.href = '/ThankYou'
           }
       } catch (e) {
