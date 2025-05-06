@@ -24,7 +24,7 @@ const OneVacation = () => {
   useEffect(() => { getVacation(); }
   , [])
   useEffect(() => { 
-    if(vacation?.activities.length!=0)
+    if(vacation?.activities?.length!=0)
     getActivities();}
   , [vacation])
 
