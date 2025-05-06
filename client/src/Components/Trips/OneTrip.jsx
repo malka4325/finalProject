@@ -36,21 +36,23 @@ const OneTrip = () => {
   useEffect(() => {
     console.log(trip);
   }, [])
-  useEffect(() => { 
-    if(trip?.activities?.length!=0)
-    getActivities();}
-  , [trip])
+  useEffect(() => {
+    if (trip?.activities?.length != 0)
+      getActivities();
+  }
+    , [trip])
   const [visible, setVisible] = useState(false);
   if (!trip) return null;
   const getActivities = async () => {
     try {
-      if(trip?.activities.length!=0){
-      const res = await axios.get(`http://localhost:4300/api/activities?ids=${trip.activities}`)
-      if (res.status === 200) {
-        setActivities(res.data);
-        
-       
-      }}
+      if (trip?.activities.length != 0) {
+        const res = await axios.get(`http://localhost:4300/api/activities?ids=${trip.activities}`)
+        if (res.status === 200) {
+          setActivities(res.data);
+
+
+        }
+      }
     } catch (e) {
       console.error(e)
     }
@@ -84,29 +86,29 @@ const OneTrip = () => {
   // }));
   const images = [{
     source: trip.imageSrc,
-   thumbnail: trip.imageSrc,
-  alt: 'Gallery Image',
+    thumbnail: trip.imageSrc,
+    alt: 'Gallery Image',
     title: 'trip Image',
- }]
-const itemTemplate = (item) => {
- return <img src={item.source} alt={item.alt} style={{ width: '100%', display: 'block', margin: '0 auto', border: '5px solid #000' }} />;
-};
+  }]
+  const itemTemplate = (item) => {
+    return <img src={item.source} alt={item.alt} style={{ width: '100%', display: 'block', margin: '0 auto', border: '5px solid #000' }} />;
+  };
 
-const thumbnailTemplate = (item) => {
- return (
-   <img
-     src={item.thumbnail}
-     alt={item.alt}
-     style={{
-       display: 'block',
-       width: '100px',
-       height: '100px',
-       margin: '10px',
-       cursor: 'pointer',
-     }}
-   />
- );
-};
+  const thumbnailTemplate = (item) => {
+    return (
+      <img
+        src={item.thumbnail}
+        alt={item.alt}
+        style={{
+          display: 'block',
+          width: '100px',
+          height: '100px',
+          margin: '10px',
+          cursor: 'pointer',
+        }}
+      />
+    );
+  };
   const handleToTrips = () => {
 
     navigate(`/Trips/${trip.area}`); // שינוי URL עם state
@@ -151,20 +153,11 @@ const thumbnailTemplate = (item) => {
 
 
           <div className="flex gap-4 mb-4">
-            <div className="flex-1">
-              <div className="font-semibold text-gray-600">תאריך סיום</div>
-              <div className="text-xl text-gray-800">
-                {new Date(trip.endDate).toLocaleDateString('he-IL', {
-                  year: 'numeric',
-                  month: 'numeric',
-                  day: 'numeric',
-                })}
-              </div>
-            </div>
+          
             <div className="flex-1">
               <div className="font-semibold text-gray-600">תאריך התחלה</div>
               <div className="text-xl text-gray-800">
-                {new Date(trip.startDate).toLocaleDateString('he-IL', {
+                {new Date(trip.date).toLocaleDateString('he-IL', {
                   year: 'numeric',
                   month: 'numeric',
                   day: 'numeric',

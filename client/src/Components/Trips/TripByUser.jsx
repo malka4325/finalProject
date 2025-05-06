@@ -118,77 +118,7 @@ const TripByUser = () => {
 
     return (
         <>
-            {/* {maxPriceRef.current.value - totalPrice} */}
-            {/* <div className="card flex justify-content-center" style={{ direction: 'rtl' }}>
-                <Stepper ref={stepperRef} style={{ flexBasis: '50rem' }}>
-                    <StepperPanel header="שלב ראשון" >
-                        <div className="flex flex-column h-12rem">
-                            <div className="inline-flex flex-column gap-2">
-                                <label htmlFor="targetAudience" className="font-bold block mb-2">
-                                    למי?
-                                </label>
-                                <InputText id="targetAudience" label="name" className="font-bold block mb-2" style={{ backgroundColor: "bisque" }} ref={targetAudienceRef}></InputText>
-                            </div>
-                            
-                            
-                            <div className="inline-flex flex-column gap-2">
-                                <label htmlFor="joiners" className="font-bold block mb-2">
-                                    כמות משתתפים
-                                </label>
-                                <InputText id="joiners" label="name" className="font-bold block mb-2" style={{ backgroundColor: "bisque" }} ref={joinersRef}></InputText>
-                            </div>
-                            <div className="flex-auto">
-                                <label htmlFor="date" className="font-bold block mb-2">
-                                    תאריך
-                                </label>
-                                <Calendar id="date" style={{ direction: 'ltr' }} value={date} onChange={(e) => setDate(e.value)} showIcon dateFormat="dd/mm/yy" />
-                            </div>
-                            <div className="inline-flex flex-column gap-2">
-                                <label htmlFor="maxPrice" className="font-bold block mb-2">
-                                    סכום יעד
-                                </label>
-                                <InputText id="maxPrice" label="name" className="font-bold block mb-2" style={{ backgroundColor: "bisque" }}  onChange={(e) => setMaxPrice(e.target.value)}></InputText>
-                            </div>
-                        </div>
-                        <div className="flex pt-4 justify-content-end">
-                            <Button label="הבא" icon="pi pi-arrow-left" iconPos="right" onClick={() => handleNextStep()} />
-                        </div>
-                    </StepperPanel>
-                    <StepperPanel header="שלב שני">
-                    <Button label="פעילויות" icon="pi pi-user" onClick={() =>  setShowChooseActivities(true) } />
-                    <div className="card flex justify-content-center">
-                        <Dropdown value={selectedArea} onChange={(e) => setSelectedArea(e.value)} options={areas} optionLabel="name"
-                            placeholder=" בחר אזור" className="w-full md:w-14rem" />
-                    </div>
-                    {showChooseActivities && (
-                     <ChooseActivities
-                     chooseActivities={newTrip.activities}
-                     setChooseActivities={setChooseActivities}
-                     visible={true} // העברת הנראות לדיאלוג
-                     setVisible={setShowChooseActivities} 
-                     maxPrice={maxPrice}
-                     setSumPrice={setSumPrice}// פונקציה לסגירת הדיאלוג
-                     sumPrice={sumPrice}// פונקציה לסגירת הדיאלוג
-                 />
-            )}
- 
-    <div className="flex pt-4 justify-content-between">
-        <Button label="קודם" severity="secondary" icon="pi pi-arrow-right" onClick={() => handlePrevStep()} />
-        <Button label="הבא" icon="pi pi-arrow-left" iconPos="right" onClick={() =>{handleNextStep(); buildobject()}} />
-    </div>
-</StepperPanel>
-                    <StepperPanel header="שלב שלישי">
-                        <div className="flex flex-column h-12rem">
-                            <h4>{newTrip.targetAudience}</h4>
-                            <h4>{user.name}</h4>
-                        </div>
-                        <div className="flex pt-4 justify-content-start">
-                            <Button label="קודם" severity="secondary" icon="pi pi-arrow-right" onClick={() => handlePrevStep()} />
-                            <Button label="לסיום" severity="secondary" icon="pi pi-arrow-left" onClick={() => {stepperRef.current.nextCallback();AddTrip();}} />
-                        </div>
-                    </StepperPanel>
-                </Stepper>
-            </div> */}
+          
 <div className="stepper-container">
   <Stepper ref={stepperRef}>
     <StepperPanel header="פרטי טיול">
@@ -206,7 +136,7 @@ const TripByUser = () => {
 
           <div className="col-12 md:col-6">
             <label className="field-label">תאריך</label>
-            <Calendar value={date} onChange={(e) => setDate(e.value)} showIcon dateFormat="dd/mm/yy" className="p-calendar" />
+            <Calendar value={date} onChange={(e) => setDate(e.value)} showIcon dateFormat="dd/mm/yy" className="p-calendar" style={{direction:"ltr"}} />
           </div>
 
           <div className="col-12 md:col-6">
