@@ -23,6 +23,7 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
 
     const [chooseActivitiesNames, setChooseActivitiesNames] = useState([]);
     const [activities, setActivities] = useState([]);
+    const [filterActivities, setFilterActivities] = useState([]);
     const maxActivities = 6;
     const [selectedArea, setSelectedArea] = useState(null);
     const [maxPriceForOne, setMaxPriceForOne] = useState(null);
@@ -52,32 +53,35 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
         return user.role == "Admin"
     }
     useEffect(() => {
-        getActivities();
+        filterActivitiesFunc();
         console.log();
     }, [selectedType,selectedWhom,selectedArea,maxPriceForOne]);
+    useEffect(() => {
+        getActivities();
+    }, []);
     const getActivities = async () => {
         try {    
              let url = 'http://localhost:4300/api/activities?';
-        if (selectedArea) {
-            url += `area=${selectedArea.name}&`;
+        // if (selectedArea) {
+        //     url += `area=${selectedArea.name}&`;
            
-        }
-        if (selectedWhom) {
-            url += `targetAudience=${selectedWhom.name}&`;
-        }
-        if (selectedType) {
-            url += `type=${selectedType.name}&`;
-        }
-        if (maxPriceForOne && maxPriceForOne < (maxPrice || Infinity)) {
-            url += `maxPrice=${maxPriceForOne}&`;
-        }
-        else{
+        // }
+        // if (selectedWhom) {
+        //     url += `targetAudience=${selectedWhom.name}&`;
+        // }
+        // if (selectedType) {
+        //     url += `type=${selectedType.name}&`;
+        // }
+        // if (maxPriceForOne && maxPriceForOne < (maxPrice || Infinity)) {
+        //     url += `maxPrice=${maxPriceForOne}&`;
+        // }
+        // else{
             if (maxPrice) {
-                url += `maxPrice=${maxPrice}&`;
+                url += `maxPrice=${maxPrice}`;
             }
-        }
+       // }
         // מסיר את ה- '&' האחרון אם יש
-        url = url.endsWith('&') ? url.slice(0, -1) : url;
+       // url = url.endsWith('&') ? url.slice(0, -1) : url;
 
         console.log("Fetching activities from URL:", url); // לבדוק את ה-URL
 
@@ -87,19 +91,38 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
 
             if (res.status === 200) {
                 setActivities(res.data);
-                retainSelectedActivities(res.data)
+                setFilterActivities(res.data);
+              
             }
         } catch (e) {
             console.error(e)
         }
     }
-    
-const retainSelectedActivities = (fetchedActivities) => {
-    const newChooseActivities = chooseActivities.filter(activityId =>
-        fetchedActivities.some(activity => activity._id === activityId)
-    );
-    setChooseActivities(newChooseActivities);
-}
+    const filterActivitiesFunc=()=>{
+
+        const filteredActivitiesNow = activities.filter(activity => {
+            let matches = true;
+        
+            if (selectedArea) {
+                matches = matches && activity.area === selectedArea.name;
+            }
+            if (selectedWhom) {
+                matches = matches && activity.targetAudience === selectedWhom.name;
+            }
+            if (selectedType) {
+                matches = matches && activity.type === selectedType.name;
+            }
+            if (maxPriceForOne && maxPriceForOne < (maxPrice || Infinity)) {
+                matches = matches && activity.maxPrice <= maxPriceForOne;
+            } else if (maxPrice) {
+                matches = matches && activity.maxPrice <= maxPrice;
+            }
+        
+            return matches;
+        });
+        setFilterActivities(filteredActivitiesNow)
+        
+    }
 
     const onChooseActivitiesChange = (e, activity) => {
         console.log(e);
@@ -243,7 +266,7 @@ const retainSelectedActivities = (fetchedActivities) => {
                         </div>
 
                         <div className="grid mt-4">
-                            {activities.map((activity, index) => (
+                            {filterActivities.map((activity, index) => (
                                 <div className="col-12 md:col-3" key={index}>
                                     <Card
                                         className="activity-card"
