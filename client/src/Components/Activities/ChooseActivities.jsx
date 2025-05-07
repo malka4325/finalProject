@@ -87,11 +87,20 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
 
             if (res.status === 200) {
                 setActivities(res.data);
+                retainSelectedActivities(res.data)
             }
         } catch (e) {
             console.error(e)
         }
     }
+    
+const retainSelectedActivities = (fetchedActivities) => {
+    const newChooseActivities = chooseActivities.filter(activityId =>
+        fetchedActivities.some(activity => activity._id === activityId)
+    );
+    setChooseActivities(newChooseActivities);
+}
+
     const onChooseActivitiesChange = (e, activity) => {
         console.log(e);
         let _chooseActivities = [...chooseActivities];

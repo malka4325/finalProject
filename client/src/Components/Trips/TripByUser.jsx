@@ -43,11 +43,14 @@ const TripByUser = () => {
         }
     }
     const [date, setDate] = useState(null);
+    const [joiners, setJoiners] = useState(0);
+    const [targetAudience, setTargetAudience] = useState("");
 
-    const joinersRef = useRef("")
+    //const joinersRef = useRef("")
+
     //const maxPriceRef = useRef("")
 
-    const targetAudienceRef = useRef("")
+    //const targetAudienceRef = useRef("")
     // useEffect(() => {
     //     setMaxPrice(maxPriceRef.current.value)
     // }, [maxPriceRef]);
@@ -84,12 +87,12 @@ const TripByUser = () => {
         console.log("response", newTrip.imageSrc);
 
         if (selectedArea) newTrip.area = selectedArea.name;
-        if (targetAudienceRef.current.value) newTrip.targetAudience = targetAudienceRef.current.value;
+        if (targetAudience) newTrip.targetAudience = targetAudience;
         if (date) newTrip.date = date;
         if (selectedActivities) newTrip.activities = selectedActivities;
-        if (joinersRef.current.value) {
-            newTrip.currentParticipants = joinersRef.current.value;
-            newTrip.maxParticipants = joinersRef.current.value
+        if (joiners) {
+            newTrip.currentParticipants = joiners;
+            newTrip.maxParticipants = joiners
         }
 
         if (sumPrice) newTrip.price = sumPrice;
@@ -127,12 +130,12 @@ const TripByUser = () => {
         <div className="grid">
           <div className="col-12 md:col-6">
             <label className="field-label">למי?</label>
-            <InputText ref={targetAudienceRef} className="p-inputtext" />
+            <InputText value={targetAudience} onChange={(e) => setTargetAudience(e.target.value)} className="p-inputtext" />
           </div>
 
           <div className="col-12 md:col-6">
             <label className="field-label">כמות משתתפים</label>
-            <InputText ref={joinersRef} className="p-inputtext" />
+            <InputText value={joiners} onChange={(e) => setJoiners(e.target.value)} className="p-inputtext" />
           </div>
 
           <div className="col-12 md:col-6">
@@ -142,7 +145,7 @@ const TripByUser = () => {
 
           <div className="col-12 md:col-6">
             <label className="field-label">סכום יעד</label>
-            <InputText onChange={(e) => setMaxPrice(e.target.value)} className="p-inputtext" />
+            <InputText value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} className="p-inputtext" />
           </div>
         </div>
 
