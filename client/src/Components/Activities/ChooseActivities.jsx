@@ -68,8 +68,13 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
         if (selectedType) {
             url += `type=${selectedType.name}&`;
         }
-        if (maxPriceForOne) {
+        if (maxPriceForOne && maxPriceForOne < (maxPrice || Infinity)) {
             url += `maxPrice=${maxPriceForOne}&`;
+        }
+        else{
+            if (maxPrice) {
+                url += `maxPrice=${maxPrice}&`;
+            }
         }
         // מסיר את ה- '&' האחרון אם יש
         url = url.endsWith('&') ? url.slice(0, -1) : url;
