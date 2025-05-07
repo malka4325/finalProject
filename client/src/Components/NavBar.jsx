@@ -15,7 +15,6 @@ const NavBar = () => {
         if (!user?.name) return null;
         return user.name[0].toUpperCase();
     };
-    const personalMenu = useRef(null);
     const items = [
         {
             label: 'דף הבית',
@@ -52,11 +51,11 @@ const NavBar = () => {
                 { label: 'טיולים בקרוב', url: '/Trips/קרוב' }
             ]
         },
-        {
+        token ?{
             label: 'עשה זאת בעצמך',
             icon: <span style={{ marginLeft: '8px' }}><i className="pi pi-cog"></i></span>,
             url: '/Trips/ByUser'
-        },
+        }: null,
 
         , {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
 
@@ -85,7 +84,7 @@ const NavBar = () => {
                 }
             ] : []
         }
-    ];
+    ].filter(item => item !== null);;
    
 
     const end = (
