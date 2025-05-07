@@ -62,7 +62,7 @@ const NavBar = () => {
         {
             label: token ? 'אזור אישי' : 'התחברות',
             url: token ? '' : '/Login',
-            icon:  token && getUserInitial() ? getUserInitial() : <FaUser style={{ fontSize: '24px' }} />,
+            icon:  <FaUser style={{ fontSize: '24px' }} />,
             items: token ? [
                 { label: 'הזמנות שלי', url: '/Orders/myOrders' },
                 { label: ' טיולים שלי', url: '/Trips/MyTrips' },
