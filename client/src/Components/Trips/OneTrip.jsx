@@ -18,7 +18,7 @@ const OneTrip = () => {
   const navigate = useNavigate();
   const { id } = useParams()
   const [trip, setTrip] = useState([]);
-  const [joiners, setJoiners] = useState(10)
+  const [joiners, setJoiners] = useState(5)
   const [activities, setActivities] = useState([]);
   // const context = useContext(Context);
   const token = useSelector(state => state.TokenSlice.token)
@@ -33,6 +33,7 @@ const OneTrip = () => {
       console.error(e)
     }
   }
+  const [totalPrice, setTotalPrice] = useState(trip.price*joiners);
   useEffect(() => {
     console.log(trip);
   }, [])
@@ -41,7 +42,7 @@ const OneTrip = () => {
       getActivities();
   }
     , [trip])
-  const [visible, setVisible] = useState(false);
+
   if (!trip) return null;
   const getActivities = async () => {
     try {
@@ -59,6 +60,8 @@ const OneTrip = () => {
   }
   console.log(activities);
   if (!trip) return null;
+
+
   const responsiveOptions = [
     {
       breakpoint: '1024px',
@@ -145,7 +148,7 @@ const OneTrip = () => {
           </div>
           <div className="text-lg mb-4 flex items-center">
             <strong>מחיר:</strong>
-            <Tag value={`₪${trip.price}`} style={{ background: "var(--orange-400)" }} className="ml-2 text-lg p-3" />
+            <Tag value={`₪${totalPrice}`} style={{ background: "var(--orange-400)" }} className="ml-2 text-lg p-3" />
           </div>
 
 
@@ -166,7 +169,10 @@ const OneTrip = () => {
 
           </div>
           <div className="flex-1">
-            <InputNumber inputId="minmax-buttons" value={joiners} onValueChange={(e) => setJoiners(e.value)} mode="decimal" showButtons min={0} max={100} size="small" />
+          <label htmlFor="minmax-buttons">כמות</label>
+          </div>
+          <div className="flex-1">
+            <InputNumber inputId="minmax-buttons" value={joiners} onValueChange={(e) =>{ setJoiners(e.value);setTotalPrice(joiners*trip.price)}} mode="decimal" showButtons min={0} max={100} size="small" />
           </div>
           <Divider />
 

@@ -18,7 +18,8 @@ const OneVacation = () => {
   const { id } = useParams()
   const [vacation, setVacation] = useState(null);
   const [activities, setActivities] = useState([]);
-  const [joiners, setJoiners] = useState(5)
+  const [joiners, setJoiners] = useState(0)
+  const [totalPrice, setTotalPrice] = useState(0);
   // const context = useContext(Context);
   const token = useSelector(state => state.TokenSlice.token)
   useEffect(() => { getVacation(); }
@@ -26,6 +27,7 @@ const OneVacation = () => {
   useEffect(() => { 
     if(vacation?.activities?.length!=0)
     getActivities();}
+
   , [vacation])
 
   const getVacation = async () => {
@@ -41,6 +43,8 @@ const OneVacation = () => {
       console.error(e)
     }
   }
+  
+
  
   const getActivities = async () => {
     try {
@@ -57,6 +61,8 @@ const OneVacation = () => {
   }
   console.log(activities);
   if (!vacation) return null;
+  
+
   const responsiveOptions = [
     {
       breakpoint: '1024px',
@@ -143,7 +149,7 @@ const OneVacation = () => {
           </div>
           <div className="text-lg mb-4 flex items-center">
             <strong>מחיר:</strong>
-            <Tag value={`₪${vacation.price}`} style={{ background: "var(--orange-400)" }} className="ml-2 text-lg p-3" />
+            <Tag value={`₪${totalPrice}`} style={{ background: "var(--orange-400)" }} className="ml-2 text-lg p-3" />
           </div>
 
 
@@ -173,7 +179,14 @@ const OneVacation = () => {
 
           </div>
           <div className="flex-1">
-            <InputNumber inputId="minmax-buttons" value={joiners} onValueChange={(e) => setJoiners(e.value)} mode="decimal" showButtons min={0} max={100} size="small" />
+          <label htmlFor="minmax-buttons">כמות</label>
+          </div>
+          <div className="flex-1">
+            <InputNumber inputId="minmax-buttons" value={joiners} onValueChange={(e) => {
+        const newJoiners = e.value; // קבל את הערך החדש
+        setJoiners(newJoiners);
+        setTotalPrice((newJoiners) * vacation.price); // השתמש בערך החדש
+    }} mode="decimal" showButtons min={0} max={100} size="small" />
           </div>
           <Divider />
 
