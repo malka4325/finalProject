@@ -18,8 +18,9 @@ const OneTrip = () => {
   const navigate = useNavigate();
   const { id } = useParams()
   const [trip, setTrip] = useState([]);
-  const [joiners, setJoiners] = useState(5)
-  const [activities, setActivities] = useState([]);
+  const [joiners, setJoiners] = useState(0)
+  const [totalPrice, setTotalPrice] = useState(0);
+    const [activities, setActivities] = useState([]);
   // const context = useContext(Context);
   const token = useSelector(state => state.TokenSlice.token)
   useEffect(() => { getTrip() }, [])
@@ -33,7 +34,6 @@ const OneTrip = () => {
       console.error(e)
     }
   }
-  const [totalPrice, setTotalPrice] = useState(trip.price*joiners);
   useEffect(() => {
     console.log(trip);
   }, [])
@@ -172,7 +172,11 @@ const OneTrip = () => {
           <label htmlFor="minmax-buttons">כמות</label>
           </div>
           <div className="flex-1">
-            <InputNumber inputId="minmax-buttons" value={joiners} onValueChange={(e) =>{ setJoiners(e.value);setTotalPrice(joiners*trip.price)}} mode="decimal" showButtons min={0} max={100} size="small" />
+            <InputNumber inputId="minmax-buttons" value={joiners} onValueChange={(e) => {
+        const newJoiners = e.value; // קבל את הערך החדש
+        setJoiners(newJoiners);
+        setTotalPrice((newJoiners) * trip.price); // השתמש בערך החדש
+    }} mode="decimal" showButtons min={0} max={100} size="small" />
           </div>
           <Divider />
 
@@ -220,7 +224,7 @@ const OneTrip = () => {
           )}
         />
       </div>
-      <Button onClick={()=>{navigate(-1)}}> חזרה לנופשים</Button>
+      <Button onClick={()=>{navigate(-1)}}> חזרה לטיולים</Button>
     </div>
   );
 };
