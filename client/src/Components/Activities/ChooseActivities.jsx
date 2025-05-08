@@ -45,7 +45,7 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
     const types = [
         { name: 'אטרקציה', code: 'NY' },
         { name: 'מסלול', code: 'RM' },
-        { name: 'תוכנית', code: 'LDN' },
+        { name: 'תכנית', code: 'LDN' },
     ];
     const isAdmin = () => {
         if (!user)
@@ -99,7 +99,7 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
         }
     }
     const filterActivitiesFunc=()=>{
-
+       debugger
         const filteredActivitiesNow = activities.filter(activity => {
             let matches = true;
         
@@ -113,14 +113,15 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
                 matches = matches && activity.type === selectedType.name;
             }
             if (maxPriceForOne && maxPriceForOne < (maxPrice || Infinity)) {
-                matches = matches && activity.maxPrice <= maxPriceForOne;
+                matches = matches && activity.price <= maxPriceForOne;
             } else if (maxPrice) {
-                matches = matches && activity.maxPrice <= maxPrice;
+                matches = matches && activity.price <= maxPrice;
             }
         
             return matches;
         });
         setFilterActivities(filteredActivitiesNow)
+        console.log("Filtered activities:", filteredActivitiesNow); // לבדוק את הנתונים המתקבלים
         
     }
 
