@@ -17,7 +17,7 @@ import axios from "axios";
 import OneVacation from "./OneVacation";
 import { useSelector } from "react-redux";
 const Vacations = () => {
-    // const context = useContext(Context);
+    
 
     const navigate = useNavigate();
     const token = useSelector(state => state.TokenSlice.token)
@@ -38,7 +38,7 @@ const Vacations = () => {
             default: getVacationsByArea()
         }
     }, [area])
-    // useEffect(() => { getVacations() }, [])
+   
     const getVacations = async () => {
         try {
             const res = await axios.get(`http://localhost:4300/api/vacations?fromDate=${new Date()}`)
@@ -133,11 +133,11 @@ const Vacations = () => {
             <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-1" key={vacation._id}
             >
 
-                {/* {oneVacationVis && <OneVacation vacation={vacation} setOneVacationVis={setOneVacationVis} oneVacationVis={oneVacationVis} />} */}
+               
                 <div className=" border-1 surface-border surface-card border-round" style={{
-                    width: "370px", /* רוחב קבוע */
-                    height: '420px', /* גובה קבוע */
-                    overflow: 'hidden', /* מסתיר תוכן שגדול מהכרטיס */
+                    width: "370px", 
+                    height: '420px', 
+                    overflow: 'hidden', 
                     padding: 0, margin: 0
                 }}>
                     <button onClick={() => { handleButton(vacation) }} style={{ position: 'relative', backgroundColor: "white", borderWidth: "0px", padding: 0, margin: 0 }}>
@@ -150,7 +150,7 @@ const Vacations = () => {
                             <Tag className="mr-2 text-lg " value={full} severity={getSeverity(full)} style={{
                                 visibility: full === 'יש מקום' ? "hidden" : "visible",
                                 position: "absolute",
-                                top: '10px', // התאם את המיקום
+                                top: '10px', 
                                 right: '10px',
                                 whiteSpace: 'nowrap',
                                 zIndex: 2

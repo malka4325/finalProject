@@ -50,7 +50,7 @@ const NewOrder = () => {
             ...(type === "trip" && { trip: id, numOfJoined }) }, 
             {
               headers: {
-                "Authorization": `Bearer ${token}`, // הכנסת ה-token לכותרת Authorization
+                "Authorization": `Bearer ${token}`, 
               }
             }
           );
@@ -59,7 +59,7 @@ const NewOrder = () => {
               window.location.href = '/ThankYou'
           }
       } catch (e) {
-          alert(e.response.data.message.toString())
+          alert(e.response.data);
       }
       }
       return (
@@ -69,7 +69,7 @@ const NewOrder = () => {
     
             <Divider />
     
-            {/* שם מלא */}
+            
             <div className="field">
               <label className="block text-900 font-medium mb-2">שם מלא</label>
               <InputText
@@ -82,7 +82,7 @@ const NewOrder = () => {
             </div>
     
     
-            {/* טלפון */}
+            
             <div className="field">
               <label className="block text-900 font-medium mb-2">טלפון</label>
               <InputText
@@ -112,7 +112,7 @@ const NewOrder = () => {
     
             
             <div className="flex gap-3">
-              {/* תוקף */}
+              
               <div className="field flex-1">
                 <label className="block text-900 font-medium mb-2">תוקף (MM/YY)</label>
                 <InputText
@@ -124,7 +124,7 @@ const NewOrder = () => {
                 />
               </div>
     
-              {/* CVV */}
+              
               <div className="field flex-1">
                 <label className="block text-900 font-medium mb-2">CVV</label>
                 <Password
@@ -140,7 +140,7 @@ const NewOrder = () => {
     
             <Divider />
     
-            {/* כפתור תשלום */}
+            
             <Button label="💳 שלם עכשיו" className="w-full p-button-outlined p-button-warning text-xl" onClick={order}/>
     
             <Divider />

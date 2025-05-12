@@ -28,16 +28,14 @@ const AddTrip = () => {
 
     ];
 
-    // const mainActivity = useLocation()
-    // const props = mainActivity.state || {};
+    
     const locationRef = useRef("")
     const descriptionRef = useRef("")
     const targetAudienceRef = useRef("")
     const maxParticipantsRef = useRef("")
     const priceRef = useRef("")
 
-    //const [file, setFile] = useState(null);
-
+  
     const [imageUrl, setImageUrl] = useState("");
 
     const newTrip = {
@@ -73,43 +71,10 @@ const AddTrip = () => {
             console.error("Error uploading file:", error);
         }
     };
-    // const addTrip = async () => {
-
-
-    //     if (!newTrip.imageSrc) newTrip.imageSrc = 'http://localhost:4300/uploads/logo.jpg';
-    //     console.log("response", newTrip.imageSrc);
-
-    //     console.log(newTrip);
-
-    //     if (selectedArea) newTrip.area = selectedArea.name;
-    //     if (mainActivityRef.current.value) newTrip.location = mainActivityRef.current.value;
-    //     if (targetAudienceRef.current.value) newTrip.targetAudience = targetAudienceRef.current.value;
-    //     if (descriptionRef.current.value) newTrip.description = descriptionRef.current.value;
-    //     if (date) newTrip.date = date;
-    //     //if (activities) newTrip.activities = activities;
-    //     if (maxParticipantsRef.current.value) newTrip.maxParticipants = maxParticipantsRef.current.value;
-    //     if (priceRef.current.value) newTrip.price = priceRef.current.value;
-
-    //     try {
-    //         const res = await axios.post('http://localhost:4300/api/trips', newTrip, {
-    //             headers: {
-    //                 'Authorization': `Bearer ${token}`, // שליחת הטוקן בכותרת Authorization
-    //             },
-    //         })
-    //         console.log(res);
-    //         if (res.status === 200) {
-    //             console.log("res.data", res.data);
-    //             // props.setTrips(res.data)
-    //             navigate('/Trips/הכל');
-    //         }
-    //     } catch (e) {
-    //         alert(e.response.data.message)
-    //     }
-    // }
+    
     useEffect(() => {
         console.log("Editing:", isEditing, "Trip to update:", tripToUpdate);
         if (isEditing && tripToUpdate) {
-            // אם אנחנו במצב עדכון, מלא את השדות עם הנתונים הקיימים
             setDate(new Date(tripToUpdate.date));
             setSelectedArea(areas.find(area => area.name === tripToUpdate.area));
             locationRef.current.value = tripToUpdate.location;
@@ -124,7 +89,6 @@ const AddTrip = () => {
     const addOrUpdateTrip = async () => {
 
         if (!newTrip.imageSrc) newTrip.imageSrc = 'http://localhost:4300/uploads/logo.jpg';
-        //console.log("newTrip.imageSrc", newTrip.imageSrc);
         console.log(newTrip);
         if (selectedArea) newTrip.area = selectedArea.name;
         if (locationRef.current.value) newTrip.location = locationRef.current.value;
@@ -132,14 +96,13 @@ const AddTrip = () => {
         if (descriptionRef.current.value) newTrip.description = descriptionRef.current.value;
         if (date) newTrip.date = date;
         
-        //if (activities) newTrip.activities = activities;
         if (maxParticipantsRef.current.value) newTrip.maxParticipants = maxParticipantsRef.current.value;
         if (priceRef.current.value) newTrip.price = priceRef.current.value;
       
         try {
             let res;
             if (isEditing) {
-                // אם אנחנו במצב עדכון, בצע עדכון
+
                 newTrip._id= tripToUpdate._id
                 console.log(newTrip);
                 res = await axios.put(`http://localhost:4300/api/trips`, newTrip, {
@@ -148,7 +111,6 @@ const AddTrip = () => {
                     },
                 });
             } else {
-                // אם אנחנו במצב הוספה, בצע הוספה
                 res = await axios.post('http://localhost:4300/api/trips', newTrip, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -195,10 +157,10 @@ const AddTrip = () => {
              <ChooseActivities
              chooseActivities={newTrip.activities}
              setChooseActivities={setChooseActivities}
-             visible={showChooseActivities} // העברת הנראות לדיאלוג
+             visible={showChooseActivities} 
              setVisible={setShowChooseActivities}
              sumPrice ={sumPrice}
-             setSumPrice ={setSumPrice}// פונקציה לסגירת הדיאלוג
+             setSumPrice ={setSumPrice}
          />
           )}
       

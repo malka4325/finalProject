@@ -15,13 +15,13 @@ const AuthPage=()=> {
     const [visible, setVisible] = useState(true);
     const [connecting, setConnecting] = useState(false);
     const [error, setError] = useState(null);
-    //const [token, setToken] = useState();
+   
 
     const token = useSelector(state=> state.TokenSlice.token)
         console.log(token);
     const dispatch = useDispatch()
 
-    const [isLogin, setIsLogin] = useState(true);  // משתנה לשלוט במעבר בין הרשמה והתחברות
+    const [isLogin, setIsLogin] = useState(true);  
     const [formData, setFormData] = useState({
         userName: '',
         password: '',
@@ -107,7 +107,7 @@ const AuthPage=()=> {
                         />
                         <h2 className="text-center  mb-4">{isLogin ? "🔑 התחברות" : "📝 הרשמה"}</h2>
 
-                        {/* שדה שם מלא - יוצג רק בהרשמה */}
+                       
                         {!isLogin && (
                             <div className="inline-flex flex-column gap-2">
                                 <label htmlFor="name" className=" font-semibold">שם מלא</label>
@@ -120,7 +120,7 @@ const AuthPage=()=> {
                             </div>
                         )}
 
-                        {/* שדה שם משתמש */}
+                       
                         <div className="inline-flex flex-column gap-2">
                             <label htmlFor="userName" className=" font-semibold">שם משתמש</label>
                             <InputText 
@@ -131,7 +131,7 @@ const AuthPage=()=> {
                             />
                         </div>
 
-                        {/* שדה סיסמה */}
+                        
                         <div className="inline-flex flex-column gap-2">
                             <label htmlFor="password" className=" font-semibold">סיסמה</label>
                             <Password 
@@ -144,7 +144,7 @@ const AuthPage=()=> {
                             />
                         </div>
 
-                        {/* שדות נוספים - יוצגו רק בהרשמה */}
+                        
                         {!isLogin && (
                             <>
                                 <div className="inline-flex flex-column gap-2">
@@ -179,7 +179,7 @@ const AuthPage=()=> {
                             </>
                         )}
 
-                        {/* כפתור שליחה */}
+                        
                         <div className="flex justify-content-between">
                             <Button 
                                 label={connecting?"connecting":isLogin ? "📲 התחבר" : "📩 הרשמה"} 
@@ -189,7 +189,7 @@ const AuthPage=()=> {
                             />
                         </div>
 
-                        {/* כפתור מעבר בין הרשמה והתחברות */}
+                        
                         <div className="mt-3 text-center">
                             <Button 
                                 label={isLogin ? "אין לך חשבון? הירשם כאן" : "כבר רשום? התחבר כאן"} 

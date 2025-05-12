@@ -65,12 +65,12 @@ const storage = multer.diskStorage({
   
   const upload = multer({ storage });
   
-  // נתיב להעלאת תמונה
+  
   app.post("/upload", upload.single("image"), (req, res) => {
     if (!req.file) {
       return res.status(400).json({ error: "No file uploaded" });
     }
-    res.json({ imageUrl: `/uploads/${req.file.filename}` }); // שינוי הנתיב כך שיתאים ל-public
+    res.json({ imageUrl: `/uploads/${req.file.filename}` }); 
   });
 mongoose.connection.once('open',()=>{
     console.log('connected to mongoDB')

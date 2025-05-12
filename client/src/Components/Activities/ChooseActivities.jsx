@@ -62,31 +62,16 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
     const getActivities = async () => {
         try {    
              let url = 'http://localhost:4300/api/activities?';
-        // if (selectedArea) {
-        //     url += `area=${selectedArea.name}&`;
-           
-        // }
-        // if (selectedWhom) {
-        //     url += `targetAudience=${selectedWhom.name}&`;
-        // }
-        // if (selectedType) {
-        //     url += `type=${selectedType.name}&`;
-        // }
-        // if (maxPriceForOne && maxPriceForOne < (maxPrice || Infinity)) {
-        //     url += `maxPrice=${maxPriceForOne}&`;
-        // }
-        // else{
+        
             if (maxPrice) {
                 url += `maxPrice=${maxPrice}`;
             }
-       // }
-        // מסיר את ה- '&' האחרון אם יש
-       // url = url.endsWith('&') ? url.slice(0, -1) : url;
+       
 
-        console.log("Fetching activities from URL:", url); // לבדוק את ה-URL
+        console.log("Fetching activities from URL:", url); 
 
         const res = await axios.get(url);
-        console.log("Activities response:", res.data); // לבדוק את הנתונים המתקבלים
+        console.log("Activities response:", res.data);
 
 
             if (res.status === 200) {
@@ -121,7 +106,7 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
             return matches;
         });
         setFilterActivities(filteredActivitiesNow)
-        console.log("Filtered activities:", filteredActivitiesNow); // לבדוק את הנתונים המתקבלים
+        console.log("Filtered activities:", filteredActivitiesNow); 
         
     }
 
@@ -133,7 +118,7 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
         if (e.checked) {
             _chooseActivities.push(e.value);
             _chooseActivitiesNames.push(activity.name);
-            if (maxPrice) { //by user
+            if (maxPrice) { 
                 if (_chooseActivities.length >= maxActivities) {
                     alert('לא ניתן לבחור יותר מ-6 פעילויות');
                     return;
@@ -146,7 +131,7 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
             }
             setSumPrice(sumPrice + activity.price)
 
-            // setSumPrice(sumPrice+Number(e.target.price))
+            
         }
         else {
             _chooseActivities.splice(_chooseActivities.indexOf(e.value), 1);
@@ -184,7 +169,7 @@ const ChooseActivities = ({ chooseActivities, setChooseActivities, visible, setV
         setSumPrice(total);
     }, [chooseActivities, activities]);
     const updateActivity=(event,activity)=>{
-        //setSelectedActivity(activity)
+       
         event.stopPropagation();
         if (token && user.role == "Admin")
         navigate('/Activities/AddActivity',{ state: { activityToUpdate: activity, isEditing: true } });

@@ -1,7 +1,6 @@
 
 import './App.css';
 import HomePage from './Components/HomePage';
-import UserProvider from "./context/Provider";
 import { react, useState } from 'react';
 import Trips from './Components/Trips/Trips';
 import AuthPage from './Components/AuthPage';
@@ -64,7 +63,7 @@ function App() {
         }
     ];
   return (
-    // <div className='card'>
+  
     <Router>
       <div className="App">
         <img
@@ -73,17 +72,13 @@ function App() {
           className="fixed-logo"
         />
         <NavBar />
-        {/* <Vacation/>
-  <OneVacation vacation={{location:" מלון כינר",area:"צפון",TargetAudience:"משפחה",price:100,startDate:'05/12/2016',endDate:'05/12/2016',images:['/images/cineret.jpg', '/images/cineret.jpg', '/images/cineret.jpg','/images/logo.jpg'],activities:[{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"},{name:"aaa",type:"bbb"}]}}></OneVacation>  
- */}
-        {/* <AuthPage/> */}
-        {/* <UserProvider  accessToken={token}> */}
+  
 
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/Login" element={<AuthPage />} />
           <Route path="/ThankYou" element={<ThankYouPage />} />
-          {/* <Route path="/upload" element={<Upload/>}/> */}
+         
 
 
           <Route path="/Vacations/:area" element={<Vacations />} />
@@ -106,7 +101,7 @@ function App() {
           <Route path="/Users/update" element={<UpdateUser/>} />
         </Routes>
 
-        {/* </UserProvider> */}
+       
        
         <div style={{ position: 'relative', height: '350px' }}>
     <Tooltip target=".speeddial-bottom-left .p-speeddial-action" position="left"  />
@@ -121,7 +116,7 @@ function App() {
         
 
       </div>  </Router>
-    // {/* </div> */}
+   
   );
 }
 

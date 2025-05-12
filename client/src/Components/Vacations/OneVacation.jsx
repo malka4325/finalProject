@@ -20,7 +20,7 @@ const OneVacation = () => {
   const [activities, setActivities] = useState([]);
   const [joiners, setJoiners] = useState(0)
   const [totalPrice, setTotalPrice] = useState(0);
-  // const context = useContext(Context);
+  
   const token = useSelector(state => state.TokenSlice.token)
   useEffect(() => { getVacation(); }
   , [])
@@ -36,8 +36,7 @@ const OneVacation = () => {
       if (res.status === 200) {
         setVacation(res.data);
         console.log("ghgh");
-        // if(vacation?.activities)
-        //   getActivities();
+        
       }
     } catch (e) {
       console.error(e)
@@ -81,13 +80,7 @@ const OneVacation = () => {
       numVisible: 1,
     },
   ];
-  // vacation.images = vacation.images || []; 
-  // const images = vacation.images.map((src) => ({
-  //   source: src,
-  //   thumbnail: src,
-  //   alt: 'Gallery Image',
-  //   title: 'Vacation Image',
-  // }));
+ 
   const images = [{
        source: vacation.imageSrc,
       thumbnail: vacation.imageSrc,
@@ -183,9 +176,9 @@ const OneVacation = () => {
           </div>
           <div className="flex-1">
             <InputNumber inputId="minmax-buttons" value={joiners} onValueChange={(e) => {
-        const newJoiners = e.value; // קבל את הערך החדש
+        const newJoiners = e.value; 
         setJoiners(newJoiners);
-        setTotalPrice((newJoiners) * vacation.price); // השתמש בערך החדש
+        setTotalPrice((newJoiners) * vacation.price);
     }} mode="decimal" showButtons min={0} max={100} size="small" />
           </div>
           <Divider />

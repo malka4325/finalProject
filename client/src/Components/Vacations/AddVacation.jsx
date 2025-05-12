@@ -41,8 +41,7 @@ const AddVacation = () => {
     ];
  
 
-    // const location = useLocation();
-    // const props = location.state || {};
+    
     const locationRef = useRef("")
     const descriptionRef = useRef("")
     const targetAudienceRef = useRef("")
@@ -50,7 +49,7 @@ const AddVacation = () => {
     const priceRef = useRef("")
     const ratingRef = useRef("")
 
-    //const [file, setFile] = useState(null);
+   
  
 
 
@@ -81,51 +80,15 @@ const AddVacation = () => {
             console.error("Error uploading file:", error);
         }
     };
-    // const [visibleChooseActivity, setVisibleChooseActivity] = useState(false);
-    // const [chooseActivities, setChooseActivities] = useState([]);
-    // const [chooseActivitiesNames, setChooseActivitiesNames] = useState([]);
+   ;
     const [imageUrl, setImageUrl] = useState("");
-    // const [sumPrice, setSumPrice] = useState(0);
+    
     const newVacation = {
         imageSrc: imageUrl,
         activities:chooseActivities
     };
 
-//     const onChooseActivitiesChange = (e) => {
-//         console.log(e);
-//         let _chooseActivities = [...chooseActivities];
-//         let _chooseActivitiesNames = [...chooseActivitiesNames];
 
-//         if (e.checked){
-//             _chooseActivities.push(e.value);
-//             _chooseActivitiesNames.push(e.target.name);
-           
-//            // setSumPrice(sumPrice+Number(e.target.price))
-//         }
-//         else{
-//             _chooseActivities.splice(_chooseActivities.indexOf(e.value), 1);
-//             _chooseActivitiesNames.splice(_chooseActivitiesNames.indexOf(e.target.name), 1);
-// }
-//         setChooseActivities(_chooseActivities);
-//         setChooseActivitiesNames(_chooseActivitiesNames);
-//     }
-//     const [visibleConfirmActivities, setVisibleConfirmActivities] = useState(false);
-//     const toast = useRef(null);
-//     const accept = () => {
-//         if(chooseActivities.length!=0)
-//         newVacation.activities=chooseActivities
-//         toast.current.show({ severity:'success', summary: 'הצליח', detail: 'פעילויות נוספו', life: 3000 });
-//     }
-//     useEffect(() => {
-//         const total = chooseActivities.reduce((total, activityId) => {
-//             const activity = activities.find(activity => activity._id === activityId);
-//             return activity ? total + activity.price : total;
-//         }, 0);
-//         setSumPrice(total);
-//     }, [chooseActivities]);
-//     const reject = () => {
-//         setVisibleChooseActivity(true)
-//     }
     useEffect(() => {
         console.log("Editing:", isEditing, "Vacation to update:", vacationToUpdate);
         if (isEditing && vacationToUpdate) {
@@ -146,7 +109,7 @@ const AddVacation = () => {
     const addOrUpdateVacation = async () => {
 
         if (!newVacation.imageSrc) newVacation.imageSrc = 'http://localhost:4300/uploads/logo.jpg';
-        //console.log("newVacation.imageSrc", newVacation.imageSrc);
+        
         console.log(newVacation);
         if (selectedArea) newVacation.area = selectedArea.name;
         if (locationRef.current.value) newVacation.location = locationRef.current.value;
@@ -154,7 +117,6 @@ const AddVacation = () => {
         if (descriptionRef.current.value) newVacation.description = descriptionRef.current.value;
         if (startDate) newVacation.startDate = startDate;
         if (endDate) newVacation.endDate = endDate;
-        //if (activities) newVacation.activities = activities;
         if (maxParticipantsRef.current.value) newVacation.maxParticipants = maxParticipantsRef.current.value;
         if (priceRef.current.value) newVacation.price = priceRef.current.value;
         if (ratingRef.current.value) newVacation.rating = ratingRef.current.value;
@@ -221,10 +183,10 @@ const AddVacation = () => {
                      <ChooseActivities
                      chooseActivities={newVacation.activities}
                      setChooseActivities={setChooseActivities}
-                     visible={showChooseActivities} // העברת הנראות לדיאלוג
+                     visible={showChooseActivities} 
                      setVisible={setShowChooseActivities}
                      sumPrice ={sumPrice}
-                     setSumPrice ={setSumPrice} // פונקציה לסגירת הדיאלוג
+                     setSumPrice ={setSumPrice}
                  />
             )}
                     <div className="flex-auto">

@@ -3,37 +3,37 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(to right, #f0f4f8, #d9e4ec); /* גרדיאנט רקע */
-    font-family: 'Arial', sans-serif; /* שינוי פונט */
+    background: linear-gradient(to right, #f0f4f8, #d9e4ec); 
+    font-family: 'Arial', sans-serif; 
 }
 
 .thank-you-card {
     width: 400px;
     text-align: center;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    border-radius: 10px; /* פינות מעוגלות */
-    transition: transform 0.2s; /* אנימציה */
+    border-radius: 10px; 
+    transition: transform 0.2s; 
 }
 
 .thank-you-card:hover {
-    transform: scale(1.05); /* הגדלה קלה בעת ריחוף */
+    transform: scale(1.05);  
 }
 
 .thank-you-image {
     width: 100%;
     height: auto;
-    border-radius: 10px 10px 0 0; /* פינות מעוגלות לתמונה */
+    border-radius: 10px 10px 0 0;
 }
 
 .thank-you-message {
     margin: 20px 0;
-    font-size: 1.2em; /* גודל פונט גדול יותר */
-    color: #333; /* צבע טקסט */
+    font-size: 1.2em; 
+    color: #333;
 }
 
 .thank-you-button {
     margin-top: 20px;
-    background-color: #007adf; /* צבע כפתור מותאם */
-    color: white; /* צבע טקסט בכפתור */
+    background-color: #007adf; 
+    color: white;
 }
 

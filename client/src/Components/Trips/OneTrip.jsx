@@ -10,7 +10,6 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 import 'primeicons/primeicons.css';
-import Context from "../../context/Context"
 import NewOrder from "../Orders/NewOrder.jsx"
 import { useSelector } from 'react-redux';
 import { InputNumber } from 'primereact/inputnumber';
@@ -21,7 +20,7 @@ const OneTrip = () => {
   const [joiners, setJoiners] = useState(0)
   const [totalPrice, setTotalPrice] = useState(0);
     const [activities, setActivities] = useState([]);
-  // const context = useContext(Context);
+
   const token = useSelector(state => state.TokenSlice.token)
   useEffect(() => { getTrip() }, [])
   const getTrip = async () => {
@@ -80,13 +79,7 @@ const OneTrip = () => {
       numVisible: 1,
     },
   ];
-  // trip.images = trip.images || []; 
-  // const images = trip.images.map((src) => ({
-  //   source: src,
-  //   thumbnail: src,
-  //   alt: 'Gallery Image',
-  //   title: 'Trip Image',
-  // }));
+ 
   const images = [{
     source: trip.imageSrc,
     thumbnail: trip.imageSrc,
@@ -173,9 +166,9 @@ const OneTrip = () => {
           </div>
           <div className="flex-1">
             <InputNumber inputId="minmax-buttons" value={joiners} onValueChange={(e) => {
-        const newJoiners = e.value; // קבל את הערך החדש
+        const newJoiners = e.value; 
         setJoiners(newJoiners);
-        setTotalPrice((newJoiners) * trip.price); // השתמש בערך החדש
+        setTotalPrice((newJoiners) * trip.price); 
     }} mode="decimal" showButtons min={0} max={100} size="small" />
           </div>
           <Divider />

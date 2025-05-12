@@ -47,10 +47,5 @@ const Upload = () => {
 
 
         
-//     return (
-//         <div className="card">
-//             <FileUpload name="image" url={'http://localhost:4300/upload'} multiple accept="image/*" maxFileSize={1000000} emptyTemplate={<p className="m-0">Drag and drop files to here to upload.</p>} />
-//         </div>
-//     )
-// }  
+  
 export default Upload;

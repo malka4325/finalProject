@@ -71,7 +71,7 @@ const OldOrders = () => {
                         </div>
                         <div className="flex flex-row lg:flex-column align-items-center lg:align-items-end gap-4 lg:gap-2">
                             <span className="text-2xl font-semibold">₪{data.price}</span>
-                            {/* <Tag value={data.vacation.inventoryStatus} severity={getSeverity(data)}></Tag> */}
+                           
                         </div>
                     </div>
                 </div>

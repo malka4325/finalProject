@@ -14,11 +14,9 @@ import axios from "axios";
 
 import { useSelector } from "react-redux";
 const MyTrips = () => {
-    // const context = useContext(Context);
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const forAdmin = queryParams.get('forAdmin')
-    //console.log(forAdmin?forAdmin:"kn");
     const navigate = useNavigate();
     const token = useSelector(state => state.TokenSlice.token)
     const user = useSelector(state => state.UserSlice.user)
@@ -34,7 +32,6 @@ const MyTrips = () => {
     useEffect(() => {
         getTrips()
     }, [])
-    // useEffect(() => { getTrips() }, [])
     const getTrips = async () => {
         try {
             let res;
@@ -52,7 +49,6 @@ const MyTrips = () => {
     }
 
     const approvedTrip = async (event, trip) => {
-        //setSelectedTrip(trip)
         event.stopPropagation();
         if (isAdmin()) {
             try {
@@ -66,7 +62,7 @@ const MyTrips = () => {
                     getTrips();
                      const ownerTrip=await getOwnerTrip(trip.madeById)
                     console.log(ownerTrip);
-                    //debugger
+                    
                     await  handleEmail(ownerTrip);
                 }
             } catch (e) {
@@ -113,35 +109,7 @@ const MyTrips = () => {
         if (token && user.role == "Admin")
             navigate('/Trips/AddTrip', { state: { tripToUpdate: trip, isEditing: true } });
     }
-    //    const deleteTrip=async(trip)=>{
-
-    //     try {
-    //         const res = await axios.delete(`http://localhost:4300/api/trips/${trip._id}`, {
-    //             headers: {
-    //                 'Authorization': `Bearer ${token}`, // שליחת הטוקן בכותרת Authorization
-    //             }
-    //         })
-    //         if (res.status === 200) {
-    //             getTrips()
-    //         }
-    //       } catch (e) {
-    //         console.error(e)
-    //       }
-    //    }
-    //    const acceptDelete = () => {
-    //     deleteTrip(selectedTrip)
-    //     }
-
-    //    const rejectDelete = () => {
-    //     setConfirmDeleteVisible(false);
-    //    }
-
-    // const handleButton = (trip) => {
-    //     if (token)
-    //         navigate(`/Trips/${trip.area}/${trip._id}`);
-    //     else
-    //         navigate('/Login')
-    // }
+    
     const handleOrder = (trip) => {
         if (token)
             navigate(`/Orders/newOrder/${trip._id}?num=${trip.currentParticipants}&type=trip`);
@@ -150,24 +118,20 @@ const MyTrips = () => {
 
 
         console.log(trip);
-        // const handleDelete = (event) => {
-        //     event.stopPropagation();
-        //     setSelectedTrip(trip); // שומר את הנופש הנבחר
-        //     setConfirmDeleteVisible(true); // מציג את דיאלוג האישור
-        // };
+      
 
         return (
             <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-1" key={trip._id}
             >
 
-                {/* {oneTripVis && <OneTrip trip={trip} setOneTripVis={setOneTripVis} oneTripVis={oneTripVis} />} */}
+              
                 <div className=" border-1 surface-border surface-card border-round" style={{
-                    width: "370px", /* רוחב קבוע */
-                    height: '370px', /* גובה קבוע */
-                    overflow: 'hidden', /* מסתיר תוכן שגדול מהכרטיס */
+                    width: "370px", 
+                    height: '370px', 
+                    overflow: 'hidden', 
                     padding: 0, margin: 0
                 }}>
-                    {/* <button onClick={() => { handleButton(trip) }} style={{ position: 'relative', backgroundColor: "white", borderWidth: "0px", padding: 0, margin: 0 }}> */}
+                    
                     <div style={{ position: 'relative', width: '370px', height: '200px', overflow: 'hidden' }}>
                         <Image src={trip.imageSrc} alt={trip.location} width="370px" height="200" style={{ width: '100%', height: '100%' }} />
                         <div className="flex flex-wrap align-items-center justify-content-between gap-1" style={{ position: 'absolute', top: '5px', left: '5px', margin: 8 }}>
@@ -178,7 +142,7 @@ const MyTrips = () => {
                         <Tag className="mr-2 text-lg " value={"לא אושר עדין"} severity={'info'} style={{
                             visibility: trip.isApproved ? "hidden" : "visible",
                             position: "absolute",
-                            top: '10px', // התאם את המיקום
+                            top: '10px', 
                             right: '10px',
                             whiteSpace: 'nowrap',
                             zIndex: 2
@@ -187,7 +151,7 @@ const MyTrips = () => {
                     <div className="flex justify-content w-full  gap-2" >
                         <Button icon="pi pi-pen-to-square" visible={!trip.isApproved} rounded text severity="help" aria-label="update" onClick={(event) => updateTrip(event, trip)} />
                         <Button icon="pi pi-verified" visible={isAdmin()} rounded text severity="help" aria-label="update" onClick={(event) => approvedTrip(event, trip)} />
-                        {/* <Button icon="pi pi-trash" rounded text severity="danger" aria-label="Cancel" onClick={(event) =>{handleDelete(event)}}/> */}
+                       
                     </div>
                     <div className="flex flex-column align-items-center gap-2 py-2">
 
@@ -210,7 +174,7 @@ const MyTrips = () => {
 
 
                     </div>
-                    {/* </button> */}
+                    
                     <Button label="הזמן" rounded aria-label="Filter" disabled={!trip.isApproved} onClick={() => { handleOrder(trip) }} />
 
                     <div className="flex align-items-center justify-content-between" style={{ padding: "1px" }}>
@@ -220,11 +184,6 @@ const MyTrips = () => {
                         </span>
                         <span className="text-m font-semibold">{trip.targetAudience}</span>
 
-
-
-                        {/* <Button className="p-button-rounded font-semibold" style={{
-                           backgroundColor: "Window",color:"ButtonText", borderColor: "orange", boxShadow: '0 0 0 0.2rem rgba(240, 134, 80, 0.5)',marginRight:"7px"
-                        }} onClick={() => { handleButton(trip) }}>הזמן עכשיו</Button> */}
                     </div>
                 </div>
 
@@ -240,8 +199,7 @@ const MyTrips = () => {
             <div className="card" style={{ margin: "40px" }}>
                 <h1>הטיולים שלי</h1>
                 <DataView value={trips} listTemplate={listTemplate} />
-                {/* <ConfirmDialog group="declarative"  visible={confirmDeleteVisible} onHide={() => setConfirmDeleteVisible(false)} message="למחוק נופש?" 
-                header="למחוק?" icon="pi pi-exclamation-triangle" accept={acceptDelete} reject={rejectDelete} /> */}
+               
                 <Outlet />
             </div> </>
     )

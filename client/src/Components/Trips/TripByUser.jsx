@@ -46,16 +46,9 @@ const TripByUser = () => {
     const [joiners, setJoiners] = useState(0);
     const [targetAudience, setTargetAudience] = useState("");
 
-    //const joinersRef = useRef("")
-
-    //const maxPriceRef = useRef("")
-
-    //const targetAudienceRef = useRef("")
-    // useEffect(() => {
-    //     setMaxPrice(maxPriceRef.current.value)
-    // }, [maxPriceRef]);
+    
     const [selectedActivities, setSelectedActivities] = useState([]);
-    // const [totalPrice, setTotalPrice] = useState(0);
+    
     const [currentStep, setCurrentStep] = useState(0); // עוקב אחרי השלב הנוכחי
 
     const maxActivities = 6;

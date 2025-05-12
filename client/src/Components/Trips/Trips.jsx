@@ -14,7 +14,7 @@ import axios from "axios";
 
 import { useSelector } from "react-redux";
 const Trips = () => {
-    // const context = useContext(Context);
+    
 
     const navigate = useNavigate();
     const token = useSelector(state => state.TokenSlice.token)
@@ -32,7 +32,7 @@ const Trips = () => {
             default: getTripsByArea()
         }
     }, [area])
-    // useEffect(() => { getTrips() }, [])
+    
     const getTrips = async () => {
         try {
             const res = await axios.get(`http://localhost:4300/api/trips?fromDate=${new Date()}&madeByType=Admin`)
@@ -129,11 +129,11 @@ const Trips = () => {
             <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-1" key={trip._id}
             >
 
-                {/* {oneTripVis && <OneTrip trip={trip} setOneTripVis={setOneTripVis} oneTripVis={oneTripVis} />} */}
+                
                 <div className=" border-1 surface-border surface-card border-round" style={{
-                    width: "370px", /* רוחב קבוע */
-                    height: '370px', /* גובה קבוע */
-                    overflow: 'hidden', /* מסתיר תוכן שגדול מהכרטיס */
+                    width: "370px", 
+                    height: '370px', 
+                    overflow: 'hidden', 
                     padding: 0, margin: 0
                 }}>
                     <button onClick={() => { handleButton(trip) }} style={{ position: 'relative', backgroundColor: "white", borderWidth: "0px", padding: 0, margin: 0 }}>
@@ -146,7 +146,7 @@ const Trips = () => {
                             <Tag className="mr-2 text-lg " value={full} severity={getSeverity(full)} style={{
                                 visibility: full === 'יש מקום' ? "hidden" : "visible",
                                 position: "absolute",
-                                top: '10px', // התאם את המיקום
+                                top: '10px', 
                                 right: '10px',
                                 whiteSpace: 'nowrap',
                                 zIndex: 2
@@ -187,9 +187,7 @@ const Trips = () => {
 
 
 
-                        {/* <Button className="p-button-rounded font-semibold" style={{
-                           backgroundColor: "Window",color:"ButtonText", borderColor: "orange", boxShadow: '0 0 0 0.2rem rgba(240, 134, 80, 0.5)',marginRight:"7px"
-                        }} onClick={() => { handleButton(trip) }}>הזמן עכשיו</Button> */}
+                        
                     </div>
                 </div>
 
