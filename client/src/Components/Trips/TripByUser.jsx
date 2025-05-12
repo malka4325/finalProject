@@ -84,7 +84,7 @@ const TripByUser = () => {
         if (date) newTrip.date = date;
         if (selectedActivities) newTrip.activities = selectedActivities;
         if (joiners) {
-            newTrip.currentParticipants = joiners;
+            //newTrip.currentParticipants = joiners;
             newTrip.maxParticipants = joiners
         }
 
@@ -192,7 +192,7 @@ const TripByUser = () => {
       <div className="form-section text-right">
 
         <h4>טיול עבור: {BuildingTrip.targetAudience}</h4>
-        <h4>משתתפים: {BuildingTrip.currentParticipants}</h4>
+        <h4>משתתפים: {BuildingTrip.maxParticipants}</h4>
         <h4>תאריך: {date?.toLocaleDateString()}</h4>
         <h4>סה"כ עלות: ₪{BuildingTrip.price}</h4>
         <h4>שם יוצר: {user?.name}</h4>
